@@ -2752,3 +2752,1464 @@ footer {
     padding: 58px 0;
   }
 }
+
+
+/* =========================================================
+   PORTFOLIO ENHANCEMENTS — HEADER / EXPERIENCE / MOTION
+   These overrides intentionally leave the hero, theme and
+   existing button styles unchanged.
+   ========================================================= */
+
+/* Glass pill appears only after leaving the landing page. */
+.site-header {
+  transition:
+    width .28s ease,
+    height .28s ease,
+    top .28s ease,
+    border .28s ease,
+    border-radius .28s ease,
+    background .28s ease,
+    box-shadow .28s ease,
+    backdrop-filter .28s ease;
+}
+
+.site-header.is-scrolled {
+  top: 14px;
+  width: min(var(--max), calc(100% - 32px));
+  height: 62px;
+  border: 1px solid rgba(17, 16, 15, .14);
+  border-radius: 999px;
+  background: rgba(245, 241, 232, .72);
+  box-shadow: 0 10px 30px rgba(17, 16, 15, .10);
+  backdrop-filter: blur(18px) saturate(120%);
+  -webkit-backdrop-filter: blur(18px) saturate(120%);
+}
+
+.site-header.is-scrolled .main-nav .home-link {
+  border-color: transparent;
+}
+
+/* Experience: simple, factual and compact. */
+.experience-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.experience-head span {
+  flex: 0 0 auto;
+  color: var(--muted);
+  font: 500 9px "DM Mono", monospace;
+  letter-spacing: .04em;
+  white-space: nowrap;
+}
+
+.experience-item ul {
+  margin: 10px 0 0;
+  padding-left: 17px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.experience-item li + li {
+  margin-top: 6px;
+}
+
+.experience-item li::marker {
+  color: var(--red);
+}
+
+/* Scroll reveal — deliberately restrained, not a full-page animation. */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity .65s ease,
+    transform .65s cubic-bezier(.22, 1, .36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.scroll-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Skill bars animate after the section becomes visible. */
+.skillbox hr::after {
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 1s cubic-bezier(.22, 1, .36, 1);
+}
+
+.skills.skills-visible .skillbox hr::after {
+  transform: scaleX(1);
+}
+
+@media (max-width: 850px) {
+  .site-header.is-scrolled {
+    width: calc(100% - 24px);
+    top: 10px;
+  }
+
+  .experience-head {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 4px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-header,
+  .scroll-reveal,
+  .skillbox hr::after {
+    transition: none !important;
+  }
+}
+
+/* =========================================================
+   FINAL POLISH — HEADER + ROUTE + ALZHEIMER'S
+   ========================================================= */
+
+/* Keep the scrolled header comfortably inside the viewport. */
+.site-header.is-scrolled {
+  width: min(1500px, calc(100% - 72px));
+  padding: 0 18px;
+}
+
+/* ---------------------------------------------------------
+   AI ROUTE OPTIMIZER — clean, meaningful visual
+   --------------------------------------------------------- */
+.route-visual {
+  background: #e8e3da;
+  padding: 16px;
+}
+
+.route-visual .map-window {
+  background: #fbf8f0;
+  border: 1px solid rgba(17,16,15,.10);
+  box-shadow: none;
+}
+
+.route-visual .map-grid {
+  opacity: .55;
+  background-image:
+    linear-gradient(rgba(17,16,15,.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(17,16,15,.055) 1px, transparent 1px);
+  background-size: 52px 52px;
+  transform: none;
+}
+
+.route-visual .map-window b {
+  top: 18px;
+  left: 20px;
+  font-size: 9px;
+}
+
+.route-visual .map-window b::before {
+  width: 22px;
+  height: 3px;
+  margin-right: 9px;
+}
+
+.route-visual .route-path::before {
+  left: 17%;
+  top: 68%;
+  width: 66%;
+  height: 5px;
+  background: var(--red);
+  border-radius: 999px;
+  transform: rotate(-20deg);
+}
+
+.route-visual .route-path::after {
+  display: block;
+  left: 17%;
+  top: 68%;
+  width: 62%;
+  height: 2px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--ink) 0 8px,
+    transparent 8px 15px
+  );
+  transform: rotate(-5deg);
+  transform-origin: left center;
+  opacity: .65;
+}
+
+.route-visual .route-path span {
+  width: 14px;
+  height: 14px;
+  background: #fbf8f0;
+  border: 3px solid var(--red);
+  box-shadow: none;
+}
+
+.route-visual .route-path span:nth-child(1) {
+  left: 15%;
+  top: 72%;
+}
+
+.route-visual .route-path span:nth-child(2) {
+  left: 48%;
+  top: 49%;
+  width: 12px;
+  height: 12px;
+  background: var(--ink);
+  border: 3px solid #fbf8f0;
+  box-shadow: 0 0 0 2px var(--ink);
+}
+
+.route-visual .route-path span:nth-child(3) {
+  left: 82%;
+  top: 25%;
+  background: #fbf8f0;
+  border-color: var(--red);
+}
+
+.route-visual .route-path span::after {
+  position: absolute;
+  left: 50%;
+  top: 19px;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font: 500 7px "DM Mono", monospace;
+  color: var(--muted);
+}
+
+.route-visual .route-path span:nth-child(1)::after { content: "START"; }
+.route-visual .route-path span:nth-child(2)::after { content: "STOP"; top: -17px; }
+.route-visual .route-path span:nth-child(3)::after { content: "DESTINATION"; }
+
+.route-visual .route-path i {
+  display: none;
+}
+
+/* ---------------------------------------------------------
+   ALZHEIMER'S CLASSIFICATION — MRI / biomarker visual
+   --------------------------------------------------------- */
+.alzheimer-visual {
+  background: var(--ink);
+  padding: 18px;
+}
+
+.alzheimer-visual::before {
+  content: "MRI / XGBOOST";
+  top: 18px;
+  left: 20px;
+  font-size: 9px;
+}
+
+.alzheimer-visual .brain-art {
+  overflow: visible;
+}
+
+/* MRI scan */
+.alzheimer-visual .brain-half.left {
+  left: 13%;
+  top: 23%;
+  width: 42%;
+  height: 56%;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 56% 47%, rgba(17,16,15,.42) 0 9%, transparent 10%),
+    radial-gradient(circle at 50% 50%, transparent 0 29%, rgba(17,16,15,.20) 30% 32%, transparent 33% 42%, rgba(17,16,15,.14) 43% 45%, transparent 46%),
+    #d9d5cc;
+  transform: none;
+  box-shadow: inset 0 0 0 5px rgba(17,16,15,.18);
+}
+
+.alzheimer-visual .brain-half.left::before {
+  left: 12%;
+  right: 12%;
+  top: 49%;
+  height: 2px;
+  background: rgba(17,16,15,.28);
+  box-shadow: 0 -22px 0 rgba(17,16,15,.14), 0 22px 0 rgba(17,16,15,.14);
+}
+
+.alzheimer-visual .brain-half.left::after {
+  left: 50%;
+  right: auto;
+  top: 10%;
+  width: 2px;
+  height: 80%;
+  background: rgba(17,16,15,.16);
+}
+
+/* highlighted biomarker region */
+.alzheimer-visual .brain-half.right {
+  left: 43%;
+  top: 42%;
+  width: 13%;
+  height: 20%;
+  border-radius: 50%;
+  background: var(--red);
+  transform: none;
+  box-shadow: 0 0 0 5px rgba(255,59,48,.16);
+  z-index: 4;
+}
+
+.alzheimer-visual .brain-half.right::before,
+.alzheimer-visual .brain-half.right::after {
+  display: none;
+}
+
+.alzheimer-visual .brain-art::after {
+  display: none;
+}
+
+.alzheimer-visual .research-lines {
+  top: 36%;
+  right: 6%;
+  width: 28%;
+  gap: 8px;
+}
+
+.alzheimer-visual .research-lines::before {
+  content: "HC   EMCI   LMCI   AD";
+  display: block;
+  margin-bottom: 5px;
+  color: var(--paper);
+  font: 500 7px "DM Mono", monospace;
+  letter-spacing: .02em;
+}
+
+.alzheimer-visual .research-lines i {
+  height: 4px;
+}
+
+.alzheimer-visual .research-lines i:nth-child(1) {
+  width: 68%;
+  background: var(--red);
+}
+
+.alzheimer-visual .research-lines i:nth-child(2) {
+  width: 100%;
+}
+
+.alzheimer-visual .research-lines i:nth-child(3) {
+  width: 55%;
+}
+
+@media (max-width: 850px) {
+  .site-header.is-scrolled {
+    width: calc(100% - 32px);
+    padding: 0 14px;
+  }
+}
+
+/* =========================================================
+   FINAL FIX — STABLE GLASS HEADER + PROJECT SELECTION
+   ========================================================= */
+
+/* Keep the header's layout box unchanged. The glass pill is a
+   pseudo-element, so scrolling never pushes the page around. */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  width: min(var(--max), calc(100% - 48px));
+  height: 76px;
+  margin: auto;
+  padding: 0;
+  border-bottom: 1px solid var(--line);
+  background: rgba(245, 241, 232, 0.94);
+  box-shadow: none;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: background .25s ease, border-color .25s ease;
+}
+
+.site-header::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  border: 1px solid transparent;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  opacity: 0;
+  transition:
+    inset .35s cubic-bezier(.22,1,.36,1),
+    border-radius .35s ease,
+    background .35s ease,
+    border-color .35s ease,
+    box-shadow .35s ease,
+    opacity .25s ease;
+}
+
+.site-header.is-scrolled {
+  top: 0;
+  width: min(var(--max), calc(100% - 48px));
+  height: 76px;
+  padding: 0;
+  border-color: transparent;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.site-header.is-scrolled::before {
+  inset: 7px 0;
+  border-color: rgba(17,16,15,.13);
+  border-radius: 999px;
+  background: rgba(245,241,232,.70);
+  box-shadow: 0 12px 30px rgba(17,16,15,.10);
+  opacity: 1;
+  backdrop-filter: blur(18px) saturate(125%);
+  -webkit-backdrop-filter: blur(18px) saturate(125%);
+}
+
+/* The pill itself, rather than the entire header, gets the visual change. */
+.site-header.is-scrolled .main-nav .home-link {
+  border-color: transparent;
+  background: transparent;
+}
+
+/* ---------------------------------------------------------
+   PROJECT SELECTION MOTION
+   --------------------------------------------------------- */
+.project-card {
+  position: relative;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.project-card.is-selected {
+  animation: projectSelect .58s cubic-bezier(.22,1,.36,1);
+}
+
+.project-card.is-selected::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border: 1px solid var(--red);
+  animation: projectFlash .58s ease both;
+}
+
+@keyframes projectSelect {
+  0% { transform: translateY(0) scale(1); }
+  35% { transform: translateY(-7px) scale(1.012); }
+  70% { transform: translateY(-3px) scale(1.006); }
+  100% { transform: translateY(0) scale(1); }
+}
+
+@keyframes projectFlash {
+  0% { opacity: 0; box-shadow: 0 0 0 0 rgba(255,59,48,0); }
+  35% { opacity: 1; box-shadow: 0 0 0 5px rgba(255,59,48,.10); }
+  100% { opacity: 0; box-shadow: 0 0 0 12px rgba(255,59,48,0); }
+}
+
+/* =========================================================
+   ROUTE OPTIMIZER — simple route diagram
+   ========================================================= */
+.route-visual {
+  padding: 0;
+  background: #e5e0d6;
+}
+
+.route-graphic {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #f8f4eb;
+  border: 1px solid rgba(17,16,15,.10);
+}
+
+.route-title {
+  position: absolute;
+  z-index: 2;
+  left: 18px;
+  top: 16px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font: 600 9px "DM Mono", monospace;
+  letter-spacing: .02em;
+}
+
+.route-title span {
+  width: 22px;
+  height: 3px;
+  background: var(--red);
+}
+
+.route-graphic svg {
+  position: absolute;
+  inset: 38px 12px 10px;
+  width: calc(100% - 24px);
+  height: calc(100% - 48px);
+  overflow: visible;
+}
+
+.route-roads path {
+  fill: none;
+  stroke: rgba(17,16,15,.075);
+  stroke-width: 1;
+}
+
+.route-alt {
+  fill: none;
+  stroke: rgba(17,16,15,.40);
+  stroke-width: 3;
+  stroke-dasharray: 7 8;
+}
+
+.route-main {
+  fill: none;
+  stroke: var(--red);
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+
+.route-node {
+  fill: #f8f4eb;
+  stroke: var(--red);
+  stroke-width: 4;
+}
+
+.route-node.stop {
+  fill: var(--ink);
+  stroke: #f8f4eb;
+  stroke-width: 4;
+}
+
+.route-graphic text {
+  fill: var(--muted);
+  font: 500 8px "DM Mono", monospace;
+  letter-spacing: .03em;
+}
+
+/* tiny motion only inside the project visual */
+.project-card:hover .route-main {
+  stroke-dasharray: 8 4;
+  animation: routeFlow 1.2s linear infinite;
+}
+
+@keyframes routeFlow {
+  to { stroke-dashoffset: -24; }
+}
+
+/* =========================================================
+   ALZHEIMER'S — MRI → classification
+   ========================================================= */
+.alzheimer-visual {
+  padding: 0;
+  background: var(--ink);
+}
+
+.mri-graphic {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.mri-title {
+  position: absolute;
+  z-index: 2;
+  left: 18px;
+  top: 16px;
+  color: var(--paper);
+  font: 600 9px "DM Mono", monospace;
+  letter-spacing: .02em;
+}
+
+.mri-title span {
+  color: var(--red);
+  padding: 0 4px;
+}
+
+.mri-graphic svg {
+  position: absolute;
+  inset: 38px 12px 10px;
+  width: calc(100% - 24px);
+  height: calc(100% - 48px);
+}
+
+.mri-ring {
+  fill: none;
+  stroke: rgba(217,213,204,.22);
+  stroke-width: 2;
+}
+
+.mri-ring.outer {
+  stroke: rgba(217,213,204,.12);
+  stroke-width: 5;
+}
+
+.mri-slice {
+  stroke: rgba(17,16,15,.25);
+  stroke-width: 2;
+}
+
+.mri-brain {
+  fill: none;
+  stroke: rgba(17,16,15,.30);
+  stroke-width: 3;
+}
+
+.mri-hotspot {
+  fill: var(--red);
+  opacity: .95;
+}
+
+.mri-leader {
+  fill: none;
+  stroke: var(--red);
+  stroke-width: 2;
+}
+
+.mri-dot {
+  fill: var(--red);
+}
+
+.stage-list text:first-child {
+  fill: var(--paper);
+  font: 600 8px "DM Mono", monospace;
+  letter-spacing: .03em;
+}
+
+.stage-list rect {
+  fill: rgba(245,241,232,.08);
+  stroke: rgba(245,241,232,.20);
+}
+
+.stage-list rect:nth-of-type(2) {
+  fill: rgba(255,59,48,.12);
+  stroke: var(--red);
+}
+
+.stage-label {
+  fill: var(--paper) !important;
+  font: 600 8px "DM Mono", monospace !important;
+}
+
+.stage-list line {
+  stroke: rgba(245,241,232,.22);
+  stroke-width: 3;
+}
+
+.stage-list line.stage-accent {
+  stroke: var(--red);
+}
+
+.stage-note {
+  fill: rgba(245,241,232,.60) !important;
+  font: 500 7px "DM Mono", monospace !important;
+}
+
+.project-card:hover .mri-hotspot {
+  animation: hotspotPulse 1.2s ease-in-out infinite;
+}
+
+@keyframes hotspotPulse {
+  50% { transform: scale(1.18); transform-origin: 158px 116px; }
+}
+
+@media (max-width: 850px) {
+  .site-header,
+  .site-header.is-scrolled {
+    width: calc(100% - 32px);
+  }
+
+  .site-header.is-scrolled::before {
+    inset: 7px 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-header,
+  .site-header::before,
+  .project-card.is-selected,
+  .project-card.is-selected::after,
+  .project-card:hover .route-main,
+  .project-card:hover .mri-hotspot {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* =========================================================
+   FINAL CLEAN INTERACTION PASS
+   - Keeps the landing page design intact.
+   - One consistent hover language for all project cards.
+   - Stable glass header without layout jumps.
+   ========================================================= */
+
+/* ---------- Stable glass header ---------- */
+.site-header,
+.site-header.is-scrolled {
+  width: min(var(--max), calc(100% - 48px));
+  height: 76px;
+  top: 0;
+  margin: auto;
+  padding: 0;
+  border-radius: 0;
+  border-bottom: 1px solid var(--line);
+  background: rgba(245, 241, 232, .94);
+  box-shadow: none;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: background .35s ease, border-color .35s ease;
+}
+
+.site-header::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  inset: 0;
+  border: 1px solid transparent;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  opacity: 0;
+  transform: scale(.985);
+  transform-origin: center;
+  transition:
+    opacity .32s ease,
+    transform .42s cubic-bezier(.22, 1, .36, 1),
+    inset .42s cubic-bezier(.22, 1, .36, 1),
+    border-radius .42s ease,
+    background .32s ease,
+    border-color .32s ease,
+    box-shadow .42s ease;
+}
+
+.site-header.is-scrolled {
+  border-bottom-color: transparent;
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.site-header.is-scrolled::before {
+  inset: 7px 0;
+  border-radius: 999px;
+  border-color: rgba(17,16,15,.12);
+  background: rgba(245,241,232,.78);
+  box-shadow: 0 12px 30px rgba(17,16,15,.10);
+  opacity: 1;
+  transform: scale(1);
+  backdrop-filter: blur(18px) saturate(125%);
+  -webkit-backdrop-filter: blur(18px) saturate(125%);
+}
+
+/* Give the scrolled pill breathing room without moving the landing layout. */
+.site-header.is-scrolled .logo {
+  transform: translateX(10px);
+  transition: transform .42s cubic-bezier(.22,1,.36,1);
+}
+
+.site-header.is-scrolled .header-ai {
+  transform: translateX(-10px);
+  transition: transform .42s cubic-bezier(.22,1,.36,1);
+}
+
+.site-header:not(.is-scrolled) .logo,
+.site-header:not(.is-scrolled) .header-ai {
+  transform: translateX(0);
+  transition: transform .42s cubic-bezier(.22,1,.36,1);
+}
+
+.site-header.is-scrolled .main-nav .home-link {
+  border-color: transparent;
+  background: transparent;
+}
+
+/* ---------- One consistent hover language for ALL projects ---------- */
+.project-card {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transform: translateY(0);
+  box-shadow: 0 0 0 transparent;
+  transition:
+    transform .32s cubic-bezier(.22,1,.36,1),
+    box-shadow .32s cubic-bezier(.22,1,.36,1),
+    border-color .25s ease;
+}
+
+.project-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border: 1px solid transparent;
+  transition: border-color .28s ease, box-shadow .32s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 8px 8px 0 var(--ink);
+}
+
+.project-card:hover::after {
+  border-color: rgba(255,59,48,.45);
+  box-shadow: inset 0 0 0 1px rgba(255,59,48,.06);
+}
+
+.project-card .project-visual {
+  transition: transform .42s cubic-bezier(.22,1,.36,1), filter .32s ease;
+  transform-origin: center;
+}
+
+.project-card:hover .project-visual {
+  transform: scale(1.018);
+}
+
+.project-card .project-content h3 {
+  transition: color .25s ease, transform .32s cubic-bezier(.22,1,.36,1);
+}
+
+.project-card:hover .project-content h3 {
+  color: var(--red);
+  transform: translateX(3px);
+}
+
+.project-card .project-arrow {
+  display: inline-block;
+  transition: transform .32s cubic-bezier(.22,1,.36,1);
+}
+
+.project-card:hover .project-arrow {
+  transform: translate(4px,-4px);
+}
+
+/* Remove the two old one-off visual animations. Everything now uses the same motion language. */
+.project-card:hover .route-main,
+.project-card:hover .mri-hotspot {
+  animation: none !important;
+}
+
+.project-card.is-selected {
+  animation: projectSelectClean .5s cubic-bezier(.22,1,.36,1);
+}
+
+.project-card.is-selected::after {
+  border-color: var(--red);
+  animation: projectSelectBorder .5s ease both;
+}
+
+@keyframes projectSelectClean {
+  0% { transform: translateY(-6px) scale(1); }
+  45% { transform: translateY(-8px) scale(1.012); }
+  100% { transform: translateY(0) scale(1); }
+}
+
+@keyframes projectSelectBorder {
+  0% { opacity: 0; box-shadow: inset 0 0 0 0 rgba(255,59,48,0); }
+  30% { opacity: 1; box-shadow: inset 0 0 0 3px rgba(255,59,48,.10); }
+  100% { opacity: 0; box-shadow: inset 0 0 0 0 rgba(255,59,48,0); }
+}
+
+/* =========================================================
+   ROUTE OPTIMIZER — deliberately simple
+   ========================================================= */
+.route-visual {
+  padding: 14px;
+  background: #e5e0d6;
+}
+
+.route-simple {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #faf7ef;
+  border: 1px solid rgba(17,16,15,.10);
+}
+
+.visual-label {
+  position: absolute;
+  top: 15px;
+  left: 17px;
+  z-index: 4;
+  font: 600 9px "DM Mono", monospace;
+  letter-spacing: .04em;
+  color: var(--ink);
+}
+
+.visual-label::before {
+  content: "";
+  display: inline-block;
+  width: 22px;
+  height: 3px;
+  margin: 0 9px 2px 0;
+  background: var(--red);
+}
+
+.route-canvas {
+  position: absolute;
+  inset: 0;
+}
+
+.route-road {
+  position: absolute;
+  height: 1px;
+  background: rgba(17,16,15,.09);
+  transform-origin: left center;
+}
+
+.route-road.road-a { left: 8%; right: 8%; top: 58%; transform: rotate(-8deg); }
+.route-road.road-b { left: 12%; right: 10%; top: 37%; transform: rotate(7deg); }
+
+.route-main-line {
+  position: absolute;
+  left: 16%;
+  top: 60%;
+  width: 67%;
+  height: 4px;
+  background: var(--red);
+  border-radius: 999px;
+  transform: rotate(-13deg);
+  transform-origin: left center;
+}
+
+.route-main-line::after {
+  content: "";
+  position: absolute;
+  right: -1px;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  border-top: 3px solid var(--red);
+  border-right: 3px solid var(--red);
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.route-point {
+  position: absolute;
+  z-index: 3;
+}
+
+.route-point span {
+  display: block;
+  width: 15px;
+  height: 15px;
+  border: 3px solid var(--red);
+  border-radius: 50%;
+  background: #faf7ef;
+}
+
+.route-point b {
+  position: absolute;
+  top: 21px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  color: var(--muted);
+  font: 500 7px "DM Mono", monospace;
+}
+
+.point-start { left: 13%; top: 67%; }
+.point-mid { left: 48%; top: 46%; }
+.point-mid span { width: 13px; height: 13px; border-color: var(--ink); }
+.point-end { right: 13%; top: 27%; }
+
+.route-result {
+  position: absolute;
+  right: 16px;
+  bottom: 13px;
+  padding: 6px 9px;
+  background: rgba(255,253,247,.9);
+  color: var(--muted);
+  font: 500 7px "DM Mono", monospace;
+  border: 1px solid rgba(17,16,15,.08);
+}
+
+.route-result span {
+  display: inline-block;
+  width: 15px;
+  height: 2px;
+  margin: 0 6px 2px 0;
+  background: var(--red);
+}
+
+/* =========================================================
+   ALZHEIMER'S — clean data visual, no fake brain artwork
+   ========================================================= */
+.alzheimer-visual {
+  padding: 14px;
+  background: var(--ink);
+}
+
+.alz-simple {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #151413;
+  border: 1px solid rgba(245,241,232,.10);
+}
+
+.alz-layout {
+  position: absolute;
+  inset: 47px 18px 14px;
+  display: grid;
+  grid-template-columns: 42% 58%;
+  gap: 18px;
+  align-items: center;
+}
+
+.scan-card {
+  min-width: 0;
+}
+
+.scan-frame {
+  position: relative;
+  height: 116px;
+  overflow: hidden;
+  border: 1px solid rgba(245,241,232,.18);
+  background:
+    linear-gradient(90deg, transparent 49%, rgba(245,241,232,.10) 50%, transparent 51%),
+    linear-gradient(0deg, transparent 49%, rgba(245,241,232,.08) 50%, transparent 51%),
+    #242321;
+  background-size: 24px 24px;
+}
+
+.scan-lines {
+  position: absolute;
+  inset: 15px 18px;
+  border-radius: 50%;
+  background:
+    radial-gradient(ellipse at 50% 50%, #d9d5cc 0 21%, #8d8982 22% 28%, #3b3936 29% 39%, #1b1a19 40% 48%, transparent 49%),
+    radial-gradient(ellipse at 42% 45%, rgba(255,255,255,.75) 0 4%, transparent 5%),
+    radial-gradient(ellipse at 58% 56%, rgba(255,255,255,.42) 0 5%, transparent 6%);
+  filter: grayscale(1);
+}
+
+.scan-highlight {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  left: 57%;
+  top: 48%;
+  border-radius: 50%;
+  background: var(--red);
+  box-shadow: 0 0 0 5px rgba(255,59,48,.15);
+}
+
+.scan-card > span {
+  display: block;
+  margin-top: 6px;
+  color: rgba(245,241,232,.50);
+  font: 500 7px "DM Mono", monospace;
+}
+
+.classification-card {
+  min-width: 0;
+}
+
+.classification-card small {
+  display: block;
+  margin-bottom: 10px;
+  color: rgba(245,241,232,.58);
+  font: 500 8px "DM Mono", monospace;
+}
+
+.stage-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 5px;
+}
+
+.stage-row span {
+  padding: 8px 3px;
+  text-align: center;
+  color: rgba(245,241,232,.68);
+  border: 1px solid rgba(245,241,232,.16);
+  font: 600 7px "DM Mono", monospace;
+}
+
+.stage-row span.active {
+  color: var(--paper);
+  border-color: var(--red);
+  background: rgba(255,59,48,.13);
+}
+
+.confidence {
+  height: 3px;
+  margin-top: 14px;
+  background: rgba(245,241,232,.16);
+}
+
+.confidence i {
+  display: block;
+  width: 72%;
+  height: 100%;
+  background: var(--red);
+}
+
+.classification-card > b {
+  display: block;
+  margin-top: 9px;
+  color: rgba(245,241,232,.58);
+  font: 500 7px "DM Mono", monospace;
+}
+
+/* Same restrained visual motion as every other project. */
+.project-card:hover .scan-highlight {
+  box-shadow: 0 0 0 7px rgba(255,59,48,.10);
+}
+
+@media (max-width: 850px) {
+  .site-header,
+  .site-header.is-scrolled {
+    width: calc(100% - 32px);
+  }
+
+  .site-header.is-scrolled .logo { transform: translateX(5px); }
+  .site-header.is-scrolled .header-ai { transform: translateX(-5px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-header,
+  .site-header::before,
+  .site-header .logo,
+  .site-header .header-ai,
+  .project-card,
+  .project-card::after,
+  .project-card .project-visual,
+  .project-card .project-content h3,
+  .project-card .project-arrow,
+  .project-card.is-selected,
+  .project-card.is-selected::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* =========================================================
+   CASE STUDY MODAL
+   ========================================================= */
+
+body.modal-open {
+  overflow: hidden;
+}
+
+.case-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  padding: 28px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .25s ease, visibility .25s ease;
+}
+
+.case-modal.open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.case-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(17,16,15,.72);
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+}
+
+.case-panel {
+  position: relative;
+  width: min(900px, 100%);
+  max-height: min(88vh, 820px);
+  overflow: auto;
+  background: var(--paper);
+  border: 1px solid rgba(17,16,15,.16);
+  padding: clamp(28px, 5vw, 52px);
+  box-shadow: 14px 14px 0 var(--red);
+  transform: translateY(16px) scale(.985);
+  transition: transform .35s cubic-bezier(.22,1,.36,1);
+}
+
+.case-modal.open .case-panel {
+  transform: translateY(0) scale(1);
+}
+
+.case-close {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--cream);
+  cursor: pointer;
+  font-size: 24px;
+  line-height: 1;
+  transition: .2s ease;
+}
+
+.case-close:hover {
+  background: var(--ink);
+  color: var(--cream);
+}
+
+.case-kicker {
+  color: var(--red);
+  font: 500 10px "DM Mono", monospace;
+  letter-spacing: .06em;
+}
+
+.case-panel h2 {
+  max-width: 760px;
+  margin-top: 10px;
+  font-size: clamp(42px, 6vw, 72px);
+  line-height: .92;
+  letter-spacing: -.065em;
+}
+
+.case-summary {
+  max-width: 720px;
+  margin-top: 18px;
+  color: var(--muted);
+  font-size: 17px;
+  line-height: 1.55;
+}
+
+.case-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 1px;
+  margin-top: 34px;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+
+.case-block {
+  min-width: 0;
+  padding: 22px;
+  background: var(--paper);
+}
+
+.case-block small {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--muted);
+  font: 500 9px "DM Mono", monospace;
+}
+
+.case-block p {
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.case-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.case-tags span {
+  border: 1px solid var(--line);
+  padding: 7px 9px;
+  background: var(--cream);
+  color: var(--ink);
+  font: 500 9px "DM Mono", monospace;
+}
+
+.case-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 28px;
+}
+
+.case-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0 16px;
+  border: 1px solid var(--ink);
+  font-size: 12px;
+  font-weight: 600;
+  transition: .2s ease;
+}
+
+.case-button-primary {
+  background: var(--red);
+  border-color: var(--red);
+  color: var(--paper);
+}
+
+.case-button-secondary {
+  background: var(--paper);
+}
+
+.case-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 4px 4px 0 var(--ink);
+}
+
+/* Certification links use the same restrained interaction language. */
+.cert-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  color: inherit;
+}
+
+.cert-link > span {
+  flex: 0 0 auto;
+  color: var(--red);
+  font: 500 9px "DM Mono", monospace;
+}
+
+.cert-link:hover h3 {
+  color: var(--red);
+}
+
+.project-card:focus-visible,
+.cert-link:focus-visible,
+.case-close:focus-visible,
+.case-button:focus-visible {
+  outline: 2px solid var(--red);
+  outline-offset: 3px;
+}
+
+@media (max-width: 620px) {
+  .case-modal {
+    padding: 12px;
+  }
+
+  .case-panel {
+    max-height: 92vh;
+    box-shadow: 7px 7px 0 var(--red);
+    padding: 28px 20px 22px;
+  }
+
+  .case-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .case-block {
+    padding: 17px;
+  }
+
+  .case-actions {
+    flex-direction: column;
+  }
+
+  .case-button {
+    width: 100%;
+  }
+}
+
+/* =========================================================
+   PAGE LOAD MOTION
+   Subtle entrance only; the landing layout itself is unchanged.
+   ========================================================= */
+.hero-copy,
+.visual,
+.ticker {
+  animation: portfolioPageEnter .7s cubic-bezier(.22, 1, .36, 1) both;
+}
+
+.visual { animation-delay: .08s; }
+.ticker { animation-delay: .16s; }
+
+@keyframes portfolioPageEnter {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-copy,
+  .visual,
+  .ticker {
+    animation: none !important;
+  }
+}
+
+/* =========================================================
+   CERTIFICATIONS — UI COLOR MATCH
+   ========================================================= */
+
+#certifications .cert-index {
+  color: #ff3b30;
+  font-weight: 700;
+}
+
+#certifications .cert-year {
+  color: #151515;
+}
+
+#certifications .cert-item h3 {
+  color: #151515;
+}
+
+#certifications .cert-item p {
+  color: #77736c;
+}
+
+#certifications .cert-link {
+  color: #ff3b30;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+#certifications .cert-link:hover {
+  color: #151515;
+}
+/* =========================================================
+   CERTIFICATIONS — MATCH EXPERIENCE
+   ========================================================= */
+
+#certifications .cert-list {
+  margin-top: 34px;
+}
+
+#certifications .cert-item {
+  padding: 0 0 24px;
+  margin-bottom: 24px;
+  border-top: none !important;
+  border-bottom: 1px solid rgba(18, 18, 18, 0.14);
+}
+
+#certifications .cert-item:last-child {
+  margin-bottom: 0;
+  border-bottom: none;
+}
+
+#certifications .cert-item h3 {
+  margin: 0 0 10px;
+  color: #151515;
+  font-size: 18px;
+  line-height: 1.3;
+}
+
+#certifications .cert-link {
+  color: #ff3b30;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+#certifications .cert-link:hover {
+  color: #151515;
+}

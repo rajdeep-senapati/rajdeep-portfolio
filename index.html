@@ -173,7 +173,7 @@
           <!-- X -->
 
           <a
-            href="https://x.com/rajdeep_senapati"
+            href="https://x.com/rajdeepirl"
             target="_blank"
             rel="noreferrer"
             aria-label="X / Twitter"
@@ -220,9 +220,9 @@
           <!-- ORBIT -->
 
           <div class="orbit">
-          <span class="orbit-dot dot-1"></span>
-          <span class="orbit-dot dot-2"></span>
-          <span class="orbit-dot dot-3"></span>
+            <span class="orbit-dot dot-1"></span>
+            <span class="orbit-dot dot-2"></span>
+            <span class="orbit-dot dot-3"></span>
           </div>
 
 
@@ -334,7 +334,7 @@
              PROJECT 01 — JOBSHIELD
              ================================================= -->
 
-        <article class="project-card">
+        <article class="project-card" data-project="jobshield" tabindex="0" role="button" aria-label="Open JobShield case study">
 
           <div class="project-meta">
             <span>01</span>
@@ -407,7 +407,7 @@
              PROJECT 02 — STOCKSENSE
              ================================================= -->
 
-        <article class="project-card">
+        <article class="project-card" data-project="stocksense" tabindex="0" role="button" aria-label="Open StockSense case study">
 
           <div class="project-meta">
             <span>02</span>
@@ -491,7 +491,7 @@
              PROJECT 03 — ROUTE OPTIMIZER
              ================================================= -->
 
-        <article class="project-card">
+        <article class="project-card" data-project="route" tabindex="0" role="button" aria-label="Open AI Route Optimizer case study">
 
           <div class="project-meta">
             <span>03</span>
@@ -500,22 +500,38 @@
 
           <div class="project-visual route-visual">
 
-            <div class="map-window">
+            <div class="route-simple">
 
-              <div class="map-grid"></div>
+              <div class="visual-label">
+                ROUTE OPTIMIZATION
+              </div>
 
-              <b>
-                AI ROUTE OPTIMIZER
-              </b>
+              <div class="route-canvas">
 
-              <div class="route-path">
+                <div class="route-road road-a"></div>
+                <div class="route-road road-b"></div>
+                <div class="route-main-line"></div>
 
+                <div class="route-point point-start">
+                  <span></span>
+                  <b>START</b>
+                </div>
+
+                <div class="route-point point-mid">
+                  <span></span>
+                  <b>WAYPOINT</b>
+                </div>
+
+                <div class="route-point point-end">
+                  <span></span>
+                  <b>DESTINATION</b>
+                </div>
+
+              </div>
+
+              <div class="route-result">
                 <span></span>
-                <span></span>
-                <span></span>
-
-                <i></i>
-
+                OPTIMIZED PATH
               </div>
 
             </div>
@@ -529,12 +545,12 @@
             </h3>
 
             <p>
-              Route planning concept focused on finding efficient paths
-              while keeping the experience practical.
+              Vehicle-routing workflow using distance-aware optimization,
+              capacity and fuel constraints, traffic enrichment and rerouting.
             </p>
 
             <div class="chips">
-              Python · Algorithms · AI
+              Python · OR-Tools · Flask · Supabase
             </div>
 
             <span class="project-arrow">
@@ -550,7 +566,7 @@
              PROJECT 04 — EXAM SEATING
              ================================================= -->
 
-        <article class="project-card">
+        <article class="project-card" data-project="exam" tabindex="0" role="button" aria-label="Open Exam Seating Algorithm case study">
 
           <div class="project-meta">
             <span>04</span>
@@ -617,7 +633,7 @@
              PROJECT 05 — ALZHEIMER'S
              ================================================= -->
 
-        <article class="project-card">
+        <article class="project-card" data-project="alzheimers" tabindex="0" role="button" aria-label="Open Alzheimer's Classification case study">
 
           <div class="project-meta">
             <span>05</span>
@@ -626,17 +642,49 @@
 
           <div class="project-visual alzheimer-visual">
 
-            <div class="brain-art">
+            <div class="alz-simple">
 
-              <div class="brain-half left"></div>
+              <div class="visual-label">
+                MRI CLASSIFICATION
+              </div>
 
-              <div class="brain-half right"></div>
+              <div class="alz-layout">
 
-              <div class="research-lines">
+                <div class="scan-card">
 
-                <i></i>
-                <i></i>
-                <i></i>
+                  <div class="scan-frame">
+                    <div class="scan-lines"></div>
+                    <div class="scan-highlight"></div>
+                  </div>
+
+                  <span>
+                    MRI VOLUME
+                  </span>
+
+                </div>
+
+                <div class="classification-card">
+
+                  <small>
+                    MODEL OUTPUT
+                  </small>
+
+                  <div class="stage-row">
+                    <span>HC</span>
+                    <span>EMCI</span>
+                    <span>LMCI</span>
+                    <span class="active">AD</span>
+                  </div>
+
+                  <div class="confidence">
+                    <i></i>
+                  </div>
+
+                  <b>
+                    XGBOOST
+                  </b>
+
+                </div>
 
               </div>
 
@@ -647,12 +695,12 @@
           <div class="project-content">
 
             <h3>
-              Alzheimer's Classification
+              Alzheimer’s Classification
             </h3>
 
             <p>
-              MRI-derived biomarkers, statistical feature selection and
-              XGBoost for disease-stage classification.
+              MRI-derived biomarkers, statistical feature selection
+              and XGBoost for disease-stage classification.
             </p>
 
             <div class="chips">
@@ -672,7 +720,7 @@
              PROJECT 06 — DIWALI SALES
              ================================================= -->
 
-        <article class="project-card">
+        <article class="project-card" data-project="diwali" tabindex="0" role="button" aria-label="Open Diwali Sales Analysis case study">
 
           <div class="project-meta">
             <span>06</span>
@@ -866,61 +914,261 @@
          EXPERIENCE + CERTIFICATIONS
          ======================================================= -->
 
-    <section class="profile-sections" aria-label="Experience and Certifications">
+    <section
+      class="profile-sections"
+      aria-label="Experience and Certifications"
+    >
 
-      <article class="profile-panel" id="experience">
-        <small>EXPERIENCE</small>
-        <h2>Where I’ve <i>worked.</i></h2>
+      <article
+        class="profile-panel"
+        id="experience"
+      >
+
+        <small>
+          EXPERIENCE
+        </small>
+
+        <h2>
+          Where I’ve <i>worked.</i>
+        </h2>
+
 
         <div class="experience-list">
 
           <div class="experience-item">
-            <h3>Cognizant</h3>
-            <div class="experience-role">AIA / AI &amp; ANALYTICS INTERN</div>
-            <p>Worked on practical AI and analytics tasks during the AIA internship.</p>
+
+            <div class="experience-head">
+
+              <h3>
+                Cognizant
+              </h3>
+
+              <span>
+                JAN 2026 — APR 2026
+              </span>
+
+            </div>
+
+            <div class="experience-role">
+              AIA / AI &amp; ANALYTICS INTERN · CHENNAI
+            </div>
+
+            <ul>
+
+              <li>
+                Built an end-to-end Azure Data Factory pipeline using Bronze → Silver → Gold architecture across JSON, CSV and XML sources.
+              </li>
+
+              <li>
+                Developed Mapping Data Flows and SQL stored procedures for cleansing, validation, SCD Type 2 historization and fact loading.
+              </li>
+
+            </ul>
+
           </div>
 
+
           <div class="experience-item">
-            <h3>Jadavpur University</h3>
-            <div class="experience-role">MACHINE LEARNING RESEARCH INTERN</div>
-            <p>Worked on Alzheimer’s disease-stage classification research using MRI-derived biomarkers, statistical feature selection and XGBoost.</p>
+
+            <div class="experience-head">
+
+              <h3>
+                CollegeTips
+              </h3>
+
+              <span>
+                JUN 2025 — JUL 2025
+              </span>
+
+            </div>
+
+            <div class="experience-role">
+              DATA ANALYST INTERN · REMOTE
+            </div>
+
+            <ul>
+
+              <li>
+                Cleaned and structured 15+ datasets, reducing analysis time by approximately 30%.
+              </li>
+
+              <li>
+                Designed 10+ dashboards and visualizations that reduced campaign planning time by 25%.
+              </li>
+
+            </ul>
+
+          </div>
+
+
+          <div class="experience-item">
+
+            <div class="experience-head">
+
+              <h3>
+                Jadavpur University
+              </h3>
+
+              <span>
+                JUN 2024 — OCT 2024
+              </span>
+
+            </div>
+
+            <div class="experience-role">
+              MACHINE LEARNING INTERN · KOLKATA
+            </div>
+
+            <ul>
+
+              <li>
+                Built an XGBoost model for cognitive-impairment detection, reaching 90–95% accuracy.
+              </li>
+
+              <li>
+                Reduced feature dimensionality by 59% and verified model stability with 10-fold cross-validation.
+              </li>
+
+            </ul>
+
           </div>
 
         </div>
+
       </article>
 
-      <article class="profile-panel" id="certifications">
-        <small>CERTIFICATIONS</small>
-        <h2>What I’ve <i>learned.</i></h2>
+
+      <!-- =====================================================
+           CERTIFICATIONS
+           ===================================================== -->
+
+      <article
+        class="profile-panel"
+        id="certifications"
+      >
+
+        <small>
+          CERTIFICATIONS
+        </small>
+
+        <h2>
+          Proof of <i>learning.</i>
+        </h2>
+
 
         <div class="cert-list">
 
-          <div class="cert-item">
-            <h3>Google Analytics</h3>
-            <p>Analytics certification.</p>
-          </div>
 
           <div class="cert-item">
-            <h3>Python — Udemy</h3>
-            <p>Python programming certification.</p>
+
+            <h3>
+              AWS Certified Cloud Practitioner 2025
+            </h3>
+
+            <a
+              class="cert-link"
+              href="assets/Certifications/AWS_Certified_Cloud_Practitioner_2025.pdf"
+              target="_blank"
+              rel="noopener"
+            >
+              VIEW CERTIFICATE ↗
+            </a>
+
           </div>
 
-          <div class="cert-item">
-            <h3>Machine Learning — Udemy</h3>
-            <p>Machine learning certification.</p>
-          </div>
 
           <div class="cert-item">
-            <h3>SQL — HackerRank</h3>
-            <p>SQL certification.</p>
+
+            <h3>
+              SQL (Intermediate)
+            </h3>
+
+            <a
+              class="cert-link"
+              href="assets/Certifications/SQL_Intermediate_HackerRank.pdf"
+              target="_blank"
+              rel="noopener"
+            >
+              VIEW CERTIFICATE ↗
+            </a>
+
           </div>
 
+
           <div class="cert-item">
-            <h3>Automated ML — Udemy</h3>
-            <p>Automated machine learning certification.</p>
+
+            <h3>
+              Engineering on Azure and Fabric
+            </h3>
+
+            <a
+              class="cert-link"
+              href="assets/Certifications/Engineering_on_Azure_and_Fabric.pdf"
+              target="_blank"
+              rel="noopener"
+            >
+              VIEW CERTIFICATE ↗
+            </a>
+
           </div>
+
+
+          <div class="cert-item">
+
+            <h3>
+              Microsoft Power BI — Beginner to Pro
+            </h3>
+
+            <a
+              class="cert-link"
+              href="assets/Certifications/Microsoft_Power_BI_Beginner_to_Pro.pdf"
+              target="_blank"
+              rel="noopener"
+            >
+              VIEW CERTIFICATE ↗
+            </a>
+
+          </div>
+
+
+          <div class="cert-item">
+
+            <h3>
+              SQL for Data Analysis — Advanced SQL Querying
+            </h3>
+
+            <a
+              class="cert-link"
+              href="assets/Certifications/SQL_for_Data_Analysis_Advanced_SQL_Querying.pdf"
+              target="_blank"
+              rel="noopener"
+            >
+              VIEW CERTIFICATE ↗
+            </a>
+
+          </div>
+
+
+          <div class="cert-item">
+
+            <h3>
+              Machine Learning — Fundamentals of Python Machine Learning
+            </h3>
+
+            <a
+              class="cert-link"
+              href="assets/Certifications/Machine_Learning_Fundamentals_of_Python_Machine_Learning.pdf"
+              target="_blank"
+              rel="noopener"
+            >
+              VIEW CERTIFICATE ↗
+            </a>
+
+          </div>
+
 
         </div>
+
       </article>
 
     </section>
@@ -966,30 +1214,41 @@
         <div class="facts">
 
           <span>
+
             <small>
               BASED IN
             </small>
+
             <b>
               India
             </b>
+
           </span>
 
+
           <span>
+
             <small>
               FOCUS
             </small>
+
             <b>
               Data + AI
             </b>
+
           </span>
 
+
           <span>
+
             <small>
               STATUS
             </small>
+
             <b>
               Open to work
             </b>
+
           </span>
 
         </div>
@@ -1069,7 +1328,7 @@
         <!-- X -->
 
         <a
-          href="https://x.com/rajdeep_senapati"
+          href="https://x.com/rajdeepirl"
           target="_blank"
           rel="noreferrer"
           aria-label="X / Twitter"
@@ -1103,6 +1362,7 @@
 
     </section>
 
+
   </main>
 
 
@@ -1121,6 +1381,117 @@
     </span>
 
   </footer>
+
+
+  <!-- =========================================================
+       PROJECT CASE STUDY MODAL
+       ========================================================= -->
+
+  <div
+    class="case-modal"
+    id="caseModal"
+    aria-hidden="true"
+  >
+
+    <div
+      class="case-backdrop"
+      id="caseBackdrop"
+    ></div>
+
+    <section
+      class="case-panel"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="caseTitle"
+    >
+
+      <button
+        class="case-close"
+        id="caseClose"
+        aria-label="Close project case study"
+      >
+        ×
+      </button>
+
+      <div
+        class="case-kicker"
+        id="caseKicker"
+      ></div>
+
+      <h2 id="caseTitle"></h2>
+
+      <p
+        class="case-summary"
+        id="caseSummary"
+      ></p>
+
+      <div class="case-grid">
+
+        <div class="case-block">
+
+          <small>
+            THE PROBLEM
+          </small>
+
+          <p id="caseProblem"></p>
+
+        </div>
+
+
+        <div class="case-block">
+
+          <small>
+            APPROACH
+          </small>
+
+          <p id="caseApproach"></p>
+
+        </div>
+
+
+        <div class="case-block">
+
+          <small>
+            STACK
+          </small>
+
+          <div
+            class="case-tags"
+            id="caseTags"
+          ></div>
+
+        </div>
+
+
+        <div class="case-block">
+
+          <small>
+            NOTES
+          </small>
+
+          <p id="caseNotes"></p>
+
+        </div>
+
+      </div>
+
+
+      <div class="case-actions">
+
+        <a
+          id="caseGithub"
+          class="case-button case-button-primary"
+          target="_blank"
+          rel="noreferrer"
+        >
+          View on GitHub ↗
+        </a>
+
+      </div>
+
+    </section>
+
+  </div>
 
 
   <!-- =========================================================
@@ -1154,6 +1525,7 @@
         Ask me anything.
       </h2>
 
+
       <div class="questions">
 
         <button>
@@ -1169,6 +1541,7 @@
         </button>
 
       </div>
+
 
       <div class="placeholder">
         UI ready. Free-tier AI endpoint comes next.
