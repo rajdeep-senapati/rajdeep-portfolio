@@ -17,21 +17,25 @@ openButton?.addEventListener("click", openAI);
 headerAI?.addEventListener("click", openAI);
 closeButton?.addEventListener("click", closeAI);
 backdrop?.addEventListener("click", closeAI);
-document.addEventListener("keydown", e => {
+document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") {
     closeAI();
     closeCaseStudy();
   }
 });
 
-document.querySelectorAll(".questions button").forEach(button => {
+document.querySelectorAll(".questions button").forEach((button) => {
   button.addEventListener("click", () => {
     const answers = {
-      "Who are you?": "Rajdeep is a Data Science graduate focused on practical ML, analytics and GenAI products.",
-      "Tell me about JobShield.": "JobShield is an AI job discovery and safety assistant built around risk signals, resume matching and improvement areas.",
-      "What are your skills?": "Python, machine learning, data analytics, SQL, GenAI/LLMs and cloud technologies."
+      "Who are you?":
+        "Rajdeep is a Data Science graduate focused on practical ML, analytics and GenAI products.",
+      "Tell me about JobShield.":
+        "JobShield is an AI job discovery and safety assistant built around risk signals, resume matching and improvement areas.",
+      "What are your skills?":
+        "Python, machine learning, data analytics, SQL, GenAI/LLMs and cloud technologies.",
     };
-    document.querySelector(".placeholder").textContent = answers[button.textContent] || "Ask me about Rajdeep's work.";
+    document.querySelector(".placeholder").textContent =
+      answers[button.textContent] || "Ask me about Rajdeep's work.";
   });
 });
 
@@ -45,63 +49,124 @@ const projectData = {
   jobshield: {
     kicker: "01 · AI / GENAI",
     title: "JobShield",
-    summary: "AI Job Discovery & Safety Assistant built around the flow Find → Verify → Match → Improve.",
-    problem: "Job seekers need to distinguish suspicious recruitment signals from legitimate job requirements before relying on an automated match.",
-    approach: "Resume PDF/DOCX text is parsed and cleaned locally. A 20B model analyzes job-risk signals, while a separate 120B model performs evidence-based resume-to-job reasoning after the risk gate.",
-    stack: ["Python", "Groq", "GPT-OSS 20B", "GPT-OSS 120B", "Streamlit", "PyPDF", "python-docx"],
-    notes: "Risk output is a signal score, not a scam probability. High-risk results require confirmation before detailed matching.",
-    github: "https://github.com/rajdeep-senapati/JobShield"
+    summary:
+      "AI Job Discovery & Safety Assistant built around the flow Find → Verify → Match → Improve.",
+    problem:
+      "Job seekers need to distinguish suspicious recruitment signals from legitimate job requirements before relying on an automated match.",
+    approach:
+      "Resume PDF/DOCX text is parsed and cleaned locally. A 20B model analyzes job-risk signals, while a separate 120B model performs evidence-based resume-to-job reasoning after the risk gate.",
+    stack: [
+      "Python",
+      "Groq",
+      "GPT-OSS 20B",
+      "GPT-OSS 120B",
+      "Streamlit",
+      "PyPDF",
+      "python-docx",
+    ],
+    notes:
+      "Risk output is a signal score, not a scam probability. High-risk results require confirmation before detailed matching.",
+    github: "https://github.com/rajdeep-senapati/JobShield",
   },
   stocksense: {
     kicker: "02 · ML / FORECASTING",
     title: "StockSense",
-    summary: "Predictive Inventory Intelligence connecting SKU-level demand forecasting to replenishment decisions.",
-    problem: "Retail inventory decisions need to balance stockout risk against excess inventory while demand can be intermittent and highly variable.",
-    approach: "Transactions are cleaned with explicit business rules, transformed into daily SKU demand, analyzed for intermittency, then modeled with lag, rolling and calendar features. Forecasts feed a reorder-point and inventory-risk decision layer.",
-    stack: ["Python", "Pandas", "XGBoost", "Feature Engineering", "Time Series", "Streamlit"],
-    notes: "The project is designed around prediction → inventory risk → business action rather than forecasting alone.",
-    github: "https://github.com/rajdeep-senapati/stocksense"
+    summary:
+      "Predictive Inventory Intelligence connecting SKU-level demand forecasting to replenishment decisions.",
+    problem:
+      "Retail inventory decisions need to balance stockout risk against excess inventory while demand can be intermittent and highly variable.",
+    approach:
+      "Transactions are cleaned with explicit business rules, transformed into daily SKU demand, analyzed for intermittency, then modeled with lag, rolling and calendar features. Forecasts feed a reorder-point and inventory-risk decision layer.",
+    stack: [
+      "Python",
+      "Pandas",
+      "XGBoost",
+      "Feature Engineering",
+      "Time Series",
+      "Streamlit",
+    ],
+    notes:
+      "The project is designed around prediction → inventory risk → business action rather than forecasting alone.",
+    github: "https://github.com/rajdeep-senapati/stocksense",
   },
   route: {
     kicker: "03 · AI / OPTIMIZATION",
     title: "AI Route Optimizer",
-    summary: "Vehicle-routing workflow combining optimization, capacity, fuel constraints and traffic-aware enrichment.",
-    problem: "Delivery planning has to account for multiple customers, vehicle capacity, route distance, fuel usage and changing traffic conditions.",
-    approach: "A Flask backend uses OR-Tools for vehicle routing, Haversine distance calculations and capacity constraints. The solver can attempt a fuel-aware model, fall back when necessary, then enrich routes with traffic durations and rerouting logic.",
-    stack: ["Python", "OR-Tools", "Flask", "Supabase", "Haversine", "Traffic APIs"],
-    notes: "The portfolio case study links both the optimization backend and the separate React frontend repository.",
-    github: "https://github.com/rajdeep-senapati/Route_Optimizer"
+    summary:
+      "Vehicle-routing workflow combining optimization, capacity, fuel constraints and traffic-aware enrichment.",
+    problem:
+      "Delivery planning has to account for multiple customers, vehicle capacity, route distance, fuel usage and changing traffic conditions.",
+    approach:
+      "A Flask backend uses OR-Tools for vehicle routing, Haversine distance calculations and capacity constraints. The solver can attempt a fuel-aware model, fall back when necessary, then enrich routes with traffic durations and rerouting logic.",
+    stack: [
+      "Python",
+      "OR-Tools",
+      "Flask",
+      "Supabase",
+      "Haversine",
+      "Traffic APIs",
+    ],
+    notes:
+      "The portfolio case study links both the optimization backend and the separate React frontend repository.",
+    github: "https://github.com/rajdeep-senapati/Route_Optimizer",
   },
   exam: {
     kicker: "04 · ALGORITHMS",
     title: "Exam Seating Algorithm",
-    summary: "Full-stack exam management system with constraint-based seating, invigilator assignment and AI constraint parsing.",
-    problem: "Manual exam hall allocation is repetitive and can create seating conflicts, invigilator double-booking and poor room utilization.",
-    approach: "A three-phase seating algorithm handles department distribution and leftover allocation. Invigilators are load-balanced with conflict prevention, while Gemini converts natural-language constraints into structured rules.",
-    stack: ["Python", "Flask", "React", "SQLite", "SQLAlchemy", "Gemini", "OpenPyXL", "JWT"],
-    notes: "The repository includes the frontend, backend, sample data and screenshots, making the case study useful even without a hosted demo.",
-    github: "https://github.com/rajdeep-senapati/Exam-seating-system"
+    summary:
+      "Full-stack exam management system with constraint-based seating, invigilator assignment and AI constraint parsing.",
+    problem:
+      "Manual exam hall allocation is repetitive and can create seating conflicts, invigilator double-booking and poor room utilization.",
+    approach:
+      "A three-phase seating algorithm handles department distribution and leftover allocation. Invigilators are load-balanced with conflict prevention, while Gemini converts natural-language constraints into structured rules.",
+    stack: [
+      "Python",
+      "Flask",
+      "React",
+      "SQLite",
+      "SQLAlchemy",
+      "Gemini",
+      "OpenPyXL",
+      "JWT",
+    ],
+    notes:
+      "The repository includes the frontend, backend, sample data and screenshots, making the case study useful even without a hosted demo.",
+    github: "https://github.com/rajdeep-senapati/Exam-seating-system",
   },
   alzheimers: {
     kicker: "05 · ML / RESEARCH",
     title: "Alzheimer’s Classification",
-    summary: "Research project using MRI-derived biomarkers, statistical feature selection and XGBoost for disease-stage classification.",
-    problem: "MRI-derived volumetric biomarkers can contain many candidate variables, making feature selection and stage-specific classification important parts of the modeling workflow.",
-    approach: "ADNI MRI volumetric reports were processed into biomarker features. Statistical z-test selection was used before XGBoost models were trained for binary disease-stage classification tasks.",
-    stack: ["Python", "XGBoost", "Statistics", "Feature Selection", "Cross-validation"],
-    notes: "The project was completed as machine-learning research work at Jadavpur University; the portfolio should present the documented methodology rather than imply clinical deployment.",
-    github: "https://github.com/rajdeep-senapati/ML-and-DL"
+    summary:
+      "Research project using MRI-derived biomarkers, statistical feature selection and XGBoost for disease-stage classification.",
+    problem:
+      "MRI-derived volumetric biomarkers can contain many candidate variables, making feature selection and stage-specific classification important parts of the modeling workflow.",
+    approach:
+      "ADNI MRI volumetric reports were processed into biomarker features. Statistical z-test selection was used before XGBoost models were trained for binary disease-stage classification tasks.",
+    stack: [
+      "Python",
+      "XGBoost",
+      "Statistics",
+      "Feature Selection",
+      "Cross-validation",
+    ],
+    notes:
+      "The project was completed as machine-learning research work at Jadavpur University; the portfolio should present the documented methodology rather than imply clinical deployment.",
+    github: "https://github.com/rajdeep-senapati/ML-and-DL",
   },
   diwali: {
     kicker: "06 · DATA ANALYTICS",
     title: "Diwali Sales Analysis",
-    summary: "Exploratory retail analysis focused on customer demographics, spending patterns and product categories.",
-    problem: "Festive retail data can reveal which customer segments, regions and product categories contribute most to sales.",
-    approach: "The notebook cleans the transaction data, engineers total-spend and age-group features, then uses univariate and bivariate analysis to explore demographic and product-level patterns.",
+    summary:
+      "Exploratory retail analysis focused on customer demographics, spending patterns and product categories.",
+    problem:
+      "Festive retail data can reveal which customer segments, regions and product categories contribute most to sales.",
+    approach:
+      "The notebook cleans the transaction data, engineers total-spend and age-group features, then uses univariate and bivariate analysis to explore demographic and product-level patterns.",
     stack: ["Python", "Pandas", "NumPy", "Matplotlib", "Seaborn", "Jupyter"],
-    notes: "The repository contains the analysis notebook and source dataset, so the portfolio case study can explain the findings before sending the recruiter to the code.",
-    github: "https://github.com/rajdeep-senapati/Diwali_Sales"
-  }
+    notes:
+      "The repository contains the analysis notebook and source dataset, so the portfolio case study can explain the findings before sending the recruiter to the code.",
+    github: "https://github.com/rajdeep-senapati/Diwali_Sales",
+  },
 };
 
 const caseModal = document.querySelector("#caseModal");
@@ -126,7 +191,9 @@ function openCaseStudy(key) {
   caseProblem.textContent = project.problem;
   caseApproach.textContent = project.approach;
   caseNotes.textContent = project.notes;
-  caseTags.innerHTML = project.stack.map(tag => `<span>${tag}</span>`).join("");
+  caseTags.innerHTML = project.stack
+    .map((tag) => `<span>${tag}</span>`)
+    .join("");
   caseGithub.href = project.github;
 
   caseModal.classList.add("open");
@@ -145,10 +212,10 @@ function closeCaseStudy() {
 caseClose?.addEventListener("click", closeCaseStudy);
 caseBackdrop?.addEventListener("click", closeCaseStudy);
 
-document.querySelectorAll(".project-card[data-project]").forEach(card => {
+document.querySelectorAll(".project-card[data-project]").forEach((card) => {
   const open = () => openCaseStudy(card.dataset.project);
   card.addEventListener("click", open);
-  card.addEventListener("keydown", event => {
+  card.addEventListener("keydown", (event) => {
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
       open();
@@ -172,7 +239,9 @@ updateHeaderState();
 
 /* Add the same restrained reveal language to the main sections/cards. */
 const revealTargets = [
-  ...document.querySelectorAll(".section-heading, .project-card, .skills > div, .ai > div, .profile-panel, .about > div, .contact")
+  ...document.querySelectorAll(
+    ".section-heading, .project-card, .skills > div, .ai > div, .profile-panel, .about > div, .contact",
+  ),
 ];
 
 revealTargets.forEach((el, index) => {
@@ -181,27 +250,33 @@ revealTargets.forEach((el, index) => {
 });
 
 if ("IntersectionObserver" in window) {
-  const revealObserver = new IntersectionObserver((entries, observer) => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      entry.target.classList.add("is-visible");
-      observer.unobserve(entry.target);
-    });
-  }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
+  const revealObserver = new IntersectionObserver(
+    (entries, observer) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("is-visible");
+        observer.unobserve(entry.target);
+      });
+    },
+    { threshold: 0.12, rootMargin: "0px 0px -8% 0px" },
+  );
 
-  revealTargets.forEach(el => revealObserver.observe(el));
+  revealTargets.forEach((el) => revealObserver.observe(el));
 } else {
-  revealTargets.forEach(el => el.classList.add("is-visible"));
+  revealTargets.forEach((el) => el.classList.add("is-visible"));
 }
 
 const skillsSection = document.querySelector("#skills");
 if (skillsSection && "IntersectionObserver" in window) {
-  const skillObserver = new IntersectionObserver(entries => {
-    if (entries[0].isIntersecting) {
-      skillsSection.classList.add("skills-visible");
-      skillObserver.disconnect();
-    }
-  }, { threshold: 0.2 });
+  const skillObserver = new IntersectionObserver(
+    (entries) => {
+      if (entries[0].isIntersecting) {
+        skillsSection.classList.add("skills-visible");
+        skillObserver.disconnect();
+      }
+    },
+    { threshold: 0.2 },
+  );
   skillObserver.observe(skillsSection);
 }
 
@@ -210,24 +285,46 @@ if (skillsSection && "IntersectionObserver" in window) {
    ========================================================= */
 
 const navLinks = [...document.querySelectorAll(".main-nav a")];
-const sections = [...document.querySelectorAll("main section[id]")];
+
+const navTargets = navLinks
+  .map((link) => {
+    const href = link.getAttribute("href");
+
+    if (!href || !href.startsWith("#")) return null;
+
+    const target = document.querySelector(href);
+
+    if (!target) return null;
+
+    return {
+      link,
+      target,
+    };
+  })
+  .filter(Boolean);
 
 function updateActiveNav() {
-  const headerHeight = document.querySelector('.site-header')?.offsetHeight || 76;
-  const marker = window.scrollY + headerHeight + Math.min(window.innerHeight * 0.22, 180);
-  let current = "top";
+  const headerHeight =
+    document.querySelector(".site-header")?.offsetHeight || 76;
 
-  for (const section of sections) {
-    if (section.offsetTop <= marker) current = section.id;
+  const marker =
+    window.scrollY + headerHeight + Math.min(window.innerHeight * 0.22, 180);
+
+  let activeLink = navLinks[0];
+
+  for (const item of navTargets) {
+    if (item.target.offsetTop <= marker) {
+      activeLink = item.link;
+    }
   }
 
-  navLinks.forEach(link => {
-    const href = link.getAttribute("href");
-    const active = (current === "top" && href === "#top") || href === `#${current}`;
-    link.classList.toggle("active", active);
+  navLinks.forEach((link) => {
+    link.classList.toggle("active", link === activeLink);
   });
 }
 
 window.addEventListener("scroll", updateActiveNav, { passive: true });
+
 window.addEventListener("resize", updateActiveNav);
+
 updateActiveNav();
