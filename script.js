@@ -57,6 +57,13 @@ function scrollAIChat() {
   if (aiChat) aiChat.scrollTop = aiChat.scrollHeight;
 }
 
+/* The terminal-style cursor is singular: only the active response owns it. */
+function clearActiveCursor() {
+  aiChat?.querySelectorAll(".ai-cursor").forEach((cursor) => {
+    cursor.remove();
+  });
+}
+
 function addUserMessage(text) {
   if (!aiChat) return;
   const message = document.createElement("div");
@@ -119,6 +126,8 @@ function wait(ms) {
 }
 
 async function streamLocalAnswer(text) {
+  clearActiveCursor();
+
   const thinking = addThinkingMessage();
   await wait(520);
   thinking?.remove();
@@ -133,13 +142,16 @@ async function streamLocalAnswer(text) {
   const chars = [...text];
   for (let i = 0; i < chars.length; i += 1) {
     cursor.before(document.createTextNode(chars[i]));
-    if (i % 3 === 0) scrollAIChat();
-    await wait(chars[i] === " " ? 8 : 16);
+    if (i % 2 === 0) scrollAIChat();
+    await wait(chars[i] === " " ? 7 : 13);
   }
+
   scrollAIChat();
 }
 
 async function streamRemoteAnswer(question) {
+  clearActiveCursor();
+
   const thinking = addThinkingMessage();
 
   const response = await fetch(RAJDEEP_AI_API, {
