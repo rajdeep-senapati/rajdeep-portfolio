@@ -2139,53 +2139,60 @@ h2 i {
    ========================================================= */
 
 .about {
-  width: min(var(--max), calc(100% - 48px));
-
+  width: 100%;
   margin: auto;
 
-  padding: 68px 0 88px;
+  padding: 78px max(24px, calc((100% - var(--max)) / 2)) 88px;
 
   display: grid;
-
   grid-template-columns: 0.75fr 1.25fr;
-
   gap: 85px;
 
-  border-top: 1px solid var(--line);
+  background: var(--red);
+  color: var(--ink);
+
+  border-top: 1px solid var(--red);
+}
+
+.about h2 i {
+  color: var(--cream);
 }
 
 .about p {
   font-size: 19px;
-
   line-height: 1.5;
-
   margin-bottom: 18px;
 }
 
+.about p.muted {
+  color: rgba(17, 16, 15, 0.72);
+}
+
 .facts {
-  border-top: 1px solid var(--line);
-
+  border-top: 1px solid rgba(17, 16, 15, 0.28);
   padding-top: 20px;
-
   margin-top: 30px;
 
   display: grid;
-
   grid-template-columns: repeat(3, 1fr);
-
   gap: 20px;
 }
 
 .facts small {
   display: block;
-
-  color: var(--muted);
-
+  color: rgba(17, 16, 15, 0.62);
   margin-bottom: 6px;
 }
 
 .facts b {
   font-size: 14px;
+  color: var(--ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about h2 i {
+    transition: none !important;
+  }
 }
 /* =========================================================
    CONTACT
