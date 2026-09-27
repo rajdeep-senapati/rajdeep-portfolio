@@ -3607,6 +3607,90 @@ footer {
 
 
 /* ---------- One consistent hover language for ALL projects ---------- */
+
+/* ---------- Project micro-interactions ---------- */
+
+/* A small red signal appears at the card edge on hover. */
+.project-card::before {
+  content: "";
+  position: absolute;
+  z-index: 3;
+  left: 0;
+  top: 14px;
+  width: 2px;
+  height: 0;
+  background: var(--red);
+  transition: height .28s cubic-bezier(.22,1,.36,1);
+  pointer-events: none;
+}
+
+.project-card:hover::before {
+  height: 42px;
+}
+
+/* Project type becomes an active accent without changing the layout. */
+.project-card .project-meta span:last-child {
+  transition: color .22s ease;
+}
+
+.project-card:hover .project-meta span:last-child {
+  color: var(--red);
+}
+
+/* One shared visual "signal sweep" keeps all six project visuals lively. */
+.project-card .project-visual::after {
+  content: "";
+  position: absolute;
+  z-index: 8;
+  top: 0;
+  left: -32%;
+  width: 22%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 253, 247, .20),
+    transparent
+  );
+  transform: skewX(-12deg) translateX(-180%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.project-card:hover .project-visual::after {
+  animation: projectVisualSweep .8s cubic-bezier(.22,1,.36,1) both;
+}
+
+@keyframes projectVisualSweep {
+  0% {
+    opacity: 0;
+    transform: skewX(-12deg) translateX(-180%);
+  }
+
+  15% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: skewX(-12deg) translateX(760%);
+  }
+}
+
+/* Slightly deepen the visual response without changing its proportions. */
+.project-card:hover .project-visual {
+  filter: saturate(1.035);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-card::before,
+  .project-card .project-visual::after,
+  .project-card .project-meta span:last-child {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
 .project-card {
   position: relative;
   overflow: hidden;
