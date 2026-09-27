@@ -58,7 +58,7 @@ ${JSON.stringify(knowledge, null, 2)}
 `;
 
 function sendSSE(res, payload) {
-  res.write(`data: ${JSON.stringify(payload)}\\n\\n`);
+  res.write(`data: ${JSON.stringify(payload)}\n\n`);
 }
 
 function isComplexQuestion(question) {
