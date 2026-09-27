@@ -2140,52 +2140,114 @@ h2 i {
 
 .about {
   width: min(var(--max), calc(100% - 48px));
-
   margin: auto;
-
-  padding: 68px 0 88px;
-
+  padding: 78px 0 94px;
   display: grid;
-
   grid-template-columns: 0.75fr 1.25fr;
-
   gap: 85px;
-
   border-top: 1px solid var(--line);
+  position: relative;
+  overflow: hidden;
+}
+
+.about::before {
+  content: "01";
+  position: absolute;
+  top: 28px;
+  right: 0;
+  color: rgba(17, 16, 15, 0.10);
+  font: 500 clamp(54px, 7vw, 92px) "DM Mono", monospace;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.about > div:first-child {
+  position: relative;
+  z-index: 1;
+}
+
+.about > div:first-child small {
+  display: inline-block;
+  transition: color 0.22s ease, transform 0.3s cubic-bezier(.22, 1, .36, 1);
+}
+
+.about > div:first-child:hover small {
+  color: var(--red);
+  transform: translateX(3px);
+}
+
+.about h2 {
+  margin-top: 18px;
+  font-size: clamp(48px, 5.5vw, 76px);
+  line-height: 0.92;
+  letter-spacing: -0.065em;
+}
+
+.about > div:nth-child(2) {
+  position: relative;
+  z-index: 1;
+  padding-top: 6px;
 }
 
 .about p {
+  max-width: 680px;
   font-size: 19px;
-
-  line-height: 1.5;
-
+  line-height: 1.55;
   margin-bottom: 18px;
+}
+
+.about p:first-child {
+  font-size: clamp(20px, 2.1vw, 25px);
+  line-height: 1.42;
+  letter-spacing: -0.018em;
+}
+
+.about p.muted {
+  max-width: 590px;
 }
 
 .facts {
   border-top: 1px solid var(--line);
-
   padding-top: 20px;
-
-  margin-top: 30px;
-
+  margin-top: 34px;
   display: grid;
-
   grid-template-columns: repeat(3, 1fr);
-
   gap: 20px;
+}
+
+.facts span {
+  min-width: 0;
+  transition: transform 0.28s cubic-bezier(.22, 1, .36, 1);
+}
+
+.facts span:hover {
+  transform: translateY(-3px);
 }
 
 .facts small {
   display: block;
-
   color: var(--muted);
-
-  margin-bottom: 6px;
+  margin-bottom: 7px;
+  transition: color 0.2s ease;
 }
 
 .facts b {
   font-size: 14px;
+  transition: color 0.2s ease;
+}
+
+.facts span:hover small,
+.facts span:hover b {
+  color: var(--red);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about > div:first-child small,
+  .facts span,
+  .facts small,
+  .facts b {
+    transition: none !important;
+  }
 }
 
 /* =========================================================
