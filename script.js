@@ -290,6 +290,24 @@ if (skillsSection && "IntersectionObserver" in window) {
   skillObserver.observe(skillsSection);
 }
 
+const aiTerminal = document.querySelector("#ai-terminal");
+
+if (aiTerminal && "IntersectionObserver" in window) {
+  const terminalObserver = new IntersectionObserver(
+    (entries) => {
+      if (entries[0].isIntersecting) {
+        aiTerminal.classList.add("is-booted");
+        terminalObserver.disconnect();
+      }
+    },
+    {
+      threshold: 0.35,
+    },
+  );
+
+  terminalObserver.observe(aiTerminal);
+}
+
 /* =========================================================
    NAVIGATION
    ========================================================= */

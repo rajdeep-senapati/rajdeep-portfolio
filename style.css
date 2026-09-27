@@ -2035,6 +2035,105 @@ h2 i {
   color: var(--red);
 }
 
+/* ---------- AI terminal boot animation ---------- */
+
+.terminal-output {
+  min-height: 205px;
+  padding-top: 2px;
+}
+
+.terminal-line {
+  margin: 11px 0;
+  opacity: 0;
+  transform: translateY(5px);
+}
+
+.terminal.is-booted .terminal-line {
+  animation: terminalLineIn 0.45s ease forwards;
+}
+
+.terminal.is-booted .terminal-line:nth-child(1) {
+  animation-delay: 0.25s;
+}
+
+.terminal.is-booted .terminal-line:nth-child(2) {
+  animation-delay: 0.75s;
+}
+
+.terminal.is-booted .terminal-line:nth-child(3) {
+  animation-delay: 1.25s;
+}
+
+.terminal.is-booted .terminal-line:nth-child(4) {
+  animation-delay: 1.75s;
+}
+
+.terminal.is-booted .terminal-line:nth-child(5) {
+  animation-delay: 2.25s;
+}
+
+.terminal.is-booted .terminal-line:nth-child(6) {
+  animation-delay: 2.75s;
+}
+
+@keyframes terminalLineIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.terminal-cursor {
+  display: inline-block;
+  width: 7px;
+  height: 13px;
+  margin-top: 3px;
+  background: var(--red);
+  vertical-align: middle;
+  opacity: 0;
+}
+
+.terminal.is-booted .terminal-cursor {
+  animation:
+    terminalCursorAppear 0.2s ease forwards 3.25s,
+    terminalCursorBlink 1s steps(1, end) infinite 3.45s;
+}
+
+@keyframes terminalCursorAppear {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes terminalCursorBlink {
+  0%,
+  45% {
+    opacity: 1;
+  }
+
+  46%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .terminal-line {
+    opacity: 1;
+    transform: none;
+  }
+
+  .terminal-cursor {
+    opacity: 1;
+    animation: none !important;
+  }
+}
+
 /* =========================================================
    ABOUT
    ========================================================= */
