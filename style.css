@@ -2194,6 +2194,144 @@ h2 i {
     transition: none !important;
   }
 }
+
+/* =========================================================
+   ABOUT — SUBTLE MOTION
+   ========================================================= */
+
+.about > div {
+  position: relative;
+  z-index: 1;
+}
+
+.about h2 {
+  overflow: hidden;
+}
+
+.about h2 {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+.about.is-visible h2 {
+  animation: aboutTextIn 0.55s cubic-bezier(.22, 1, .36, 1) forwards;
+}
+
+.about.is-visible h2 i {
+  animation: aboutAccentIn 0.55s cubic-bezier(.22, 1, .36, 1) 0.08s both;
+}
+
+.about p {
+  opacity: 0;
+  transform: translateY(9px);
+}
+
+.about.is-visible p {
+  animation: aboutTextIn 0.5s cubic-bezier(.22, 1, .36, 1) forwards;
+}
+
+.about.is-visible p:nth-of-type(2) {
+  animation-delay: 0.1s;
+}
+
+.about.is-visible .facts {
+  animation: aboutFactsIn 0.55s cubic-bezier(.22, 1, .36, 1) 0.18s both;
+}
+
+.facts {
+  position: relative;
+  overflow: hidden;
+}
+
+.facts::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -28%;
+  width: 22%;
+  height: 1px;
+  background: var(--cream);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.about.is-visible .facts::after {
+  animation: aboutSignalSweep 0.8s cubic-bezier(.22, 1, .36, 1) 0.3s both;
+}
+
+.facts > div {
+  transition: transform 0.22s ease;
+}
+
+.facts > div:hover {
+  transform: translateY(-3px);
+}
+
+.facts > div:hover small {
+  color: var(--cream);
+}
+
+@keyframes aboutTextIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes aboutAccentIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes aboutFactsIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes aboutSignalSweep {
+  0% {
+    left: -28%;
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.8;
+  }
+  100% {
+    left: 112%;
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about h2,
+  .about p,
+  .about.is-visible h2,
+  .about.is-visible h2 i,
+  .about.is-visible p,
+  .about.is-visible .facts,
+  .about.is-visible .facts::after {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+  }
+}
+
 /* =========================================================
    CONTACT
    ========================================================= */
