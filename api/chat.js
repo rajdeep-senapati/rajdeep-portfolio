@@ -115,6 +115,26 @@ export default async function handler(req, res) {
     return;
   }
 
+  if (message.length > 600) {
+    res.status(400).json({ error: "Message is too long." });
+    return;
+  }
+
+  const history = Array.isArray(req.body?.messages)
+    ? req.body.messages
+        .filter(
+          (item) =>
+            item &&
+            (item.role === "user" || item.role === "assistant") &&
+            typeof item.content === "string"
+        )
+        .map((item) => ({
+          role: item.role,
+          content: item.content.slice(0, 1200),
+        }))
+        .slice(-10)
+    : [];
+
   try {
     const groqResponse = await fetch(
       "https://api.groq.com/openai/v1/chat/completions",
@@ -131,6 +151,7 @@ export default async function handler(req, res) {
           max_tokens: 500,
           messages: [
             { role: "system", content: SYSTEM_PROMPT },
+            ...history,
             { role: "user", content: message },
           ],
         }),
