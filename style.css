@@ -5691,3 +5691,13 @@ body.modal-open {
     opacity: 1;
   }
 }
+
+/* =========================================================
+   FINAL FIX — REMOVE DUPLICATE ALZHEIMER'S VISUAL LABEL
+   Keep the real .mri-title element; disable the legacy pseudo-label.
+   ========================================================= */
+
+.alzheimer-visual::before {
+  content: none !important;
+  display: none !important;
+}
