@@ -5329,3 +5329,69 @@ body.modal-open {
     animation: none !important;
   }
 }
+
+
+/* =========================================================
+   ROUTE — LIVELY PATH, FIXED POINTS
+   ========================================================= */
+
+.route-visual .route-main {
+  stroke: var(--red);
+  stroke-width: 5;
+  stroke-dasharray: none;
+  stroke-dashoffset: 0;
+  animation: none !important;
+}
+
+.route-visual .route-flow {
+  fill: none;
+  stroke: #fffdf7;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-dasharray: 2 34;
+  stroke-dashoffset: 0;
+  opacity: .92;
+  pointer-events: none;
+  animation: routeFlowSignal 1.35s linear infinite;
+}
+
+.route-visual .route-alt {
+  animation: routeAltFlow 3s linear infinite;
+}
+
+/* Keep every location marker locked to its exact SVG position. */
+.route-visual .route-node,
+.route-visual .route-node.stop {
+  animation: none !important;
+  transform: none !important;
+  transform-box: initial;
+}
+
+/* A quiet pulse in the route itself, not the markers. */
+.route-visual .route-main {
+  filter: drop-shadow(0 0 0 rgba(255,59,48,0));
+  animation: routeGlow 2.8s ease-in-out infinite !important;
+}
+
+@keyframes routeFlowSignal {
+  to {
+    stroke-dashoffset: -36;
+  }
+}
+
+@keyframes routeGlow {
+  0%, 100% {
+    filter: drop-shadow(0 0 0 rgba(255,59,48,0));
+  }
+  50% {
+    filter: drop-shadow(0 0 4px rgba(255,59,48,.18));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .route-visual .route-flow,
+  .route-visual .route-alt,
+  .route-visual .route-main {
+    animation: none !important;
+  }
+}
