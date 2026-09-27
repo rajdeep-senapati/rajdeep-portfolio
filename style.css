@@ -1941,6 +1941,34 @@ h2 i {
 }
 
 /* =========================================================
+   SKILLS — STAGGERED BAR LOAD
+   ========================================================= */
+
+.skills.skills-visible .skillbox div:nth-child(1) hr::after {
+  transition-delay: 0ms;
+}
+
+.skills.skills-visible .skillbox div:nth-child(2) hr::after {
+  transition-delay: 100ms;
+}
+
+.skills.skills-visible .skillbox div:nth-child(3) hr::after {
+  transition-delay: 200ms;
+}
+
+.skills.skills-visible .skillbox div:nth-child(4) hr::after {
+  transition-delay: 300ms;
+}
+
+.skills.skills-visible .skillbox div:nth-child(5) hr::after {
+  transition-delay: 400ms;
+}
+
+.skills.skills-visible .skillbox div:nth-child(6) hr::after {
+  transition-delay: 500ms;
+}
+
+/* =========================================================
    AI RAJDEEP
    ========================================================= */
 
