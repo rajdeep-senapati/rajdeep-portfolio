@@ -240,7 +240,7 @@ updateHeaderState();
 /* Add the same restrained reveal language to the main sections/cards. */
 const revealTargets = [
   ...document.querySelectorAll(
-    ".section-heading, .project-card, .skills > div, .ai > div, .profile-panel, .about > div, .contact, .experience-item, .cert-item",
+    ".section-heading, .project-card, .skills > div, .ai > div, .profile-panel, .about, .contact, .experience-item, .cert-item",
   ),
 ];
 
