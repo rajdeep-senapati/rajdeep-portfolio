@@ -4,39 +4,223 @@ const headerAI = document.querySelector(".header-ai");
 const closeButton = document.querySelector("#close");
 const backdrop = document.querySelector("#backdrop");
 
+const aiChat = document.querySelector("#aiChat");
+const aiInput = document.querySelector("#aiInput");
+const aiComposer = document.querySelector("#aiComposer");
+const aiSend = document.querySelector("#aiSend");
+const aiQuestions = document.querySelector("#aiQuestions");
+
+const RAJDEEP_AI_API = window.RAJDEEP_AI_API || "";
+
+const quickAnswers = {
+  "Who are you?":
+    "I'm Rajdeep's portfolio AI — a digital representative built around his work, projects, skills and experience. Rajdeep is a Data Science graduate focused on practical machine learning, analytics and GenAI products.",
+  "Tell me about JobShield.":
+    "JobShield is an AI job discovery and safety assistant built around the flow Find → Verify → Match → Improve. It uses resume parsing, job-risk signals and evidence-based resume matching to help job seekers make better-informed decisions.",
+  "What are your skills?":
+    "Rajdeep works with Python, machine learning, data analytics, SQL, GenAI/LLMs and cloud technologies. His project work includes XGBoost, Streamlit, Groq, OR-Tools, Flask, Pandas and Azure/AWS technologies."
+};
+
+let aiBusy = false;
+
 function openAI(e) {
   if (e) e.preventDefault();
   modal?.classList.add("open");
+  modal?.setAttribute("aria-hidden", "false");
+  document.body.classList.add("modal-open");
+  window.setTimeout(() => aiInput?.focus(), 80);
 }
 
 function closeAI() {
   modal?.classList.remove("open");
+  modal?.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("modal-open");
 }
 
 openButton?.addEventListener("click", openAI);
 headerAI?.addEventListener("click", openAI);
 closeButton?.addEventListener("click", closeAI);
 backdrop?.addEventListener("click", closeAI);
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") {
-    closeAI();
-    closeCaseStudy();
+
+function scrollAIChat() {
+  if (aiChat) aiChat.scrollTop = aiChat.scrollHeight;
+}
+
+function addUserMessage(text) {
+  if (!aiChat) return;
+  const message = document.createElement("div");
+  message.className = "ai-message user";
+  message.innerHTML = `
+    <div class="ai-bubble">
+      <p></p>
+    </div>
+  `;
+  message.querySelector("p").textContent = text;
+  aiChat.appendChild(message);
+  scrollAIChat();
+}
+
+function addAssistantMessage() {
+  if (!aiChat) return null;
+  const message = document.createElement("div");
+  message.className = "ai-message assistant";
+  message.innerHTML = `
+    <span class="ai-avatar">R.</span>
+    <div class="ai-bubble">
+      <small>RAJDEEP AI</small>
+      <p></p>
+    </div>
+  `;
+  aiChat.appendChild(message);
+  scrollAIChat();
+  return message.querySelector("p");
+}
+
+function addThinkingMessage() {
+  if (!aiChat) return null;
+  const message = document.createElement("div");
+  message.className = "ai-message assistant ai-thinking-message";
+  message.innerHTML = `
+    <span class="ai-avatar">R.</span>
+    <div class="ai-bubble">
+      <small>RAJDEEP AI</small>
+      <div class="ai-thinking" aria-label="Thinking">
+        <i></i><i></i><i></i>
+      </div>
+    </div>
+  `;
+  aiChat.appendChild(message);
+  scrollAIChat();
+  return message;
+}
+
+function setComposerBusy(busy) {
+  aiBusy = busy;
+  if (aiInput) aiInput.disabled = busy;
+  if (aiSend) aiSend.disabled = busy;
+  aiQuestions?.querySelectorAll("button").forEach((button) => {
+    button.disabled = busy;
+  });
+}
+
+function wait(ms) {
+  return new Promise((resolve) => window.setTimeout(resolve, ms));
+}
+
+async function streamLocalAnswer(text) {
+  const thinking = addThinkingMessage();
+  await wait(520);
+  thinking?.remove();
+
+  const output = addAssistantMessage();
+  if (!output) return;
+
+  const cursor = document.createElement("span");
+  cursor.className = "ai-cursor";
+  output.appendChild(cursor);
+
+  const chars = [...text];
+  for (let i = 0; i < chars.length; i += 1) {
+    cursor.before(document.createTextNode(chars[i]));
+    if (i % 3 === 0) scrollAIChat();
+    await wait(chars[i] === " " ? 8 : 16);
   }
+  scrollAIChat();
+}
+
+async function streamRemoteAnswer(question) {
+  const thinking = addThinkingMessage();
+
+  const response = await fetch(RAJDEEP_AI_API, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ message: question, stream: true })
+  });
+
+  if (!response.ok || !response.body) {
+    throw new Error("Rajdeep AI endpoint is unavailable.");
+  }
+
+  thinking?.remove();
+
+  const output = addAssistantMessage();
+  if (!output) return;
+
+  const cursor = document.createElement("span");
+  cursor.className = "ai-cursor";
+  output.appendChild(cursor);
+
+  const reader = response.body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = "";
+
+  while (true) {
+    const { value, done } = await reader.read();
+    if (done) break;
+
+    buffer += decoder.decode(value, { stream: true });
+    const events = buffer.split("\n\n");
+    buffer = events.pop() || "";
+
+    for (const event of events) {
+      const lines = event.split("\n");
+      for (const line of lines) {
+        if (!line.startsWith("data:")) continue;
+        const payload = line.slice(5).trim();
+        if (!payload || payload === "[DONE]") continue;
+
+        try {
+          const data = JSON.parse(payload);
+          if (data.text) {
+            cursor.before(document.createTextNode(data.text));
+            scrollAIChat();
+          }
+        } catch {
+          // Ignore incomplete SSE frames.
+        }
+      }
+    }
+  }
+}
+
+async function askRajdeep(question) {
+  const cleanQuestion = question.trim();
+  if (!cleanQuestion || aiBusy) return;
+
+  addUserMessage(cleanQuestion);
+  setComposerBusy(true);
+
+  try {
+    if (quickAnswers[cleanQuestion]) {
+      await streamLocalAnswer(quickAnswers[cleanQuestion]);
+    } else if (RAJDEEP_AI_API) {
+      await streamRemoteAnswer(cleanQuestion);
+    } else {
+      await streamLocalAnswer(
+        "I can answer questions about Rajdeep's projects, skills, experience and portfolio. The live AI endpoint is being connected for open-ended questions."
+      );
+    }
+  } catch (error) {
+    const thinking = aiChat?.querySelector(".ai-thinking-message");
+    thinking?.remove();
+
+    await streamLocalAnswer(
+      "I couldn't reach the live AI layer right now. Try one of the suggested questions, or check back once the AI endpoint is available."
+    );
+  } finally {
+    setComposerBusy(false);
+    aiInput?.focus();
+  }
+}
+
+aiComposer?.addEventListener("submit", (event) => {
+  event.preventDefault();
+  askRajdeep(aiInput?.value || "");
+  if (aiInput) aiInput.value = "";
 });
 
-document.querySelectorAll(".questions button").forEach((button) => {
-  button.addEventListener("click", () => {
-    const answers = {
-      "Who are you?":
-        "Rajdeep is a Data Science graduate focused on practical ML, analytics and GenAI products.",
-      "Tell me about JobShield.":
-        "JobShield is an AI job discovery and safety assistant built around risk signals, resume matching and improvement areas.",
-      "What are your skills?":
-        "Python, machine learning, data analytics, SQL, GenAI/LLMs and cloud technologies.",
-    };
-    document.querySelector(".placeholder").textContent =
-      answers[button.textContent] || "Ask me about Rajdeep's work.";
-  });
+aiQuestions?.querySelectorAll("button").forEach((button) => {
+  button.addEventListener("click", () => askRajdeep(button.textContent || ""));
 });
 
 /* =========================================================
