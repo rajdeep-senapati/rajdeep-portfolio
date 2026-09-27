@@ -5138,12 +5138,12 @@ body.modal-open {
   letter-spacing: .04em;
 }
 
-.seating-visual::after {
+.seating-board::after {
   content: "CONFLICT CHECK  ✓";
   position: absolute;
   z-index: 3;
-  right: 14px;
-  bottom: 11px;
+  right: 0;
+  bottom: 0;
   color: var(--red);
   font: 500 7px "DM Mono", monospace;
 }
