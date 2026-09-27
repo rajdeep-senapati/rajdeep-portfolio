@@ -126,6 +126,30 @@ function wait(ms) {
   return new Promise((resolve) => window.setTimeout(resolve, ms));
 }
 
+function escapeHTML(text) {
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+function renderAIText(text) {
+  const escaped = escapeHTML(text.trim());
+
+  return escaped
+    .replace(/^### (.+)$/gm, "<h4>$1</h4>")
+    .replace(/^## (.+)$/gm, "<h3>$1</h3>")
+    .replace(/^# (.+)$/gm, "<h3>$1</h3>")
+    .replace(/^\*\* (.+)$/gm, "<strong>$1</strong>")
+    .replace(/^[-*] (.+)$/gm, "• $1")
+    .replace(/^(\d+)\. (.+)$/gm, "$1. $2")
+    .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+    .replace(/\*([^*]+)\*/g, "<em>$1</em>")
+    .replace(/\n{2,}/g, "<br><br>")
+    .replace(/\n/g, "<br>");
+}
+
+
 async function streamLocalAnswer(text) {
   clearActiveCursor();
 
@@ -207,7 +231,8 @@ async function streamRemoteAnswer(question) {
 
           if (data.text) {
             streamedText += data.text;
-            cursor.before(document.createTextNode(data.text));
+            output.innerHTML = renderAIText(streamedText);
+            output.appendChild(cursor);
             scrollAIChat();
           }
         } catch {
