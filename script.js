@@ -10,7 +10,11 @@ const aiComposer = document.querySelector("#aiComposer");
 const aiSend = document.querySelector("#aiSend");
 const aiQuestions = document.querySelector("#aiQuestions");
 
-const RAJDEEP_AI_API = window.RAJDEEP_AI_API || "";
+const RAJDEEP_AI_API =
+  window.RAJDEEP_AI_API ||
+  ((window.location.protocol === "http:" || window.location.protocol === "https:")
+    ? "/api/chat"
+    : "");
 
 const quickAnswers = {
   "Who are you?":
@@ -41,6 +45,13 @@ openButton?.addEventListener("click", openAI);
 headerAI?.addEventListener("click", openAI);
 closeButton?.addEventListener("click", closeAI);
 backdrop?.addEventListener("click", closeAI);
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    closeAI();
+    closeCaseStudy();
+  }
+});
 
 function scrollAIChat() {
   if (aiChat) aiChat.scrollTop = aiChat.scrollHeight;
