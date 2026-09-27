@@ -4741,11 +4741,7 @@ body.modal-open {
 }
 
 #certifications .cert-item h3 {
-  transition: color 0.22s ease;
-}
-
-#certifications .cert-item:hover h3 {
-  color: var(--red);
+  transition: none;
 }
 
 #certifications .cert-link {
