@@ -85,11 +85,6 @@ function sendSSE(res, payload) {
 }
 
 export default async function handler(req, res) {
-  if (req.method !== "POST") {
-    res.status(405).json({ error: "Method not allowed" });
-    return;
-  }
-
   const origin = req.headers.origin || "*";
   res.setHeader("Access-Control-Allow-Origin", origin);
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
@@ -97,6 +92,11 @@ export default async function handler(req, res) {
 
   if (req.method === "OPTIONS") {
     res.status(204).end();
+    return;
+  }
+
+  if (req.method !== "POST") {
+    res.status(405).json({ error: "Method not allowed" });
     return;
   }
 
