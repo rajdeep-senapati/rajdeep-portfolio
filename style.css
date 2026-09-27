@@ -4958,3 +4958,374 @@ body.modal-open {
 
   transform: translateY(-1px);
 }
+
+/* =========================================================
+   FINAL PROJECT VISUAL PASS
+   - More editorial detail across all six visuals.
+   - Continuous micro-motion keeps the grid alive.
+   - Route + MRI receive full visual systems.
+   ========================================================= */
+
+/* Shared visual frame */
+.project-card .project-visual {
+  border: 1px solid rgba(17,16,15,.08);
+}
+
+/* ---------------------------------------------------------
+   01 — JOBSHIELD / LIVE MATCH SIGNAL
+   --------------------------------------------------------- */
+
+.jobshield-visual {
+  position: relative;
+  overflow: hidden;
+}
+
+.jobshield-visual::before {
+  content: "RISK GATE  •  MATCH READY";
+  position: absolute;
+  z-index: 4;
+  top: 9px;
+  right: 13px;
+  padding: 5px 7px;
+  color: var(--paper);
+  border: 1px solid rgba(245,241,232,.35);
+  background: rgba(17,16,15,.18);
+  font: 500 7px "DM Mono", monospace;
+  letter-spacing: .04em;
+}
+
+.mock-window {
+  position: relative;
+  overflow: hidden;
+}
+
+.mock-window::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 32px;
+  height: 1px;
+  background: rgba(255,59,48,.28);
+  box-shadow: 0 46px 0 rgba(17,16,15,.06);
+}
+
+.mock-score strong {
+  animation: metricPulse 3.8s ease-in-out infinite;
+}
+
+/* ---------------------------------------------------------
+   02 — STOCKSENSE / FORECAST SIGNAL
+   --------------------------------------------------------- */
+
+.stocksense-visual {
+  position: relative;
+}
+
+.chart-window {
+  position: relative;
+  overflow: hidden;
+}
+
+.chart-window::before {
+  content: "";
+  position: absolute;
+  inset: 46px 15px 24px;
+  background-image:
+    linear-gradient(rgba(17,16,15,.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(17,16,15,.055) 1px, transparent 1px);
+  background-size: 42px 28px;
+  pointer-events: none;
+}
+
+.chart-window svg,
+.chart-head,
+.chart-labels {
+  position: relative;
+  z-index: 1;
+}
+
+.chart-window .forecast {
+  stroke-dasharray: 8 5;
+  animation: forecastFlow 1.8s linear infinite;
+}
+
+/* ---------------------------------------------------------
+   03 — ROUTE OPTIMIZER / LIVE ROUTE MAP
+   --------------------------------------------------------- */
+
+.route-visual {
+  padding: 0;
+  background: #e5e0d6;
+}
+
+.route-graphic {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 78% 18%, rgba(255,59,48,.08), transparent 24%),
+    #f8f4eb;
+  border: 1px solid rgba(17,16,15,.10);
+}
+
+.route-graphic::after {
+  content: "OPTIMIZED";
+  position: absolute;
+  right: 15px;
+  bottom: 12px;
+  padding: 5px 7px;
+  border: 1px solid rgba(17,16,15,.12);
+  background: rgba(255,253,247,.82);
+  color: var(--red);
+  font: 500 7px "DM Mono", monospace;
+  letter-spacing: .05em;
+}
+
+.route-title {
+  top: 14px;
+  left: 16px;
+}
+
+.route-graphic svg {
+  inset: 35px 10px 8px;
+  width: calc(100% - 20px);
+  height: calc(100% - 43px);
+}
+
+.route-roads path {
+  stroke: rgba(17,16,15,.09);
+}
+
+.route-alt {
+  stroke-dasharray: 5 8;
+  animation: routeAltFlow 2.4s linear infinite;
+}
+
+.route-main {
+  stroke-dasharray: 11 6;
+  stroke-linecap: round;
+  animation: routeFlow 2.4s linear infinite !important;
+}
+
+.route-node {
+  animation: routeNodePulse 3.2s ease-in-out infinite;
+}
+
+.route-node.stop {
+  animation-delay: .6s;
+}
+
+/* ---------------------------------------------------------
+   04 — EXAM SEATING / ALLOCATION MATRIX
+   --------------------------------------------------------- */
+
+.seating-visual {
+  position: relative;
+}
+
+.seating-visual::before {
+  content: "ALLOCATION MATRIX";
+  position: absolute;
+  z-index: 3;
+  top: 11px;
+  left: 14px;
+  padding: 4px 6px;
+  background: rgba(255,253,247,.78);
+  color: var(--ink);
+  font: 500 7px "DM Mono", monospace;
+  letter-spacing: .04em;
+}
+
+.seating-visual::after {
+  content: "CONFLICT CHECK  ✓";
+  position: absolute;
+  z-index: 3;
+  right: 14px;
+  bottom: 11px;
+  color: var(--red);
+  font: 500 7px "DM Mono", monospace;
+}
+
+.seat-grid b {
+  animation: seatSignal 3.6s ease-in-out infinite;
+}
+
+.seat-grid b:nth-child(2) { animation-delay: .15s; }
+.seat-grid b:nth-child(9) { animation-delay: .3s; }
+.seat-grid b:nth-child(16) { animation-delay: .45s; }
+.seat-grid b:nth-child(20) { animation-delay: .6s; }
+.small-grid b:nth-child(6) { animation-delay: .75s; }
+
+/* ---------------------------------------------------------
+   05 — ALZHEIMER'S / MRI → MODEL OUTPUT
+   --------------------------------------------------------- */
+
+.alzheimer-visual {
+  padding: 0;
+  background: var(--ink);
+}
+
+.mri-graphic {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 20% 52%, rgba(245,241,232,.055), transparent 27%),
+    #151413;
+}
+
+.mri-graphic::after {
+  content: "FEATURE SIGNAL  •  0.86";
+  position: absolute;
+  right: 14px;
+  bottom: 12px;
+  color: rgba(245,241,232,.62);
+  font: 500 7px "DM Mono", monospace;
+  letter-spacing: .04em;
+}
+
+.mri-title {
+  left: 16px;
+  top: 14px;
+}
+
+.mri-graphic svg {
+  inset: 34px 10px 8px;
+  width: calc(100% - 20px);
+  height: calc(100% - 42px);
+}
+
+.mri-ring {
+  animation: mriRingPulse 4s ease-in-out infinite;
+}
+
+.mri-ring.outer {
+  animation-delay: .35s;
+}
+
+.mri-hotspot {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: hotspotPulse 2.2s ease-in-out infinite !important;
+}
+
+.mri-leader {
+  stroke-dasharray: 5 4;
+  animation: leaderFlow 1.8s linear infinite;
+}
+
+.stage-list rect:nth-of-type(4) {
+  fill: rgba(255,59,48,.14);
+  stroke: var(--red);
+}
+
+/* ---------------------------------------------------------
+   06 — DIWALI SALES / DEMAND SNAPSHOT
+   --------------------------------------------------------- */
+
+.diwali-visual {
+  position: relative;
+}
+
+.diwali-visual::before {
+  content: "CUSTOMER / SALES";
+  position: absolute;
+  z-index: 3;
+  left: 14px;
+  top: 11px;
+  padding: 4px 6px;
+  background: rgba(255,253,247,.76);
+  color: var(--ink);
+  font: 500 7px "DM Mono", monospace;
+  letter-spacing: .04em;
+}
+
+.sales-bars i {
+  transform-origin: bottom;
+  animation: salesSignal 3.8s ease-in-out infinite;
+}
+
+.sales-bars i:nth-child(2) { animation-delay: .15s; }
+.sales-bars i:nth-child(3) { animation-delay: .3s; }
+.sales-bars i:nth-child(4) { animation-delay: .45s; }
+.sales-bars i:nth-child(5) { animation-delay: .6s; }
+.sales-bars i:nth-child(6) { animation-delay: .75s; }
+.sales-bars i:nth-child(7) { animation-delay: .9s; }
+
+.donut {
+  animation: donutFloat 4s ease-in-out infinite;
+}
+
+/* ---------------------------------------------------------
+   SHARED MICRO-MOTION
+   --------------------------------------------------------- */
+
+@keyframes metricPulse {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+}
+
+@keyframes forecastFlow {
+  to { stroke-dashoffset: -26; }
+}
+
+@keyframes routeFlow {
+  to { stroke-dashoffset: -34; }
+}
+
+@keyframes routeAltFlow {
+  to { stroke-dashoffset: -28; }
+}
+
+@keyframes routeNodePulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+
+@keyframes seatSignal {
+  0%, 100% { transform: scale(1); opacity: .72; }
+  50% { transform: scale(1.08); opacity: 1; }
+}
+
+@keyframes mriRingPulse {
+  0%, 100% { opacity: .82; }
+  50% { opacity: 1; }
+}
+
+@keyframes hotspotPulse {
+  0%, 100% { transform: scale(1); opacity: .88; }
+  50% { transform: scale(1.18); opacity: 1; }
+}
+
+@keyframes leaderFlow {
+  to { stroke-dashoffset: -18; }
+}
+
+@keyframes salesSignal {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(1.035); }
+}
+
+@keyframes donutFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mock-score strong,
+  .chart-window .forecast,
+  .route-alt,
+  .route-main,
+  .route-node,
+  .seat-grid b,
+  .mri-ring,
+  .mri-hotspot,
+  .mri-leader,
+  .sales-bars i,
+  .donut {
+    animation: none !important;
+  }
+}
