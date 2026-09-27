@@ -2155,7 +2155,7 @@ h2 i {
 }
 
 .about h2 i {
-  color: var(--cream);
+  color: var(--paper);
 }
 
 .about p {
@@ -2186,7 +2186,7 @@ h2 i {
 
 .facts b {
   font-size: 14px;
-  color: var(--cream);
+  color: var(--ink);
 }
 
 @media (prefers-reduced-motion: reduce) {
