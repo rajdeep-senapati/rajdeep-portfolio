@@ -1554,6 +1554,7 @@
   <div
     class="modal"
     id="modal"
+    aria-hidden="true"
   >
 
     <div
@@ -1561,46 +1562,80 @@
       id="backdrop"
     ></div>
 
-    <div class="panel">
+    <section
+      class="panel ai-chat-panel"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="aiChatTitle"
+    >
 
-      <button
-        id="close"
-        aria-label="Close"
+      <div class="ai-chat-head">
+
+        <div>
+          <small>AI RAJDEEP</small>
+          <h2 id="aiChatTitle">Ask me anything.</h2>
+        </div>
+
+        <button
+          id="close"
+          class="ai-close"
+          aria-label="Close AI Rajdeep"
+        >
+          ×
+        </button>
+
+      </div>
+
+      <div
+        class="ai-chat"
+        id="aiChat"
+        aria-live="polite"
+        aria-label="Conversation with AI Rajdeep"
       >
-        ×
-      </button>
 
-      <small>
-        AI RAJDEEP
-      </small>
-
-      <h2>
-        Ask me anything.
-      </h2>
-
-
-      <div class="questions">
-
-        <button>
-          Who are you?
-        </button>
-
-        <button>
-          Tell me about JobShield.
-        </button>
-
-        <button>
-          What are your skills?
-        </button>
+        <div class="ai-welcome">
+          <span class="ai-avatar">R.</span>
+          <div class="ai-bubble">
+            <small>RAJDEEP AI</small>
+            <p>Ask about my work, projects, skills or experience.</p>
+          </div>
+        </div>
 
       </div>
 
+      <div class="questions" id="aiQuestions">
 
-      <div class="placeholder">
-        UI ready. Free-tier AI endpoint comes next.
+        <button type="button">Who are you?</button>
+        <button type="button">Tell me about JobShield.</button>
+        <button type="button">What are your skills?</button>
+
       </div>
 
-    </div>
+      <form class="ai-composer" id="aiComposer">
+
+        <input
+          id="aiInput"
+          type="text"
+          autocomplete="off"
+          placeholder="Ask about Rajdeep..."
+          aria-label="Ask AI Rajdeep a question"
+        />
+
+        <button
+          id="aiSend"
+          type="submit"
+          aria-label="Send question"
+        >
+          ↗
+        </button>
+
+      </form>
+
+      <p class="ai-disclaimer">
+        AI Rajdeep answers from Rajdeep's portfolio knowledge.
+      </p>
+
+    </section>
 
   </div>
 
