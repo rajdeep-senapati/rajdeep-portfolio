@@ -2338,33 +2338,75 @@ h2 i {
 
 .contact {
   background: var(--ink);
-
   color: var(--cream);
+  padding: 88px max(24px, calc((100% - var(--max)) / 2)) 82px;
+  position: relative;
+  overflow: hidden;
+}
 
-  padding: 78px max(24px, calc((100% - var(--max)) / 2));
+.contact::after {
+  content: "";
+  position: absolute;
+  width: 190px;
+  height: 190px;
+  right: -75px;
+  bottom: -95px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 59, 48, 0.45);
+  pointer-events: none;
 }
 
 .contact small {
   color: #aaa49a;
+  display: block;
+  transition: color 0.25s ease;
+}
+
+.contact h2 {
+  max-width: 760px;
+  margin-top: 18px;
+  font-size: clamp(56px, 8vw, 108px);
+  line-height: 0.88;
+  letter-spacing: -0.07em;
+}
+
+.contact h2 i {
+  color: var(--red);
 }
 
 .email {
-  display: inline-block;
-
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 26px;
+  width: min(100%, 430px);
+  min-height: 54px;
   margin-top: 34px;
+  padding: 14px 17px;
+  background: var(--cream);
+  color: var(--ink);
+  border: 1px solid var(--cream);
+  box-shadow: 5px 5px 0 var(--red);
+  font-size: 13px;
+  font-weight: 700;
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    background 0.22s ease,
+    color 0.22s ease;
+}
 
-  font-size: clamp(19px, 3vw, 30px);
-
-  border-bottom: 1px solid;
-
-  padding-bottom: 6px;
+.email:hover {
+  background: var(--red);
+  color: var(--ink);
+  border-color: var(--red);
+  transform: translate(-4px, -4px);
+  box-shadow: 9px 9px 0 var(--cream);
 }
 
 .social {
   display: flex;
-
   gap: 23px;
-
   margin-top: 38px;
 }
 
@@ -2379,10 +2421,59 @@ h2 i {
 .contact-social a {
   border-color: #ffffff33;
   color: var(--cream);
+  transition:
+    color 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .contact-social a:hover {
   color: var(--ink);
+  background: var(--red);
+  border-color: var(--red);
+  transform: translateY(-2px);
+}
+
+.contact.is-visible small {
+  animation: contactFadeUp 0.45s ease both;
+}
+
+.contact.is-visible h2 {
+  animation: contactFadeUp 0.6s cubic-bezier(.22, 1, .36, 1) 0.08s both;
+}
+
+.contact.is-visible .email {
+  animation: contactFadeUp 0.55s cubic-bezier(.22, 1, .36, 1) 0.18s both;
+}
+
+.contact.is-visible .contact-social {
+  animation: contactFadeUp 0.5s cubic-bezier(.22, 1, .36, 1) 0.28s both;
+}
+
+@keyframes contactFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact.is-visible small,
+  .contact.is-visible h2,
+  .contact.is-visible .email,
+  .contact.is-visible .contact-social {
+    animation: none !important;
+  }
+
+  .email,
+  .contact-social a {
+    transition: none !important;
+  }
 }
 
 /* =========================================================
