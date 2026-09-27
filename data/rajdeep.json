@@ -1,0 +1,147 @@
+{
+  "identity": {
+    "name": "Rajdeep Senapati",
+    "education": "B.Tech Computer Science (Data Science), Heritage Institute of Technology, Kolkata",
+    "graduation": "2026",
+    "focus": [
+      "practical machine learning",
+      "data analytics",
+      "GenAI/LLM applications",
+      "useful AI products"
+    ],
+    "languages": [
+      "English",
+      "Hindi",
+      "Bengali"
+    ]
+  },
+  "experience": [
+    {
+      "company": "Cognizant",
+      "role": "AIA / AI & Analytics Intern",
+      "location": "Chennai",
+      "period": "Jan 2026 – Apr 2026",
+      "work": [
+        "Built an end-to-end Azure Data Factory pipeline using Bronze → Silver → Gold architecture across JSON, CSV and XML sources.",
+        "Developed Mapping Data Flows and SQL stored procedures for cleansing, validation, SCD Type 2 historization and fact loading."
+      ]
+    },
+    {
+      "company": "CollegeTips",
+      "role": "Data Analyst Intern",
+      "location": "Remote",
+      "period": "Jun 2025 – Jul 2025",
+      "work": [
+        "Cleaned and structured 15+ datasets, reducing analysis time by approximately 30%.",
+        "Designed 10+ dashboards and visualizations that reduced campaign planning time by 25%."
+      ]
+    },
+    {
+      "company": "Jadavpur University",
+      "role": "Machine Learning Intern",
+      "location": "Kolkata",
+      "period": "Jun 2024 – Oct 2024",
+      "work": [
+        "Built an XGBoost model for cognitive-impairment detection, reaching 90–95% accuracy in the documented project work.",
+        "Reduced feature dimensionality by 59% and verified model stability with 10-fold cross-validation."
+      ]
+    }
+  ],
+  "projects": {
+    "JobShield": {
+      "type": "AI / GenAI",
+      "summary": "AI job discovery and safety assistant built around Find → Verify → Match → Improve.",
+      "details": [
+        "Resume PDF/DOCX text is parsed and cleaned locally.",
+        "GPT-OSS 20B is used for job-risk signal analysis.",
+        "GPT-OSS 120B is used for resume-to-job reasoning after the risk gate.",
+        "Risk output is a signal score, not a scam probability.",
+        "High-risk results require confirmation before detailed matching.",
+        "Stack: Python, Groq, LLMs, Streamlit, PyPDF and python-docx."
+      ]
+    },
+    "StockSense": {
+      "type": "ML / Forecasting",
+      "summary": "Inventory and demand forecasting focused on SKU-level demand behaviour and reorder decisions.",
+      "details": [
+        "Uses explicit data-cleaning rules and daily SKU demand analysis.",
+        "Uses feature engineering and XGBoost forecasting.",
+        "Designed around prediction → inventory risk → business action.",
+        "Stack: Python, Pandas, XGBoost, Streamlit and time-series/feature engineering."
+      ]
+    },
+    "AI Route Optimizer": {
+      "type": "AI / Optimization",
+      "summary": "Vehicle-routing workflow using distance-aware optimization, capacity and fuel constraints, traffic enrichment and rerouting.",
+      "details": [
+        "Uses OR-Tools, Flask, Supabase and Haversine distance calculations."
+      ]
+    },
+    "Exam Seating Algorithm": {
+      "type": "Algorithms",
+      "summary": "Constraint-based exam seating and management system.",
+      "details": [
+        "Handles seating allocation, conflict prevention and invigilator assignment.",
+        "Includes AI constraint parsing using Gemini.",
+        "Stack includes Python, Flask, React, SQLite, SQLAlchemy, Gemini, OpenPyXL and JWT."
+      ]
+    },
+    "Alzheimer’s Classification": {
+      "type": "ML / Research",
+      "summary": "Machine-learning research project using ADNI MRI volumetric reports.",
+      "details": [
+        "Uses MRI-derived biomarkers, statistical feature selection and XGBoost for disease-stage classification.",
+        "Completed as machine-learning research work at Jadavpur University.",
+        "It should not be described as a clinical product or clinical diagnosis system."
+      ]
+    },
+    "Diwali Sales Analysis": {
+      "type": "Data Analytics",
+      "summary": "Exploratory retail analysis and customer segmentation.",
+      "details": [
+        "Uses demographic, spending and product-level analysis.",
+        "Stack: Python, Pandas, NumPy, Matplotlib, Seaborn and Jupyter."
+      ]
+    }
+  },
+  "skills": [
+    "Python",
+    "Machine Learning",
+    "XGBoost",
+    "Scikit-learn",
+    "Pandas",
+    "NumPy",
+    "SQL",
+    "PostgreSQL",
+    "MySQL",
+    "Power BI",
+    "Azure",
+    "AWS",
+    "Streamlit",
+    "GenAI/LLMs",
+    "Groq",
+    "Hugging Face",
+    "LangChain",
+    "Flask",
+    "OR-Tools"
+  ],
+  "career": {
+    "target_roles": [
+      "Data Analyst",
+      "Business Analyst",
+      "Data Scientist",
+      "Machine Learning Engineer",
+      "GenAI Developer"
+    ],
+    "interests": [
+      "practical AI",
+      "LLM applications",
+      "RAG",
+      "agentic AI"
+    ]
+  },
+  "contact": {
+    "email": "rajdeepsenapati26@gmail.com",
+    "github": "https://github.com/rajdeep-senapati"
+  }
+}
