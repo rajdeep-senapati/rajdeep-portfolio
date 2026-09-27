@@ -4742,6 +4742,8 @@ body.modal-open {
 }
 
 #certifications .cert-item h3 {
+  display: inline;
+  margin: 0;
   transition: color 0.2s ease;
 }
 
@@ -4774,7 +4776,7 @@ body.modal-open {
   color: var(--red);
   font-size: 18px;
   line-height: 1;
-  vertical-align: middle;
+  vertical-align: baseline;
   opacity: 0;
   transform: translate(-3px, 2px);
   transition:
