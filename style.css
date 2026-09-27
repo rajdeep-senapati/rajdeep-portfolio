@@ -2165,11 +2165,11 @@ h2 i {
 }
 
 .about p.muted {
-  color: rgba(17, 16, 15, 0.72);
+  color: var(--cream);
 }
 
 .facts {
-  border-top: 1px solid rgba(17, 16, 15, 0.28);
+  border-top: 1px solid rgba(245, 241, 232, 0.32);
   padding-top: 20px;
   margin-top: 30px;
 
@@ -2180,13 +2180,13 @@ h2 i {
 
 .facts small {
   display: block;
-  color: rgba(17, 16, 15, 0.62);
+  color: var(--cream);
   margin-bottom: 6px;
 }
 
 .facts b {
   font-size: 14px;
-  color: var(--ink);
+  color: var(--cream);
 }
 
 @media (prefers-reduced-motion: reduce) {
