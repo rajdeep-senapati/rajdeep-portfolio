@@ -200,6 +200,11 @@ async function streamRemoteAnswer(question) {
 
         try {
           const data = JSON.parse(payload);
+
+          if (data.error) {
+            throw new Error(data.error);
+          }
+
           if (data.text) {
             streamedText += data.text;
             cursor.before(document.createTextNode(data.text));
