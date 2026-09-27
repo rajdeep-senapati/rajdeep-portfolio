@@ -4769,14 +4769,14 @@ body.modal-open {
 }
 
 #certifications .cert-arrow {
-  position: absolute;
-  right: 0;
-  top: 0;
+  display: inline-block;
+  margin-left: 8px;
   color: var(--red);
   font-size: 18px;
   line-height: 1;
+  vertical-align: middle;
   opacity: 0;
-  transform: translate(-4px, 4px);
+  transform: translate(-3px, 2px);
   transition:
     opacity 0.2s ease,
     transform 0.22s cubic-bezier(.22, 1, .36, 1);
