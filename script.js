@@ -240,7 +240,7 @@ updateHeaderState();
 /* Add the same restrained reveal language to the main sections/cards. */
 const revealTargets = [
   ...document.querySelectorAll(
-    ".section-heading, .project-card, .skills > div, .ai > div, .profile-panel, .about > div, .contact",
+    ".section-heading, .project-card, .skills > div, .ai > div, .profile-panel, .about > div, .contact, .experience-item, .cert-item",
   ),
 ];
 
@@ -248,6 +248,16 @@ revealTargets.forEach((el, index) => {
   el.classList.add("scroll-reveal");
   el.style.setProperty("--reveal-delay", `${Math.min(index % 3, 2) * 70}ms`);
 });
+
+/* Experience + certification items use a tighter stagger. */
+document
+  .querySelectorAll(".experience-item, .cert-item")
+  .forEach((item, index) => {
+    item.style.setProperty(
+      "--profile-delay",
+      `${index * 90}ms`,
+    );
+  });
 
 if ("IntersectionObserver" in window) {
   const revealObserver = new IntersectionObserver(

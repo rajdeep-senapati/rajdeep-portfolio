@@ -80,10 +80,17 @@ header {
 
 .main-nav a {
   position: relative;
-  padding: 8px 4px;
+  padding: 8px 11px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+
   font-size: 13px;
   font-weight: 600;
-  transition: color 0.2s ease;
+
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease;
 }
 
 .main-nav a:hover {
@@ -92,12 +99,14 @@ header {
 
 .main-nav a.active {
   color: var(--red);
+  border-color: var(--red);
+  background: transparent;
 }
 
+/* Home behaves exactly like every other nav item. */
 .main-nav .home-link {
-  border: 1px solid transparent;
   color: inherit;
-  padding: 8px 11px;
+  border-color: transparent;
 }
 
 .main-nav .home-link:hover {
@@ -217,6 +226,47 @@ h2 i {
     transform 0.2s ease,
     box-shadow 0.2s ease,
     background 0.2s ease;
+}
+
+/* =========================================================
+   AI RAJDEEP CTA
+   ========================================================= */
+
+.ai-button {
+  background: var(--cream);
+  color: var(--ink);
+  border-color: var(--ink);
+
+  box-shadow: 5px 5px 0 var(--ink);
+
+  width: 190px;
+  min-height: 50px;
+
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    background 0.22s ease;
+}
+
+.ai-button:hover {
+  background: var(--ink);
+  color: var(--cream);
+  border-color: var(--ink);
+
+  transform: translate(-4px, -4px);
+  box-shadow: 9px 9px 0 var(--ink);
+}
+
+.ai-button span {
+  font-size: 18px;
+  line-height: 1;
+
+  transition:
+    transform 0.22s ease;
+}
+
+.ai-button:hover span {
+  transform: translate(3px, -3px);
 }
 
 .red-button {
@@ -2660,7 +2710,7 @@ footer {
 .experience-item,
 .cert-item {
   padding: 18px 0;
-  border-top: 1px solid var(--line);
+  border-top: 0;
 }
 
 .experience-item:first-child,
@@ -2785,9 +2835,6 @@ footer {
   -webkit-backdrop-filter: blur(18px) saturate(120%);
 }
 
-.site-header.is-scrolled .main-nav .home-link {
-  border-color: transparent;
-}
 
 /* Experience: simple, factual and compact. */
 .experience-head {
@@ -2829,6 +2876,20 @@ footer {
     opacity .65s ease,
     transform .65s cubic-bezier(.22, 1, .36, 1);
   transition-delay: var(--reveal-delay, 0ms);
+}
+
+.scroll-reveal {
+
+  opacity: 0;
+
+  transform: translateY(24px);
+
+  transition:
+    opacity .65s ease,
+    transform .65s cubic-bezier(.22, 1, .36, 1);
+
+  transition-delay: var(--reveal-delay, 0ms);
+
 }
 
 .scroll-reveal.is-visible {
@@ -3166,11 +3227,6 @@ footer {
   -webkit-backdrop-filter: blur(18px) saturate(125%);
 }
 
-/* The pill itself, rather than the entire header, gets the visual change. */
-.site-header.is-scrolled .main-nav .home-link {
-  border-color: transparent;
-  background: transparent;
-}
 
 /* ---------------------------------------------------------
    PROJECT SELECTION MOTION
@@ -3521,10 +3577,6 @@ footer {
   transition: transform .42s cubic-bezier(.22,1,.36,1);
 }
 
-.site-header.is-scrolled .main-nav .home-link {
-  border-color: transparent;
-  background: transparent;
-}
 
 /* ---------- One consistent hover language for ALL projects ---------- */
 .project-card {
@@ -4188,7 +4240,7 @@ body.modal-open {
   padding: 0 0 24px;
   margin-bottom: 24px;
   border-top: none !important;
-  border-bottom: 1px solid rgba(18, 18, 18, 0.14);
+  border-bottom: none;
 }
 
 #certifications .cert-item:last-child {
