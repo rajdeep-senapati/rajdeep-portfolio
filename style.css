@@ -4756,6 +4756,37 @@ body.modal-open {
   transform: translateX(3px);
 }
 
+#certifications .cert-item {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+#certifications .cert-arrow {
+  position: absolute;
+  right: 0;
+  top: 0;
+  color: var(--red);
+  font-size: 18px;
+  line-height: 1;
+  opacity: 0;
+  transform: translate(-4px, 4px);
+  transition:
+    opacity 0.2s ease,
+    transform 0.22s cubic-bezier(.22, 1, .36, 1);
+}
+
+#certifications .cert-item:hover .cert-arrow,
+#certifications .cert-item:focus-visible .cert-arrow {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+#certifications .cert-item:focus-visible {
+  outline: 2px solid var(--red);
+  outline-offset: 4px;
+}
+
 @media (max-width: 850px) {
   .experience-list {
     padding-left: 22px;
