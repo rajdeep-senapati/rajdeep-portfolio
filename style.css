@@ -3048,6 +3048,7 @@ footer {
   background: var(--paper);
   border: 1px solid var(--line);
   padding: 28px;
+  box-shadow: 8px 8px 0 rgba(17, 16, 15, 0.12);
 }
 
 .profile-panel > small {
@@ -4741,7 +4742,12 @@ body.modal-open {
 }
 
 #certifications .cert-item h3 {
-  transition: none;
+  transition: color 0.2s ease;
+}
+
+#certifications .cert-item:hover h3,
+#certifications .cert-item:focus-visible h3 {
+  color: var(--red);
 }
 
 #certifications .cert-link {
