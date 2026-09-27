@@ -4645,6 +4645,148 @@ body.modal-open {
 }
 
 /* =========================================================
+   EXPERIENCE + CERTIFICATIONS — EDITORIAL POLISH
+   ========================================================= */
+
+.experience-list {
+  position: relative;
+  padding-left: 24px;
+}
+
+.experience-list::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 7px;
+  bottom: 7px;
+  width: 1px;
+  background: var(--line);
+}
+
+.experience-item {
+  position: relative;
+  padding: 0 0 28px;
+  margin-bottom: 28px;
+  border-top: 0;
+  transition: transform 0.25s cubic-bezier(.22, 1, .36, 1);
+}
+
+.experience-item:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.experience-item::before {
+  content: "";
+  position: absolute;
+  left: -24px;
+  top: 5px;
+  width: 9px;
+  height: 9px;
+  border: 2px solid var(--red);
+  background: var(--paper);
+  border-radius: 50%;
+  transition:
+    background 0.22s ease,
+    transform 0.25s cubic-bezier(.22, 1, .36, 1);
+}
+
+.experience-item:hover {
+  transform: translateX(4px);
+}
+
+.experience-item:hover::before {
+  background: var(--red);
+  transform: scale(1.15);
+}
+
+.experience-item h3 {
+  transition: color 0.22s ease;
+}
+
+.experience-item:hover h3 {
+  color: var(--red);
+}
+
+.experience-head span {
+  transition: color 0.22s ease;
+}
+
+.experience-item:hover .experience-head span {
+  color: var(--ink);
+}
+
+#certifications .cert-list {
+  margin-top: 30px;
+}
+
+#certifications .cert-item {
+  position: relative;
+  padding: 0 0 18px;
+  margin: 0 0 18px;
+  border-bottom: 1px solid var(--line);
+  transition:
+    transform 0.25s cubic-bezier(.22, 1, .36, 1),
+    border-color 0.22s ease;
+}
+
+#certifications .cert-item:last-child {
+  margin-bottom: 0;
+  border-bottom: 0;
+}
+
+#certifications .cert-item:hover {
+  transform: translateX(4px);
+  border-color: rgba(255, 59, 48, 0.45);
+}
+
+#certifications .cert-item h3 {
+  transition: color 0.22s ease;
+}
+
+#certifications .cert-item:hover h3 {
+  color: var(--red);
+}
+
+#certifications .cert-link {
+  display: inline-block;
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+#certifications .cert-link:hover {
+  color: var(--ink);
+  transform: translateX(3px);
+}
+
+@media (max-width: 850px) {
+  .experience-list {
+    padding-left: 22px;
+  }
+
+  .experience-list::before {
+    left: 3px;
+  }
+
+  .experience-item::before {
+    left: -22px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .experience-item,
+  .experience-item::before,
+  .experience-item h3,
+  .experience-head span,
+  #certifications .cert-item,
+  #certifications .cert-item h3,
+  #certifications .cert-link {
+    transition: none !important;
+  }
+}
+
+/* =========================================================
    CERTIFICATIONS — UI COLOR MATCH
    ========================================================= */
 
