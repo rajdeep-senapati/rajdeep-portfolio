@@ -26,6 +26,7 @@ const quickAnswers = {
 };
 
 let aiBusy = false;
+const aiHistory = [];
 
 function openAI(e) {
   if (e) e.preventDefault();
@@ -157,7 +158,11 @@ async function streamRemoteAnswer(question) {
   const response = await fetch(RAJDEEP_AI_API, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ message: question, stream: true })
+    body: JSON.stringify({
+      message: question,
+      messages: aiHistory.slice(-10),
+      stream: true
+    })
   });
 
   if (!response.ok || !response.body) {
@@ -176,6 +181,7 @@ async function streamRemoteAnswer(question) {
   const reader = response.body.getReader();
   const decoder = new TextDecoder();
   let buffer = "";
+  let streamedText = "";
 
   while (true) {
     const { value, done } = await reader.read();
@@ -195,6 +201,7 @@ async function streamRemoteAnswer(question) {
         try {
           const data = JSON.parse(payload);
           if (data.text) {
+            streamedText += data.text;
             cursor.before(document.createTextNode(data.text));
             scrollAIChat();
           }
@@ -203,6 +210,14 @@ async function streamRemoteAnswer(question) {
         }
       }
     }
+  }
+
+  if (streamedText) {
+    aiHistory.push(
+      { role: "user", content: question },
+      { role: "assistant", content: streamedText }
+    );
+    if (aiHistory.length > 12) aiHistory.splice(0, aiHistory.length - 12);
   }
 }
 
@@ -215,7 +230,13 @@ async function askRajdeep(question) {
 
   try {
     if (quickAnswers[cleanQuestion]) {
-      await streamLocalAnswer(quickAnswers[cleanQuestion]);
+      const answer = quickAnswers[cleanQuestion];
+      await streamLocalAnswer(answer);
+      aiHistory.push(
+        { role: "user", content: cleanQuestion },
+        { role: "assistant", content: answer }
+      );
+      if (aiHistory.length > 12) aiHistory.splice(0, aiHistory.length - 12);
     } else if (RAJDEEP_AI_API) {
       await streamRemoteAnswer(cleanQuestion);
     } else {
