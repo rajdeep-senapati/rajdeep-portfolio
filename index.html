@@ -501,39 +501,40 @@
 
           <div class="project-visual route-visual">
 
-            <div class="route-simple">
+            <div class="route-graphic">
 
-              <div class="visual-label">
-                ROUTE OPTIMIZATION
-              </div>
-
-              <div class="route-canvas">
-
-                <div class="route-road road-a"></div>
-                <div class="route-road road-b"></div>
-                <div class="route-main-line"></div>
-
-                <div class="route-point point-start">
-                  <span></span>
-                  <b>START</b>
-                </div>
-
-                <div class="route-point point-mid">
-                  <span></span>
-                  <b>WAYPOINT</b>
-                </div>
-
-                <div class="route-point point-end">
-                  <span></span>
-                  <b>DESTINATION</b>
-                </div>
-
-              </div>
-
-              <div class="route-result">
+              <div class="route-title">
                 <span></span>
-                OPTIMIZED PATH
+                LIVE ROUTE / 03 STOPS
               </div>
+
+              <svg viewBox="0 0 500 170" aria-label="Optimized vehicle route">
+
+                <g class="route-roads">
+                  <path d="M25 145 L120 28 L230 150 L325 25 L475 130" />
+                  <path d="M10 72 L120 28 L260 45 L390 12 L490 72" />
+                  <path d="M60 160 L175 92 L300 120 L450 38" />
+                </g>
+
+                <path
+                  class="route-alt"
+                  d="M62 135 C145 118 182 82 248 88 S350 75 430 48"
+                />
+
+                <path
+                  class="route-main"
+                  d="M62 135 C145 118 182 82 248 88 S350 75 430 48"
+                />
+
+                <circle class="route-node" cx="62" cy="135" r="8" />
+                <circle class="route-node stop" cx="248" cy="88" r="7" />
+                <circle class="route-node" cx="430" cy="48" r="8" />
+
+                <text x="44" y="158">START</text>
+                <text x="231" y="72">STOP</text>
+                <text x="382" y="34">DESTINATION</text>
+
+              </svg>
 
             </div>
 
@@ -643,51 +644,46 @@
 
           <div class="project-visual alzheimer-visual">
 
-            <div class="alz-simple">
+            <div class="mri-graphic">
 
-              <div class="visual-label">
-                MRI CLASSIFICATION
+              <div class="mri-title">
+                MRI <span>/</span> XGBOOST
               </div>
 
-              <div class="alz-layout">
+              <svg viewBox="0 0 500 170" aria-label="MRI classification visualization">
 
-                <div class="scan-card">
+                <g>
+                  <circle class="mri-ring outer" cx="120" cy="86" r="49" />
+                  <circle class="mri-ring" cx="120" cy="86" r="38" />
+                  <ellipse class="mri-ring" cx="120" cy="86" rx="25" ry="34" />
+                  <path class="mri-brain" d="M103 56 C80 63 82 103 104 114 C114 119 126 118 137 110 C158 95 157 72 138 60 C128 54 115 53 103 56 Z" />
+                  <path class="mri-slice" d="M120 48 V124" />
+                  <circle class="mri-hotspot" cx="139" cy="82" r="8" />
+                  <path class="mri-leader" d="M145 78 L185 54 L220 54" />
+                  <circle class="mri-dot" cx="220" cy="54" r="3" />
+                </g>
 
-                  <div class="scan-frame">
-                    <div class="scan-lines"></div>
-                    <div class="scan-highlight"></div>
-                  </div>
+                <g class="stage-list">
+                  <text x="250" y="40">MODEL OUTPUT</text>
 
-                  <span>
-                    MRI VOLUME
-                  </span>
+                  <rect x="250" y="52" width="48" height="28" />
+                  <rect x="303" y="52" width="48" height="28" />
+                  <rect x="356" y="52" width="48" height="28" />
+                  <rect x="409" y="52" width="48" height="28" />
 
-                </div>
+                  <text class="stage-label" x="266" y="70">HC</text>
+                  <text class="stage-label" x="314" y="70">EMCI</text>
+                  <text class="stage-label" x="369" y="70">LMCI</text>
+                  <text class="stage-label" x="424" y="70">AD</text>
 
-                <div class="classification-card">
+                  <line x1="250" y1="103" x2="457" y2="103" />
+                  <line class="stage-accent" x1="250" y1="103" x2="426" y2="103" />
 
-                  <small>
-                    MODEL OUTPUT
-                  </small>
+                  <text class="stage-note" x="250" y="122">FEATURE SIGNAL</text>
+                  <text class="stage-note" x="392" y="122">XGBOOST</text>
+                </g>
 
-                  <div class="stage-row">
-                    <span>HC</span>
-                    <span>EMCI</span>
-                    <span>LMCI</span>
-                    <span class="active">AD</span>
-                  </div>
-
-                  <div class="confidence">
-                    <i></i>
-                  </div>
-
-                  <b>
-                    XGBOOST
-                  </b>
-
-                </div>
-
-              </div>
+              </svg>
 
             </div>
 
