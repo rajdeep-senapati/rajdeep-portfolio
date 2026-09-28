@@ -6065,3 +6065,106 @@ html {
     margin-top: 0;
   }
 }
+
+
+/* =========================================================
+   MOBILE HERO — FULL FIRST-VIEW COMPOSITION
+   Give the landing page its own viewport-height canvas:
+   copy at top, enlarged visual centered below, ticker at bottom.
+   ========================================================= */
+
+@media (max-width: 620px) {
+  .hero {
+    height: calc(100svh - 76px - var(--ticker-h));
+    min-height: 0;
+    padding: 20px 16px 0;
+    gap: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    overflow: hidden;
+  }
+
+  .hero-copy {
+    flex: 0 0 auto;
+    padding-top: 0;
+  }
+
+  .hero h1 {
+    font-size: clamp(44px, 12.6vw, 56px);
+    line-height: .9;
+    margin: 11px 0 15px;
+  }
+
+  .hero p {
+    max-width: 340px;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  .hero-buttons {
+    margin-top: 16px;
+  }
+
+  .social-links {
+    margin-top: 12px;
+  }
+
+  /* Let the visual use the remaining first-view space. */
+  .visual {
+    flex: 1 1 auto;
+    min-height: 0;
+    width: calc(100% + 32px);
+    margin-left: -16px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    overflow: visible;
+  }
+
+  .dp-card {
+    width: 100%;
+    max-width: 360px;
+    height: min(100%, 310px);
+    aspect-ratio: auto;
+    margin: 0 auto;
+    overflow: hidden;
+  }
+
+  /* Keep the original red UI element, but make it reach
+     the right edge cleanly instead of floating inward. */
+  .dp-card::before {
+    display: block;
+    width: 45%;
+    right: -8%;
+    top: -5%;
+  }
+
+  /* Preserve the original black lower-right anchor. */
+  .dp-card::after {
+    display: block;
+    width: 48%;
+    right: -10%;
+    bottom: -25%;
+  }
+
+  /* Enlarge and center the profile/orbit composition. */
+  .orbit {
+    width: 70%;
+    left: 15%;
+    top: 14%;
+  }
+
+  .dp {
+    width: 42%;
+    left: 29%;
+    top: 27%;
+  }
+
+  .ticker {
+    width: 100%;
+    height: var(--ticker-h);
+    min-height: var(--ticker-h);
+    margin-top: 0;
+  }
+}
