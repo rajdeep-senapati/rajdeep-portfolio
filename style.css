@@ -7175,3 +7175,283 @@ html {
     box-sizing: border-box !important;
   }
 }
+
+
+/* =========================================================
+   FINAL PHONE SYSTEM — iPHONE 16 REFERENCE
+   One proportional composition for EVERY phone width.
+   Do not add device-specific phone overrides below this block.
+   ========================================================= */
+
+@media (max-width: 620px) {
+  :root {
+    --header-h: 56px;
+    --ticker-h: 38px;
+  }
+
+  html,
+  body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden !important;
+  }
+
+  main {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding-top: 78px !important;
+  }
+
+  /* ---------- HEADER ---------- */
+
+  .site-header,
+  .site-header.is-scrolled {
+    position: fixed !important;
+    top: 10px !important;
+    left: 50% !important;
+    width: calc(100% - 28px) !important;
+    height: var(--header-h) !important;
+    margin: 0 !important;
+    padding: 0 10px 0 14px !important;
+    transform: translateX(-50%) !important;
+    z-index: 1000 !important;
+
+    border: 1px solid rgba(17,16,15,.12) !important;
+    border-radius: 999px !important;
+    border-bottom: 1px solid rgba(17,16,15,.12) !important;
+
+    background: rgba(245,241,232,.78) !important;
+    box-shadow: 0 8px 24px rgba(17,16,15,.08) !important;
+
+    backdrop-filter: blur(18px) saturate(125%) !important;
+    -webkit-backdrop-filter: blur(18px) saturate(125%) !important;
+  }
+
+  .site-header::before,
+  .site-header.is-scrolled::before {
+    inset: 0 !important;
+    border-radius: 999px !important;
+    background: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    opacity: 0 !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .site-header .logo,
+  .site-header.is-scrolled .logo {
+    font-size: 28px !important;
+    line-height: 1 !important;
+    transform: none !important;
+  }
+
+  .site-header .header-ai,
+  .site-header.is-scrolled .header-ai {
+    padding: 8px 11px !important;
+    font-size: 10px !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+    transform: none !important;
+  }
+
+  /* ---------- HERO CANVAS ---------- */
+
+  .hero {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin: 0 !important;
+
+    padding: 12px 6px 0 !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0 !important;
+
+    overflow: visible !important;
+  }
+
+  /* Content keeps the same 16px inset as the iPhone 16 reference. */
+  .hero-copy {
+    width: 100% !important;
+    flex: none !important;
+    padding: 0 10px !important;
+    min-width: 0 !important;
+  }
+
+  .hero h1 {
+    font-size: clamp(44px, 12.2vw, 50px) !important;
+    line-height: .9 !important;
+    letter-spacing: -.07em !important;
+    margin: 10px 0 14px !important;
+  }
+
+  .hero p {
+    max-width: 340px !important;
+    font-size: clamp(13px, 3.56vw, 14px) !important;
+    line-height: 1.4 !important;
+  }
+
+  .hero-buttons {
+    width: 100% !important;
+    display: flex !important;
+    gap: 8px !important;
+    margin-top: 16px !important;
+  }
+
+  .hero-buttons .rect-button {
+    flex: 1 1 0 !important;
+    width: auto !important;
+    min-width: 0 !important;
+    min-height: 46px !important;
+    padding: 12px 13px !important;
+    font-size: clamp(10px, 2.9vw, 11px) !important;
+  }
+
+  .social-links {
+    margin-top: 10px !important;
+    gap: 8px !important;
+  }
+
+  .social-links a {
+    width: 32px !important;
+    height: 32px !important;
+  }
+
+  /* ---------- VISUAL STAGE ----------
+     Height follows PHONE WIDTH, not phone model/height.
+     This is the key rule that keeps every phone proportional.
+  */
+
+  .visual {
+    width: 100% !important;
+    height: clamp(250px, 70vw, 275px) !important;
+    min-height: clamp(250px, 70vw, 275px) !important;
+    max-height: clamp(250px, 70vw, 275px) !important;
+
+    flex: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+
+    display: flex !important;
+    align-items: stretch !important;
+    justify-content: center !important;
+
+    overflow: visible !important;
+  }
+
+  .dp-card {
+    position: relative !important;
+    flex: none !important;
+
+    width: 100% !important;
+    max-width: none !important;
+
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: none !important;
+
+    aspect-ratio: auto !important;
+    margin: 0 !important;
+
+    overflow: hidden !important;
+    isolation: isolate !important;
+    transform: none !important;
+  }
+
+  /* ---------- DECORATIVE CIRCLES ----------
+     Same percentages at every phone width.
+  */
+
+  .dp-card::before {
+    display: block !important;
+    width: 30% !important;
+    height: auto !important;
+    aspect-ratio: 1 / 1 !important;
+
+    right: 3% !important;
+    top: 7% !important;
+    bottom: auto !important;
+
+    border-radius: 50% !important;
+    transform: none !important;
+    z-index: 0 !important;
+  }
+
+  .dp-card::after {
+    display: block !important;
+    width: 30% !important;
+    height: auto !important;
+    aspect-ratio: 1 / 1 !important;
+
+    right: 3% !important;
+    top: auto !important;
+    bottom: -31% !important;
+
+    border-radius: 50% !important;
+    transform: none !important;
+    z-index: 0 !important;
+  }
+
+  /* ---------- ORBIT / PHOTO ---------- */
+
+  .orbit {
+    width: 68% !important;
+    left: 16% !important;
+    top: 10% !important;
+    z-index: 2 !important;
+  }
+
+  .dp {
+    width: 40% !important;
+    left: 30% !important;
+    top: 25% !important;
+    z-index: 5 !important;
+  }
+
+  .dp-card > b {
+    z-index: 8 !important;
+  }
+
+  .tag-one {
+    top: 16% !important;
+    left: 5% !important;
+  }
+
+  .tag-two {
+    right: 3% !important;
+    bottom: 22% !important;
+  }
+
+  .tag-three {
+    left: 6% !important;
+    bottom: 10% !important;
+  }
+
+  /* ---------- TICKER ----------
+     It belongs to the PHONE viewport, not the inner hero padding.
+     Therefore it always touches both physical screen edges.
+  */
+
+  .ticker {
+    position: relative !important;
+    z-index: 10 !important;
+
+    width: 100vw !important;
+    max-width: none !important;
+
+    margin-left: calc(50% - 50vw) !important;
+    margin-right: 0 !important;
+    margin-top: 0 !important;
+
+    height: var(--ticker-h) !important;
+    min-height: var(--ticker-h) !important;
+
+    padding: 0 24px !important;
+    box-sizing: border-box !important;
+  }
+}
