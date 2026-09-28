@@ -6425,3 +6425,23 @@ html {
     margin: 0 !important;
   }
 }
+
+
+/* =========================================================
+   MOBILE HERO — RED CIRCLE FINAL GEOMETRY
+   Keep the red accent as an actual circle. It must be fully
+   visible inside the mobile visual instead of being clipped
+   into a half/flat shape.
+   ========================================================= */
+
+@media (max-width: 620px) {
+  .dp-card::before {
+    width: 38% !important;
+    height: auto !important;
+    aspect-ratio: 1 / 1 !important;
+    right: 3% !important;
+    top: 4% !important;
+    border-radius: 50% !important;
+    transform: none !important;
+  }
+}
