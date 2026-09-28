@@ -69,8 +69,38 @@ function scrollAIChat(force = false) {
   aiChat.scrollTop = aiChat.scrollHeight;
 }
 
+/*
+ * Auto-follow stays on by default. A real user scroll temporarily pauses
+ * it, so the reader can move through the answer without being pulled back
+ * to the bottom. Reaching the bottom automatically resumes follow mode.
+ */
 aiChat?.addEventListener("scroll", () => {
-  aiUserScrolledUp = !isAIChatAtBottom();
+  if (aiUserScrolledUp && isAIChatAtBottom()) {
+    aiUserScrolledUp = false;
+  }
+});
+
+aiChat?.addEventListener("wheel", (event) => {
+  if (event.deltaY < 0) {
+    aiUserScrolledUp = true;
+  }
+});
+
+aiChat?.addEventListener("pointerdown", () => {
+  aiUserScrolledUp = true;
+});
+
+aiChat?.addEventListener("touchmove", () => {
+  aiUserScrolledUp = true;
+}, { passive: true });
+
+aiChat?.addEventListener("keydown", (event) => {
+  if (["ArrowUp", "PageUp", "Home"].includes(event.key)) {
+    aiUserScrolledUp = true;
+  }
+  if (["ArrowDown", "PageDown", "End"].includes(event.key) && isAIChatAtBottom()) {
+    aiUserScrolledUp = false;
+  }
 });
 
 function resumeAIAutoScroll() {
