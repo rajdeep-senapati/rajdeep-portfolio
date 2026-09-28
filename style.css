@@ -6282,9 +6282,9 @@ body.modal-open .site-header {
     max-width: none !important;
     white-space: nowrap !important;
     flex: 0 0 auto !important;
-    font: inherit !important;
+    font-family: inherit !important;
+    font-weight: inherit !important;
     line-height: 1 !important;
-    transform: none !important;
     transform-origin: center center !important;
   }
 
