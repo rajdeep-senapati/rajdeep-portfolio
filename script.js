@@ -210,6 +210,7 @@ function renderInlineMarkdown(text) {
     .replace(/\`([^\`]+)\`/g, "<code>$1</code>");
 }
 
+
 function renderAIText(text) {
   const normalized = normalizeAIText(text.trim());
   if (!normalized) return "";
@@ -218,16 +219,19 @@ function renderAIText(text) {
   const html = [];
   let paragraph = [];
   let listType = null;
+  let inCodeBlock = false;
+  let codeLanguage = "";
+  let codeLines = [];
 
   const flushParagraph = () => {
     if (!paragraph.length) return;
-    html.push(`<p>${paragraph.map(renderInlineMarkdown).join("<br>")}</p>`);
+    html.push("<p>" + paragraph.map(renderInlineMarkdown).join("<br>") + "</p>");
     paragraph = [];
   };
 
   const closeList = () => {
     if (!listType) return;
-    html.push(`</${listType}>`);
+    html.push("</" + listType + ">");
     listType = null;
   };
 
@@ -235,11 +239,51 @@ function renderAIText(text) {
     if (listType === type) return;
     closeList();
     listType = type;
-    html.push(`<${type}>`);
+    html.push("<" + type + ">");
+  };
+
+  const flushCodeBlock = () => {
+    if (!inCodeBlock) return;
+    const languageClass = codeLanguage
+      ? ' class="language-' + escapeHTML(codeLanguage) + '"'
+      : "";
+    html.push(
+      "<pre><code" +
+        languageClass +
+        ">" +
+        escapeHTML(codeLines.join("\n")) +
+        "</code></pre>"
+    );
+    codeLines = [];
+    codeLanguage = "";
+    inCodeBlock = false;
   };
 
   for (let i = 0; i < lines.length; i += 1) {
-    const line = lines[i].trim();
+    const rawLine = lines[i];
+    const line = rawLine.trim();
+    const fence = line.match(
+      new RegExp("^" + String.fromCharCode(96) + "{3,}([\\w+#.-]+)?\\s*$")
+    );
+
+    if (fence) {
+      flushParagraph();
+      closeList();
+
+      if (inCodeBlock) {
+        flushCodeBlock();
+      } else {
+        inCodeBlock = true;
+        codeLanguage = fence[1] || "";
+        codeLines = [];
+      }
+      continue;
+    }
+
+    if (inCodeBlock) {
+      codeLines.push(rawLine);
+      continue;
+    }
 
     if (!line) {
       flushParagraph();
@@ -247,15 +291,27 @@ function renderAIText(text) {
       continue;
     }
 
-    if (/^\|.*\|$/.test(line) && /^\|?\s*:?-{2,}:?\s*(\|\s*:?-{2,}:?\s*)+\|?$/.test(lines[i + 1]?.trim() || "")) {
+    if (
+      /^\|.*\|$/.test(line) &&
+      /^\|?\s*:?-{2,}:?\s*(\|\s*:?-{2,}:?\s*)+\|?$/.test(
+        lines[i + 1]?.trim() || ""
+      )
+    ) {
       flushParagraph();
       closeList();
 
-      const headers = line.replace(/^\||\|$/g, "").split("|").map((cell) => cell.trim());
+      const headers = line
+        .replace(/^\||\|$/g, "")
+        .split("|")
+        .map((cell) => cell.trim());
+
       i += 1;
 
       const rows = [];
-      while (i + 1 < lines.length && /^\|.*\|$/.test(lines[i + 1].trim())) {
+      while (
+        i + 1 < lines.length &&
+        /^\|.*\|$/.test(lines[i + 1].trim())
+      ) {
         i += 1;
         rows.push(
           lines[i]
@@ -266,17 +322,23 @@ function renderAIText(text) {
         );
       }
 
-      html.push(`<div class="ai-table">`);
-      html.push("<div class=\"ai-table-head\">");
+      html.push('<div class="ai-table">');
+      html.push('<div class="ai-table-head">');
       headers.forEach((cell) => {
-        html.push(`<strong>${renderInlineMarkdown(cell)}</strong>`);
+        html.push("<strong>" + renderInlineMarkdown(cell) + "</strong>");
       });
       html.push("</div>");
 
       rows.forEach((row) => {
-        html.push("<div class=\"ai-table-row\">");
+        html.push('<div class="ai-table-row">');
         row.forEach((cell, index) => {
-          html.push(`<span><small>${renderInlineMarkdown(headers[index] || "")}</small>${renderInlineMarkdown(cell)}</span>`);
+          html.push(
+            "<span><small>" +
+              renderInlineMarkdown(headers[index] || "") +
+              "</small>" +
+              renderInlineMarkdown(cell) +
+              "</span>"
+          );
         });
         html.push("</div>");
       });
@@ -285,11 +347,18 @@ function renderAIText(text) {
       continue;
     }
 
-    const heading = line.match(/^#{1,3}\s+(.+)$/);
+    const heading = line.match(/^#{1,6}\s+(.+)$/);
     if (heading) {
       flushParagraph();
       closeList();
-      html.push(`<h4>${renderInlineMarkdown(heading[1])}</h4>`);
+      html.push("<h4>" + renderInlineMarkdown(heading[1]) + "</h4>");
+      continue;
+    }
+
+    if (/^([-*_]){3,}$/.test(line)) {
+      flushParagraph();
+      closeList();
+      html.push("<hr>");
       continue;
     }
 
@@ -297,7 +366,7 @@ function renderAIText(text) {
     if (bullet) {
       flushParagraph();
       openList("ul");
-      html.push(`<li>${renderInlineMarkdown(bullet[1])}</li>`);
+      html.push("<li>" + renderInlineMarkdown(bullet[1]) + "</li>");
       continue;
     }
 
@@ -305,7 +374,7 @@ function renderAIText(text) {
     if (numbered) {
       flushParagraph();
       openList("ol");
-      html.push(`<li>${renderInlineMarkdown(numbered[2])}</li>`);
+      html.push("<li>" + renderInlineMarkdown(numbered[2]) + "</li>");
       continue;
     }
 
@@ -313,11 +382,16 @@ function renderAIText(text) {
     paragraph.push(line);
   }
 
+  if (inCodeBlock) {
+    flushCodeBlock();
+  }
+
   flushParagraph();
   closeList();
 
   return html.join("");
 }
+
 
 
 function getAIStreamSpeed(question, textLength = 0) {
