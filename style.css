@@ -5918,3 +5918,42 @@ html {
     height: auto;
   }
 }
+
+
+/* =========================================================
+   MOBILE LANDING — FINAL VERTICAL FIT
+   Show the complete hero composition and ticker inside the
+   first mobile viewport without changing desktop layout.
+   ========================================================= */
+
+@media (max-width: 620px) {
+  .hero {
+    padding-top: 20px;
+    padding-bottom: 14px;
+    gap: 14px;
+  }
+
+  .hero h1 {
+    font-size: clamp(46px, 12.8vw, 56px);
+    margin-top: 12px;
+    margin-bottom: 16px;
+  }
+
+  .hero p {
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  .hero-buttons {
+    margin-top: 17px;
+  }
+
+  .social-links {
+    margin-top: 13px;
+  }
+
+  .dp-card {
+    width: min(78vw, 290px);
+    aspect-ratio: 1.5 / 1;
+  }
+}
