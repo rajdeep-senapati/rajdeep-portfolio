@@ -45,7 +45,7 @@ GROUNDING
 - Do not turn research work into claims of clinical deployment or diagnosis.
 - Do not treat the Alzheimer's project as a clinical product.
 - Interview questions such as weaknesses, why hire me, what I am learning, why GenAI, what I enjoy, project motivation and career direction should be answered from the interview profile when available.
-- If a question asks for something not covered by either layer, say naturally that I have not documented that yet and, when useful, redirect to a related documented area.
+- If a question asks for something not covered by either layer, say naturally that I have not documented that yet. Do not offer to answer it as a general-purpose tutor or coding assistant.
 - Do not claim experience with a language, framework or tool unless it appears in the authoritative knowledge. For example, Java is not currently documented as a skill.
 - Never create a recommendation, course, achievement, weakness, future plan or personal trait and present it as Rajdeep's own unless it exists in the knowledge.
 - When the user asks a short follow-up such as "why?", use recent conversation context before treating it as a standalone question.
@@ -132,7 +132,7 @@ def is_general_coding_request(question: str) -> bool:
         "explain", "walk me through", "how did you", "how do you",
         "why did you", "why do you", "show me how", "what does this code",
         "how does this code", "explain this code", "explain the code",
-        "with code", "using code",
+        "with code", "using code", "code snippet", "example code",
     ]
 
     generation_signals = [
@@ -142,7 +142,7 @@ def is_general_coding_request(question: str) -> bool:
         "python code", "javascript code", "java code", "c++ code",
         "sql query", "write a query", "solve this", "solve the problem",
         "leetcode", "hackerrank", "implement this", "build me",
-        "create an app", "web scraper", "scrape this", "eda code", "code snippet", "snippet", "example code", "with a code snippet",
+        "create an app", "web scraper", "scrape this", "eda code",
         "starting my eda", "exploratory data analysis code",
         "debug this code",
     ]
@@ -152,9 +152,6 @@ def is_general_coding_request(question: str) -> bool:
         or any(signal in q for signal in generation_signals)
     )
 
-    # Every code request must be tied to Rajdeep's documented project context.
-    # This allows project-code explanations/reproduction while blocking generic
-    # examples and reusable code generation.
     if asks_for_code:
         return not has_project_context
 
@@ -165,40 +162,40 @@ def is_general_coding_request(question: str) -> bool:
             q,
         )
     )
-
     return has_code_word and has_generation_verb and not has_project_context
 
 
-async def get_project_code_context(question: str) -> str:
-    q = question.lower()
-    sources = []
-    if "eda" in q or "diwali" in q:
-        sources.append(("Diwali Sales", "rajdeep-senapati/Diwali_Sales", "Diwali_Sales_Analysis.ipynb"))
-    if "stocksense" in q or "stock sense" in q:
-        sources.append(("StockSense", "rajdeep-senapati/stocksense", "app.py"))
-    if "jobshield" in q:
-        sources.append(("JobShield", "rajdeep-senapati/JobShield", "app.py"))
-    if not sources:
-        return ""
-    chunks = []
-    async with httpx.AsyncClient(timeout=httpx.Timeout(12.0, connect=5.0)) as client:
-        for project, repo, path in sources[:2]:
-            url = "https://raw.githubusercontent.com/" + repo + "/main/" + quote(path)
-            try:
-                response = await client.get(url)
-                response.raise_for_status()
-                source = response.text
-                if path.endswith(".ipynb"):
-                    notebook = json.loads(source)
-                    source = "\n\n".join(
-                        "".join(cell.get("source", []))
-                        for cell in notebook.get("cells", [])
-                        if cell.get("cell_type") == "code"
-                    )
-                chunks.append(f"PROJECT: {project}\nFILE: {path}\nSOURCE:\n{source[:14000]}")
-            except Exception as exc:
-                logger.warning("Project source retrieval failed for %s: %s", project, exc)
-    return "\n\n".join(chunks)
+def is_out_of_scope_general_request(question: str) -> bool:
+    q = question.lower().strip()
+
+    # Generic algorithm/interview/tutorial requests are not portfolio questions.
+    generic_topics = [
+        "three sum", "two sum", "binary search", "linked list",
+        "sorting algorithm", "data structure", "leetcode", "hackerrank",
+        "java", "javascript", "c++", "c#", "spring boot",
+        "learn java", "learn python", "learn javascript",
+        "coding tutorial", "coding roadmap", "programming roadmap",
+        "interview coding", "dsa", "competitive programming",
+    ]
+    learning_signals = [
+        "teach me", "learn", "tutorial", "roadmap", "how to become",
+        "how can i get hired", "prepare me", "course",
+    ]
+
+    if any(topic in q for topic in generic_topics):
+        return True
+
+    if any(signal in q for signal in learning_signals) and not any(
+        term in q for term in [
+            "rajdeep", "jobshield", "stocksense", "diwali",
+            "route optimizer", "exam seating", "alzheimer",
+        ]
+    ):
+        return True
+
+    return False
+
+
 
 
 async def get_project_code_context(question: str) -> str:
@@ -431,6 +428,46 @@ async def chat(request: Request):
             content={"error": "Message is too long."},
         )
 
+    # Keep generic coding/learning requests outside the portfolio assistant.
+    history = clean_history(
+        body.get("messages") if isinstance(body, dict) else None
+    )
+
+    previous_scope_refusal = any(
+        item.get("role") == "assistant"
+        and "portfolio ai" in item.get("content", "").lower()
+        and ("general-purpose" in item.get("content", "").lower()
+             or "documented projects" in item.get("content", "").lower())
+        for item in history[-3:]
+    )
+    short_follow_up = message.lower() in {
+        "yes", "yeah", "yep", "sure", "okay", "ok", "go ahead",
+        "do it", "please do", "continue",
+    }
+
+    if is_out_of_scope_general_request(message) or (
+        short_follow_up and previous_scope_refusal
+    ):
+        refusal = (
+            "I’m Rajdeep’s portfolio AI, so I stay focused on Rajdeep’s "
+            "work, projects, skills and experience. I can explain documented "
+            "project concepts and code, but I’m not a general coding tutor."
+        )
+
+        async def scoped_event_stream() -> AsyncIterator[str]:
+            yield sse({"text": refusal})
+            yield sse({"done": True, "model": "scope-guard"})
+
+        return StreamingResponse(
+            scoped_event_stream(),
+            media_type="text/event-stream",
+            headers={
+                "Cache-Control": "no-cache, no-transform",
+                "Connection": "keep-alive",
+                "X-Accel-Buffering": "no",
+            },
+        )
+
     code_context = ""
     if is_general_coding_request(message):
         code_context = await get_project_code_context(message)
@@ -454,10 +491,6 @@ async def chat(request: Request):
                     "X-Accel-Buffering": "no",
                 },
             )
-
-    history = clean_history(
-        body.get("messages") if isinstance(body, dict) else None
-    )
 
     messages = [
         {"role": "system", "content": SYSTEM_PROMPT},
