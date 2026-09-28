@@ -862,6 +862,70 @@ document.querySelectorAll(".project-card[data-project]").forEach((card) => {
    HEADER STATE + PAGE/SCROLL MOTION
    ========================================================= */
 
+/* =========================================================
+   RESPONSIVE MOBILE TICKER
+   Measure the real rendered text and fit it to the actual
+   phone width. This prevents the last item from being clipped
+   on narrow devices while preserving the same ticker content.
+   ========================================================= */
+
+const mobileTicker = document.querySelector(".ticker");
+const mobileTickerContent = mobileTicker?.querySelector(".ticker-content");
+
+function fitMobileTicker() {
+  if (!mobileTicker || !mobileTickerContent) return;
+
+  const isMobile = window.matchMedia("(max-width: 620px)").matches;
+
+  mobileTickerContent.style.transform = "none";
+
+  if (!isMobile) {
+    mobileTickerContent.style.fontSize = "";
+    return;
+  }
+
+  const baseSize = 10;
+  const horizontalPadding = 16;
+  const availableWidth = Math.max(
+    1,
+    mobileTicker.clientWidth - horizontalPadding,
+  );
+
+  mobileTickerContent.style.fontSize = `${baseSize}px`;
+
+  const naturalWidth =
+    mobileTickerContent.getBoundingClientRect().width;
+
+  if (naturalWidth <= availableWidth) return;
+
+  const fittedSize = Math.max(
+    6.2,
+    baseSize * (availableWidth / naturalWidth),
+  );
+
+  mobileTickerContent.style.fontSize = `${fittedSize}px`;
+
+  /* Extreme-width fallback: never clip the final item. */
+  const fittedWidth =
+    mobileTickerContent.getBoundingClientRect().width;
+
+  if (fittedWidth > availableWidth) {
+    mobileTickerContent.style.transform =
+      `scaleX(${availableWidth / fittedWidth})`;
+  }
+}
+
+const tickerResizeObserver =
+  "ResizeObserver" in window
+    ? new ResizeObserver(fitMobileTicker)
+    : null;
+
+tickerResizeObserver?.observe(mobileTicker);
+window.addEventListener("resize", fitMobileTicker, { passive: true });
+window.addEventListener("orientationchange", fitMobileTicker);
+window.addEventListener("load", fitMobileTicker);
+fitMobileTicker();
+
 const siteHeader = document.querySelector(".site-header");
 
 function updateHeaderState() {
