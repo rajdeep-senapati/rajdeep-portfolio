@@ -328,7 +328,7 @@ async def stream_model(
         "model": model,
         "messages": messages,
         "stream": True,
-        "max_completion_tokens": 600,
+        "max_completion_tokens": 1600,
         **model_config(model),
     }
 
