@@ -6465,3 +6465,47 @@ html {
     transform: none !important;
   }
 }
+
+
+/* =========================================================
+   MOBILE FINAL PASS — HEADER + BLACK ACCENT
+   ========================================================= */
+
+@media (max-width: 620px) {
+  /* Keep navigation permanently visible while the page scrolls. */
+  .site-header,
+  .site-header.is-scrolled {
+    position: fixed !important;
+    top: 0 !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    z-index: 1000 !important;
+    width: calc(100% - 32px) !important;
+    height: 76px !important;
+    margin: 0 !important;
+  }
+
+  /* Reserve the header's space so the landing content does not sit
+     underneath the fixed navigation. */
+  main {
+    padding-top: 76px !important;
+  }
+
+  /* Keep the scrolled glass treatment, but don't let it change
+     position or disappear during scrolling. */
+  .site-header.is-scrolled::before {
+    inset: 7px 0 !important;
+  }
+
+  /* The black accent is intentionally a small corner cut-out.
+     It should meet the ticker boundary without becoming a large
+     semicircle competing with the portrait. */
+  .dp-card::after {
+    width: 25% !important;
+    aspect-ratio: 1 / 1 !important;
+    right: -4% !important;
+    bottom: -16% !important;
+    border-radius: 50% !important;
+    transform: none !important;
+  }
+}
