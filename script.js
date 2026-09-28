@@ -133,20 +133,128 @@ function escapeHTML(text) {
     .replace(/>/g, "&gt;");
 }
 
-function renderAIText(text) {
-  const escaped = escapeHTML(text.trim());
+function normalizeAIText(text) {
+  return text
+    .replace(/<br\s*\/?>/gi, "\n")
+    .replace(/<\/?(?:p|div|span|section)[^>]*>/gi, "")
+    .replace(/\r\n/g, "\n")
+    .replace(/\r/g, "\n");
+}
 
-  return escaped
-    .replace(/^### (.+)$/gm, "<h4>$1</h4>")
-    .replace(/^## (.+)$/gm, "<h3>$1</h3>")
-    .replace(/^# (.+)$/gm, "<h3>$1</h3>")
-    .replace(/^\*\* (.+)$/gm, "<strong>$1</strong>")
-    .replace(/^[-*] (.+)$/gm, "• $1")
-    .replace(/^(\d+)\. (.+)$/gm, "$1. $2")
+function renderInlineMarkdown(text) {
+  return escapeHTML(text)
     .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
     .replace(/\*([^*]+)\*/g, "<em>$1</em>")
-    .replace(/\n{2,}/g, "<br><br>")
-    .replace(/\n/g, "<br>");
+    .replace(/\`([^\`]+)\`/g, "<code>$1</code>");
+}
+
+function renderAIText(text) {
+  const normalized = normalizeAIText(text.trim());
+  if (!normalized) return "";
+
+  const lines = normalized.split("\n");
+  const html = [];
+  let paragraph = [];
+  let listType = null;
+
+  const flushParagraph = () => {
+    if (!paragraph.length) return;
+    html.push(`<p>${paragraph.map(renderInlineMarkdown).join("<br>")}</p>`);
+    paragraph = [];
+  };
+
+  const closeList = () => {
+    if (!listType) return;
+    html.push(`</${listType}>`);
+    listType = null;
+  };
+
+  const openList = (type) => {
+    if (listType === type) return;
+    closeList();
+    listType = type;
+    html.push(`<${type}>`);
+  };
+
+  for (let i = 0; i < lines.length; i += 1) {
+    const line = lines[i].trim();
+
+    if (!line) {
+      flushParagraph();
+      closeList();
+      continue;
+    }
+
+    if (/^\|.*\|$/.test(line) && /^\|?\s*:?-{2,}:?\s*(\|\s*:?-{2,}:?\s*)+\|?$/.test(lines[i + 1]?.trim() || "")) {
+      flushParagraph();
+      closeList();
+
+      const headers = line.replace(/^\||\|$/g, "").split("|").map((cell) => cell.trim());
+      i += 1;
+
+      const rows = [];
+      while (i + 1 < lines.length && /^\|.*\|$/.test(lines[i + 1].trim())) {
+        i += 1;
+        rows.push(
+          lines[i]
+            .trim()
+            .replace(/^\||\|$/g, "")
+            .split("|")
+            .map((cell) => cell.trim())
+        );
+      }
+
+      html.push(`<div class="ai-table">`);
+      html.push("<div class=\"ai-table-head\">");
+      headers.forEach((cell) => {
+        html.push(`<strong>${renderInlineMarkdown(cell)}</strong>`);
+      });
+      html.push("</div>");
+
+      rows.forEach((row) => {
+        html.push("<div class=\"ai-table-row\">");
+        row.forEach((cell, index) => {
+          html.push(`<span><small>${renderInlineMarkdown(headers[index] || "")}</small>${renderInlineMarkdown(cell)}</span>`);
+        });
+        html.push("</div>");
+      });
+
+      html.push("</div>");
+      continue;
+    }
+
+    const heading = line.match(/^#{1,3}\s+(.+)$/);
+    if (heading) {
+      flushParagraph();
+      closeList();
+      html.push(`<h4>${renderInlineMarkdown(heading[1])}</h4>`);
+      continue;
+    }
+
+    const bullet = line.match(/^[-*•]\s+(.+)$/);
+    if (bullet) {
+      flushParagraph();
+      openList("ul");
+      html.push(`<li>${renderInlineMarkdown(bullet[1])}</li>`);
+      continue;
+    }
+
+    const numbered = line.match(/^(\d+)\.\s+(.+)$/);
+    if (numbered) {
+      flushParagraph();
+      openList("ol");
+      html.push(`<li>${renderInlineMarkdown(numbered[2])}</li>`);
+      continue;
+    }
+
+    closeList();
+    paragraph.push(line);
+  }
+
+  flushParagraph();
+  closeList();
+
+  return html.join("");
 }
 
 
