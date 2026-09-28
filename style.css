@@ -6827,7 +6827,7 @@ html {
   .dp-card::before {
     width: 24% !important;
     right: -3% !important;
-    top: 16% !important;
+    top: 14% !important;
     bottom: auto !important;
     aspect-ratio: 1 / 1 !important;
     border-radius: 50% !important;
@@ -6836,7 +6836,7 @@ html {
   .dp-card::after {
     width: 24% !important;
     right: -3% !important;
-    bottom: -2% !important;
+    bottom: 3% !important;
     top: auto !important;
     aspect-ratio: 1 / 1 !important;
     border-radius: 50% !important;
@@ -6847,3 +6847,32 @@ html {
     min-height: 40px !important;
   }
 }
+
+/* =========================================================
+   LANDSCAPE TABLET — iPAD PRO
+   Keep the desktop two-column composition, but use the same
+   restrained corner accents as portrait tablet. This prevents
+   the desktop-sized red accent from dominating the shorter
+   tablet viewport.
+   ========================================================= */
+
+@media (min-width: 1101px) and (max-width: 1400px) and (min-height: 900px) and (orientation: landscape) {
+  .dp-card::before {
+    width: 26% !important;
+    right: -3% !important;
+    top: 7% !important;
+    bottom: auto !important;
+    aspect-ratio: 1 / 1 !important;
+    border-radius: 50% !important;
+  }
+
+  .dp-card::after {
+    width: 26% !important;
+    right: -3% !important;
+    bottom: 2% !important;
+    top: auto !important;
+    aspect-ratio: 1 / 1 !important;
+    border-radius: 50% !important;
+  }
+}
+
