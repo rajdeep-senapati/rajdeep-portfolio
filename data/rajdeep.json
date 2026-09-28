@@ -168,5 +168,31 @@
       "Do not invent additional personal traits, weaknesses, courses, achievements or future plans beyond this interview profile.",
       "For follow-up questions, use the conversation context and answer naturally in first person."
     ]
+  },
+  "portfolio_tech_stack": {
+    "frontend": [
+      "HTML",
+      "CSS",
+      "Vanilla JavaScript"
+    ],
+    "backend": [
+      "Python",
+      "FastAPI"
+    ],
+    "ai": [
+      "Groq",
+      "GPT-OSS 20B",
+      "GPT-OSS 120B",
+      "Qwen fallback"
+    ],
+    "knowledge": [
+      "Structured JSON knowledge base"
+    ],
+    "streaming": [
+      "Server-Sent Events (SSE)"
+    ],
+    "deployment": [
+      "Vercel"
+    ]
   }
 }
