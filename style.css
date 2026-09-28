@@ -7011,3 +7011,46 @@ html {
     margin: 0 !important;
   }
 }
+
+
+/* =========================================================
+   PHONE HEADER — COMPACT, PROPORTIONAL
+   ========================================================= */
+@media (max-width: 620px) {
+  .site-header,
+  .site-header.is-scrolled {
+    top: 10px !important;
+    width: calc(100% - 28px) !important;
+    height: 56px !important;
+    border-bottom: 0 !important;
+    border: 1px solid rgba(17,16,15,.12) !important;
+    border-radius: 999px !important;
+    padding: 0 10px 0 14px !important;
+    box-shadow: 0 8px 24px rgba(17,16,15,.08) !important;
+  }
+
+  .site-header .logo,
+  .site-header.is-scrolled .logo {
+    font-size: 28px !important;
+    line-height: 1 !important;
+    transform: none !important;
+  }
+
+  .site-header .header-ai,
+  .site-header.is-scrolled .header-ai {
+    padding: 8px 11px !important;
+    font-size: 10px !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+    transform: none !important;
+  }
+
+  .site-header .header-ai::before {
+    width: 5px !important;
+    height: 5px !important;
+  }
+
+  main {
+    padding-top: 78px !important;
+  }
+}
