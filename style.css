@@ -5751,43 +5751,62 @@ body.modal-open {
 
 
 /* =========================================================
-   MOBILE STABILITY FIX — 393px / iPhone
-   - Prevent horizontal clipping from oversized children.
-   - Keep anchored sections clear of the sticky header.
-   - Preserve the existing desktop/mobile visual design.
+   MOBILE BASE — ONE SOURCE OF TRUTH
+   Keep approved copy/header behavior; only establish the
+   mobile coordinate system once.
    ========================================================= */
+@media (max-width: 620px) {
+  :root {
+    --header-h: 56px;
+    --ticker-h: 38px;
+  }
 
-html {
-  scroll-padding-top: 92px;
-}
+  html {
+    scroll-padding-top: 92px;
+    width: 100%;
+    max-width: 100%;
+    scrollbar-width: none;
+  }
 
-@media (max-width: 850px) {
-  html,
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
+  }
+
   body {
     width: 100%;
     max-width: 100%;
-    overflow-x: hidden;
+    overflow-x: clip;
+    scrollbar-width: none;
   }
 
-  .site-header {
-    max-width: calc(100% - 32px);
+  main {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding-top: 78px !important;
   }
 
   .hero {
-    width: 100%;
-    max-width: 100%;
-    overflow-x: clip;
-  }
-
-  .hero-copy,
-  .visual,
-  .dp-card {
-    min-width: 0;
-    max-width: 100%;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 12px 16px 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0 !important;
+    overflow: visible !important;
   }
 
   .hero-copy {
-    width: 100%;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    flex: none !important;
+    padding: 0 !important;
     overflow-wrap: break-word;
   }
 
@@ -5798,18 +5817,94 @@ html {
     overflow-wrap: anywhere;
   }
 
-  .hero h1,
-  .hero p {
-    max-width: 100%;
-  }
-
   .hero h1 {
+    max-width: 100%;
     overflow-wrap: anywhere;
+    font-size: clamp(44px, 12.2vw, 50px) !important;
+    line-height: .9 !important;
+    letter-spacing: -.07em !important;
+    margin: 10px 0 14px !important;
   }
 
-  .section,
-  .profile-sections {
-    max-width: 100%;
+  .hero p {
+    max-width: 340px !important;
+    font-size: clamp(13px, 3.56vw, 14px) !important;
+    line-height: 1.4 !important;
+  }
+
+  .hero-buttons {
+    width: 100% !important;
+    display: flex !important;
+    gap: 8px !important;
+    margin-top: 16px !important;
+  }
+
+  .hero-buttons .rect-button {
+    flex: 1 1 0 !important;
+    width: auto !important;
+    min-width: 0 !important;
+    min-height: 46px !important;
+    padding: 12px 13px !important;
+    font-size: clamp(10px, 2.9vw, 11px) !important;
+  }
+
+  .social-links {
+    margin-top: 10px !important;
+    gap: 8px !important;
+  }
+
+  .social-links a {
+    width: 32px !important;
+    height: 32px !important;
+  }
+
+  /* Header: preserve the approved compact glass pill. */
+  .site-header,
+  .site-header.is-scrolled {
+    position: fixed !important;
+    top: 10px !important;
+    left: 50% !important;
+    width: calc(100% - 28px) !important;
+    height: var(--header-h) !important;
+    margin: 0 !important;
+    padding: 0 10px 0 14px !important;
+    transform: translateX(-50%) !important;
+    z-index: 1000 !important;
+    border: 1px solid rgba(17,16,15,.12) !important;
+    border-radius: 999px !important;
+    border-bottom: 1px solid rgba(17,16,15,.12) !important;
+    background: rgba(245,241,232,.78) !important;
+    box-shadow: 0 8px 24px rgba(17,16,15,.08) !important;
+    backdrop-filter: blur(18px) saturate(125%) !important;
+    -webkit-backdrop-filter: blur(18px) saturate(125%) !important;
+  }
+
+  .site-header::before,
+  .site-header.is-scrolled::before {
+    inset: 0 !important;
+    border-radius: 999px !important;
+    background: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    opacity: 0 !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .site-header .logo,
+  .site-header.is-scrolled .logo {
+    font-size: 28px !important;
+    line-height: 1 !important;
+    transform: none !important;
+  }
+
+  .site-header .header-ai,
+  .site-header.is-scrolled .header-ai {
+    padding: 8px 11px !important;
+    font-size: 10px !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+    transform: none !important;
   }
 
   #top,
@@ -5823,642 +5918,6 @@ html {
     scroll-margin-top: 92px;
   }
 }
-
-@media (max-width: 620px) {
-  .hero {
-    padding-left: 16px;
-    padding-right: 16px;
-  }
-
-  .hero-copy {
-    width: 100%;
-  }
-
-  .visual {
-    width: 100%;
-  }
-
-  .dp-card {
-    width: 100%;
-  }
-}
-
-
-/* =========================================================
-   MOBILE HERO — TIGHTER FIRST VIEW
-   Keep the composition intact while reducing its vertical footprint.
-   ========================================================= */
-
-@media (max-width: 620px) {
-  .hero {
-    padding-bottom: 32px;
-  }
-
-  .dp-card {
-    aspect-ratio: 1.18 / 1;
-  }
-}
-
-
-/* =========================================================
-   MOBILE LANDING — FIRST-VIEW BALANCE
-   Keep the hero composition, but make the landing screen feel
-   like a landing screen instead of a long stacked section.
-   ========================================================= */
-
-@media (max-width: 620px) {
-  .hero {
-    padding: 24px 16px 22px;
-    gap: 20px;
-  }
-
-  .hero h1 {
-    font-size: clamp(48px, 13.2vw, 58px);
-    line-height: .9;
-    margin: 14px 0 18px;
-  }
-
-  .hero p {
-    font-size: 15px;
-    line-height: 1.45;
-    max-width: 340px;
-  }
-
-  .hero-buttons {
-    flex-direction: row;
-    gap: 8px;
-    margin-top: 20px;
-  }
-
-  .rect-button {
-    width: 168px;
-    min-height: 46px;
-    padding: 12px 13px;
-    gap: 10px;
-    font-size: 11px;
-  }
-
-  .social-links {
-    margin-top: 16px;
-    gap: 9px;
-  }
-
-  .social-links a {
-    width: 32px;
-    height: 32px;
-  }
-
-  .visual {
-    justify-content: center;
-  }
-
-  .dp-card {
-    width: min(88vw, 350px);
-    aspect-ratio: 1.35 / 1;
-    height: auto;
-  }
-}
-
-
-/* =========================================================
-   MOBILE LANDING — FINAL VERTICAL FIT
-   Show the complete hero composition and ticker inside the
-   first mobile viewport without changing desktop layout.
-   ========================================================= */
-
-@media (max-width: 620px) {
-  .hero {
-    padding-top: 20px;
-    padding-bottom: 14px;
-    gap: 14px;
-  }
-
-  .hero h1 {
-    font-size: clamp(46px, 12.8vw, 56px);
-    margin-top: 12px;
-    margin-bottom: 16px;
-  }
-
-  .hero p {
-    font-size: 14px;
-    line-height: 1.4;
-  }
-
-  .hero-buttons {
-    margin-top: 17px;
-  }
-
-  .social-links {
-    margin-top: 13px;
-  }
-
-  .dp-card {
-    width: min(78vw, 290px);
-    aspect-ratio: 1.5 / 1;
-  }
-}
-
-
-/* =========================================================
-   MOBILE LANDING — ORBIT / TICKER ALIGNMENT
-   Make the background circles feel physically connected to
-   the visual frame and the ticker.
-   ========================================================= */
-
-@media (max-width: 620px) {
-  .hero {
-    padding-bottom: 0;
-  }
-
-  .dp-card {
-    margin-bottom: 0;
-  }
-
-  /* Red circle: reveal more of the curve instead of clipping
-     a large flat section against the top edge. */
-  .dp-card::before {
-    width: 40%;
-    right: -7%;
-    top: -9%;
-  }
-
-  /* Black circle: bring its lower edge into the ticker boundary
-     so there is no cream gap between the two elements. */
-  .dp-card::after {
-    width: 44%;
-    right: -8%;
-    bottom: -18%;
-  }
-}
-
-
-/* =========================================================
-   MOBILE LANDING — CLEANER COMPOSITION
-   The red corner circle competes with the profile/orbit system
-   at narrow widths, so remove it on mobile. Keep the black
-   anchor shape flush with the ticker.
-   ========================================================= */
-
-@media (max-width: 620px) {
-  .dp-card::before {
-    display: none;
-  }
-
-  .dp-card::after {
-    display: block;
-    width: 46%;
-    right: -10%;
-    bottom: -28%;
-  }
-
-  .dp-card {
-    aspect-ratio: 1.5 / 1;
-  }
-
-  .visual {
-    margin-bottom: 0;
-  }
-
-  .ticker {
-    margin-top: 0;
-  }
-}
-
-
-/* =========================================================
-   MOBILE LANDING — RESTORE ORIGINAL VISUAL LANGUAGE
-   Keep the red/black corner shapes from the desktop composition,
-   but position them cleanly inside the smaller mobile visual.
-   ========================================================= */
-
-@media (max-width: 620px) {
-  .dp-card {
-    width: min(78vw, 290px);
-    aspect-ratio: 1.5 / 1;
-    margin-bottom: 0;
-  }
-
-  /* Restore the signature red corner shape, but keep its full
-     curve visible instead of cutting it at the card's top edge. */
-  .dp-card::before {
-    display: block;
-    width: 43%;
-    right: -9%;
-    top: 1%;
-  }
-
-  /* Keep the black shape anchored to the lower-right edge so
-     the visual ends directly where the ticker begins. */
-  .dp-card::after {
-    display: block;
-    width: 47%;
-    right: -13%;
-    bottom: -29%;
-  }
-
-  .visual {
-    margin-bottom: 0;
-    padding-bottom: 0;
-  }
-
-  .ticker {
-    margin-top: 0;
-  }
-}
-
-
-/* =========================================================
-   MOBILE HERO — FULL FIRST-VIEW COMPOSITION
-   Give the landing page its own viewport-height canvas:
-   copy at top, enlarged visual centered below, ticker at bottom.
-   ========================================================= */
-
-@media (max-width: 620px) {
-  .hero {
-    height: calc(100svh - 76px - var(--ticker-h));
-    min-height: 0;
-    padding: 20px 16px 0;
-    gap: 8px;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    overflow: hidden;
-  }
-
-  .hero-copy {
-    flex: 0 0 auto;
-    padding-top: 0;
-  }
-
-  .hero h1 {
-    font-size: clamp(44px, 12.6vw, 56px);
-    line-height: .9;
-    margin: 11px 0 15px;
-  }
-
-  .hero p {
-    max-width: 340px;
-    font-size: 14px;
-    line-height: 1.4;
-  }
-
-  .hero-buttons {
-    margin-top: 16px;
-  }
-
-  .social-links {
-    margin-top: 12px;
-  }
-
-  /* Let the visual use the remaining first-view space. */
-  .visual {
-    flex: 1 1 auto;
-    min-height: 0;
-    width: calc(100% + 32px);
-    margin-left: -16px;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    overflow: visible;
-  }
-
-  .dp-card {
-    width: 100%;
-    max-width: 360px;
-    height: min(100%, 310px);
-    aspect-ratio: auto;
-    margin: 0 auto;
-    overflow: hidden;
-  }
-
-  /* Keep the original red UI element, but make it reach
-     the right edge cleanly instead of floating inward. */
-  .dp-card::before {
-    display: block;
-    width: 45%;
-    right: -8%;
-    top: -5%;
-  }
-
-  /* Preserve the original black lower-right anchor. */
-  .dp-card::after {
-    display: block;
-    width: 48%;
-    right: -10%;
-    bottom: -25%;
-  }
-
-  /* Enlarge and center the profile/orbit composition. */
-  .orbit {
-    width: 70%;
-    left: 15%;
-    top: 14%;
-  }
-
-  .dp {
-    width: 42%;
-    left: 29%;
-    top: 27%;
-  }
-
-  .ticker {
-    width: 100%;
-    height: var(--ticker-h);
-    min-height: var(--ticker-h);
-    margin-top: 0;
-  }
-}
-
-
-/* =========================================================
-   MOBILE HERO — FINAL COMPACT LANDING COMPOSITION
-   Keep the full hero + ticker in the first viewport without
-   sacrificing the original red/black visual language.
-   ========================================================= */
-
-@media (max-width: 620px) {
-  .hero {
-    height: calc(100svh - 76px - var(--ticker-h));
-    min-height: 0;
-    padding: 20px 16px 0;
-    gap: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    overflow: hidden;
-  }
-
-  .hero-copy {
-    flex: 0 0 auto;
-    padding-top: 0;
-  }
-
-  .hero h1 {
-    font-size: clamp(44px, 12.4vw, 55px);
-    line-height: .9;
-    margin: 11px 0 14px;
-  }
-
-  .hero p {
-    max-width: 340px;
-    font-size: 14px;
-    line-height: 1.38;
-  }
-
-  .hero-buttons {
-    margin-top: 15px;
-  }
-
-  .social-links {
-    margin-top: 11px;
-  }
-
-  /* A controlled visual height prevents the orbit from pushing
-     the ticker below the first viewport. */
-  .visual {
-    flex: 0 0 245px;
-    width: calc(100% + 32px);
-    height: 245px;
-    margin: 0 -16px;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    overflow: visible;
-  }
-
-  .dp-card {
-    width: min(100%, 360px);
-    height: 245px;
-    aspect-ratio: auto;
-    margin: 0 auto;
-    overflow: hidden;
-  }
-
-  /* Original red UI circle: large, clean, and flush to right. */
-  .dp-card::before {
-    display: block;
-    width: 45%;
-    right: -8%;
-    top: -10%;
-  }
-
-  /* Original black anchor: its bottom edge meets the ticker. */
-  .dp-card::after {
-    display: block;
-    width: 46%;
-    right: -9%;
-    bottom: -31%;
-  }
-
-  .orbit {
-    width: 70%;
-    left: 15%;
-    top: 12%;
-  }
-
-  .dp {
-    width: 43%;
-    left: 28.5%;
-    top: 25%;
-  }
-
-  .ticker {
-    width: 100%;
-    height: var(--ticker-h);
-    min-height: var(--ticker-h);
-    margin: 0;
-  }
-}
-
-
-/* =========================================================
-   PHONE — ONE REFERENCE COMPOSITION
-   One mobile system for every phone width.
-   The iPhone SE composition is the reference; dimensions scale
-   horizontally, while the visual stage keeps a stable height.
-   ========================================================= */
-
-@media (max-width: 620px) {
-  :root {
-    --header-h: 76px;
-    --ticker-h: 38px;
-  }
-
-  .site-header,
-  .site-header.is-scrolled {
-    position: fixed !important;
-    top: 0 !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    width: calc(100% - 32px) !important;
-    height: var(--header-h) !important;
-    margin: 0 !important;
-    z-index: 1000 !important;
-  }
-
-  main {
-    padding-top: var(--header-h) !important;
-  }
-
-  .hero {
-    width: 100% !important;
-    height: auto !important;
-    min-height: 0 !important;
-    max-height: none !important;
-    padding: 18px 16px 0 !important;
-    margin: 0 !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: stretch !important;
-    gap: 0 !important;
-    overflow: visible !important;
-  }
-
-  .hero-copy {
-    flex: none !important;
-    width: 100% !important;
-    padding: 0 !important;
-  }
-
-  .hero h1 {
-    font-size: clamp(45px, 12.7vw, 52px) !important;
-    line-height: .89 !important;
-    letter-spacing: -.07em !important;
-    margin: 11px 0 14px !important;
-  }
-
-  .hero p {
-    max-width: 340px !important;
-    font-size: 14px !important;
-    line-height: 1.4 !important;
-  }
-
-  .hero-buttons {
-    width: 100% !important;
-    margin-top: 16px !important;
-    gap: 8px !important;
-  }
-
-  .hero-buttons .rect-button {
-    flex: 1 1 0 !important;
-    width: auto !important;
-    min-width: 0 !important;
-    min-height: 46px !important;
-    padding: 12px 13px !important;
-    font-size: 11px !important;
-  }
-
-  .social-links {
-    margin-top: 12px !important;
-    gap: 9px !important;
-  }
-
-  .social-links a {
-    width: 32px !important;
-    height: 32px !important;
-  }
-
-  /* Fixed visual stage: this prevents taller phones from pushing
-     the composition halfway down the screen. */
-  .visual {
-    flex: none !important;
-    width: calc(100% + 32px) !important;
-    height: 250px !important;
-    min-height: 250px !important;
-    max-height: 250px !important;
-    margin: 0 -16px !important;
-    padding: 0 !important;
-    display: flex !important;
-    align-items: stretch !important;
-    justify-content: center !important;
-    overflow: visible !important;
-  }
-
-  .dp-card {
-    flex: none !important;
-    width: min(100%, 360px) !important;
-    height: 250px !important;
-    min-height: 250px !important;
-    max-height: 250px !important;
-    aspect-ratio: auto !important;
-    margin: 0 auto !important;
-    overflow: hidden !important;
-    isolation: isolate !important;
-    transform: none !important;
-  }
-
-  /* RED: a real circle, fully readable on every phone. */
-  .dp-card::before {
-    display: block !important;
-    width: 38% !important;
-    height: auto !important;
-    aspect-ratio: 1 / 1 !important;
-    right: 5% !important;
-    top: 6% !important;
-    bottom: auto !important;
-    border-radius: 50% !important;
-    transform: none !important;
-    z-index: 0 !important;
-  }
-
-  /* BLACK: same circle language, anchored to the lower-right
-     corner but intentionally only partly visible. */
-  .dp-card::after {
-    display: block !important;
-    width: 38% !important;
-    height: auto !important;
-    aspect-ratio: 1 / 1 !important;
-    right: 5% !important;
-    bottom: -34% !important;
-    top: auto !important;
-    border-radius: 50% !important;
-    transform: none !important;
-    z-index: 0 !important;
-  }
-
-  .orbit {
-    width: 68% !important;
-    left: 16% !important;
-    top: 9% !important;
-    z-index: 2 !important;
-  }
-
-  .dp {
-    width: 40% !important;
-    left: 30% !important;
-    top: 23% !important;
-    z-index: 5 !important;
-  }
-
-  .dp-card > b {
-    z-index: 8 !important;
-  }
-
-  .tag-one {
-    top: 15% !important;
-    left: 5% !important;
-  }
-
-  .tag-two {
-    right: 3% !important;
-    bottom: 24% !important;
-  }
-
-  .tag-three {
-    left: 6% !important;
-    bottom: 11% !important;
-  }
-
-  .ticker {
-    position: relative !important;
-    z-index: 10 !important;
-    width: 100% !important;
-    height: var(--ticker-h) !important;
-    min-height: var(--ticker-h) !important;
-    margin: 0 !important;
-  }
-}
-
 
 /* ---------------------------------------------------------
    TABLET PORTRAIT — CONTROLLED BACKGROUND SHAPES
@@ -6676,111 +6135,68 @@ html {
 
 
 /* =========================================================
-   PHONE — SINGLE REFERENCE COMPOSITION
-   All phone widths use the iPhone-SE composition as the
-   reference. Geometry scales with width instead of switching
-   to different layouts between phone sizes.
+   PHONE HERO — SINGLE PROPORTIONAL COMPOSITION
+   The iPhone 16 composition is the reference. Every phone
+   width uses the same geometry; only the available width changes.
    ========================================================= */
-
 @media (max-width: 620px) {
-  :root {
-    --header-h: 76px;
-    --ticker-h: 38px;
-  }
-
-  .site-header,
-  .site-header.is-scrolled {
-    width: calc(100% - 32px) !important;
-    height: var(--header-h) !important;
-  }
-
-  main {
-    padding-top: var(--header-h) !important;
-  }
-
-  .hero {
-    height: calc(100svh - var(--header-h) - var(--ticker-h)) !important;
-    max-height: calc(100svh - var(--header-h) - var(--ticker-h)) !important;
-    padding: 18px 16px 0 !important;
-    gap: 0 !important;
-  }
-
-  .hero h1 {
-    font-size: clamp(42px, 12.7vw, 52px) !important;
-    line-height: .89 !important;
-    margin: 11px 0 14px !important;
-  }
-
-  .hero p {
-    max-width: 92% !important;
-    font-size: clamp(13px, 3.73vw, 14px) !important;
-    line-height: 1.4 !important;
-  }
-
-  .hero-buttons {
-    width: 100% !important;
-    gap: 8px !important;
-    margin-top: 16px !important;
-  }
-
-  .hero-buttons .rect-button {
-    width: calc((100% - 8px) / 2) !important;
-    min-width: 0 !important;
-    min-height: 46px !important;
-    padding: 12px 13px !important;
-    font-size: clamp(10px, 2.9vw, 11px) !important;
-  }
-
-  .social-links {
-    margin-top: 12px !important;
-    gap: 9px !important;
-  }
-
-  .social-links a {
-    width: 32px !important;
-    height: 32px !important;
-  }
-
+  /* Artwork uses the exact same containing block as the phone
+     content. No viewport-width hacks and no JS repositioning. */
   .visual {
-    flex: 1 1 auto !important;
-    width: calc(100% + 32px) !important;
-    margin: 0 -16px !important;
-    min-height: 0 !important;
-    height: auto !important;
-    align-items: flex-end !important;
+    width: 100% !important;
+    max-width: none !important;
+    height: clamp(250px, 70vw, 275px) !important;
+    min-height: clamp(250px, 70vw, 275px) !important;
+    max-height: clamp(250px, 70vw, 275px) !important;
+    flex: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: stretch !important;
     justify-content: center !important;
     overflow: visible !important;
+    box-sizing: border-box !important;
   }
 
   .dp-card {
-    width: min(96vw, 360px) !important;
-    height: clamp(245px, 38svh, 290px) !important;
+    position: relative !important;
+    flex: 0 0 100% !important;
+    width: 100% !important;
+    max-width: none !important;
+    height: 100% !important;
     min-height: 0 !important;
     max-height: none !important;
+    margin: 0 !important;
     aspect-ratio: auto !important;
-    margin: 0 auto !important;
     overflow: hidden !important;
     isolation: isolate !important;
+    transform: none !important;
+    box-sizing: border-box !important;
   }
 
-  /* Reference red circle. */
+  /* Same geometry at 360, 375 and 393px.
+     The circles therefore scale with the artwork instead of
+     being recalculated per device. */
   .dp-card::before {
+    display: block !important;
     width: 38% !important;
     height: auto !important;
     aspect-ratio: 1 / 1 !important;
     right: -8% !important;
     top: 7% !important;
+    bottom: auto !important;
     border-radius: 50% !important;
     transform: none !important;
     z-index: 0 !important;
   }
 
-  /* Reference black corner circle. */
   .dp-card::after {
+    display: block !important;
     width: 42% !important;
     height: auto !important;
     aspect-ratio: 1 / 1 !important;
     right: -12% !important;
+    top: auto !important;
     bottom: -27% !important;
     border-radius: 50% !important;
     transform: none !important;
@@ -6820,759 +6236,26 @@ html {
     bottom: 13% !important;
   }
 
-  .ticker {
-    width: 100% !important;
-    height: var(--ticker-h) !important;
-    min-height: var(--ticker-h) !important;
-    margin: 0 !important;
-  }
-}
-
-
-/* =========================================================
-   FINAL PHONE OVERRIDE — ONE COMPOSITION, NO HEIGHT SCALING
-   ========================================================= */
-@media (max-width: 620px) {
-  /* Header stays in the document flow visually; never lets the
-     hero copy slide underneath it. */
-  .site-header,
-  .site-header.is-scrolled {
-    position: fixed !important;
-    top: 12px !important;
-    left: 50% !important;
-    width: calc(100% - 32px) !important;
-    height: 64px !important;
-    transform: translateX(-50%) !important;
-    z-index: 1000 !important;
-  }
-
-  main {
-    padding-top: 88px !important;
-  }
-
-  .hero {
-    display: flex !important;
-    flex-direction: column !important;
-    width: 100% !important;
-    height: auto !important;
-    min-height: 0 !important;
-    max-height: none !important;
-    padding: 12px 16px 0 !important;
-    margin: 0 !important;
-    gap: 0 !important;
-    overflow: visible !important;
-  }
-
-  .hero-copy {
-    width: 100% !important;
-    flex: none !important;
-    padding: 0 !important;
-  }
-
-  .hero h1 {
-    font-size: clamp(44px, 12.2vw, 50px) !important;
-    line-height: .9 !important;
-    letter-spacing: -.07em !important;
-    margin: 10px 0 14px !important;
-  }
-
-  .hero p {
-    max-width: 340px !important;
-    font-size: 14px !important;
-    line-height: 1.4 !important;
-    margin-bottom: 0 !important;
-  }
-
-  .hero-buttons {
-    display: flex !important;
-    width: 100% !important;
-    margin-top: 16px !important;
-    gap: 8px !important;
-  }
-
-  .hero-buttons .rect-button {
-    flex: 1 1 0 !important;
-    width: auto !important;
-    min-width: 0 !important;
-    min-height: 46px !important;
-    padding: 12px 13px !important;
-    font-size: 11px !important;
-  }
-
-  .social-links {
-    margin-top: 10px !important;
-    gap: 8px !important;
-  }
-
-  .social-links a {
-    width: 32px !important;
-    height: 32px !important;
-  }
-
-  /* The visual is a fixed-size reference stage.
-     It must NOT stretch with phone height. */
-  .visual {
-    flex: none !important;
-    width: calc(100% + 32px) !important;
-    height: 275px !important;
-    min-height: 275px !important;
-    max-height: 275px !important;
-    margin: 0 -16px !important;
-    padding: 0 !important;
-    display: flex !important;
-    align-items: flex-start !important;
-    justify-content: center !important;
-    overflow: visible !important;
-  }
-
-  .dp-card {
-    position: relative !important;
-    flex: none !important;
-    width: 100% !important;
-    max-width: 360px !important;
-    height: 275px !important;
-    min-height: 275px !important;
-    max-height: 275px !important;
-    aspect-ratio: auto !important;
-    margin: 0 auto !important;
-    overflow: hidden !important;
-    transform: none !important;
-    isolation: isolate !important;
-  }
-
-  /* RED — compact, circular, fully inside the right edge. */
-  .dp-card::before {
-    display: block !important;
-    width: 32% !important;
-    height: auto !important;
-    aspect-ratio: 1 / 1 !important;
-    right: 5% !important;
-    top: 7% !important;
-    bottom: auto !important;
-    border-radius: 50% !important;
-    transform: none !important;
-    z-index: 0 !important;
-  }
-
-  /* BLACK — same diameter language, deliberately cropped only
-     by the bottom edge, never by the right edge. */
-  .dp-card::after {
-    display: block !important;
-    width: 32% !important;
-    height: auto !important;
-    aspect-ratio: 1 / 1 !important;
-    right: 5% !important;
-    top: auto !important;
-    bottom: -31% !important;
-    border-radius: 50% !important;
-    transform: none !important;
-    z-index: 0 !important;
-  }
-
-  .orbit {
-    width: 68% !important;
-    left: 16% !important;
-    top: 10% !important;
-    z-index: 2 !important;
-  }
-
-  .dp {
-    width: 40% !important;
-    left: 30% !important;
-    top: 25% !important;
-    z-index: 5 !important;
-  }
-
-  .dp-card > b {
-    z-index: 8 !important;
-  }
-
-  .tag-one {
-    top: 16% !important;
-    left: 5% !important;
-  }
-
-  .tag-two {
-    right: 3% !important;
-    bottom: 22% !important;
-  }
-
-  .tag-three {
-    left: 6% !important;
-    bottom: 10% !important;
-  }
-
-  .ticker {
-    position: relative !important;
-    z-index: 10 !important;
-    width: 100% !important;
-    height: 38px !important;
-    min-height: 38px !important;
-    margin: 0 !important;
-  }
-}
-
-
-/* =========================================================
-   PHONE HEADER — COMPACT, PROPORTIONAL
-   ========================================================= */
-@media (max-width: 620px) {
-  .site-header,
-  .site-header.is-scrolled {
-    top: 10px !important;
-    width: calc(100% - 28px) !important;
-    height: 56px !important;
-    border-bottom: 0 !important;
-    border: 1px solid rgba(17,16,15,.12) !important;
-    border-radius: 999px !important;
-    padding: 0 10px 0 14px !important;
-    box-shadow: 0 8px 24px rgba(17,16,15,.08) !important;
-  }
-
-  .site-header .logo,
-  .site-header.is-scrolled .logo {
-    font-size: 28px !important;
-    line-height: 1 !important;
-    transform: none !important;
-  }
-
-  .site-header .header-ai,
-  .site-header.is-scrolled .header-ai {
-    padding: 8px 11px !important;
-    font-size: 10px !important;
-    line-height: 1 !important;
-    white-space: nowrap !important;
-    transform: none !important;
-  }
-
-  .site-header .header-ai::before {
-    width: 5px !important;
-    height: 5px !important;
-  }
-
-  main {
-    padding-top: 78px !important;
-  }
-}
-
-
-/* =========================================================
-   FINAL MOBILE SCROLL FIX — OPAQUE HEADER
-   Prevent hero content from bleeding through the navbar
-   while scrolling on phones.
-   ========================================================= */
-@media (max-width: 620px) {
-  .site-header.is-scrolled {
-    background: var(--cream) !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-  }
-
-  .site-header.is-scrolled::before {
-    inset: 0 !important;
-    background: var(--cream) !important;
-    border-color: rgba(17,16,15,.12) !important;
-    box-shadow: 0 8px 24px rgba(17,16,15,.08) !important;
-    opacity: 1 !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-  }
-}
-
-
-/* =========================================================
-   FINAL MOBILE GLASS + FULL-BLEED TICKER
-   ========================================================= */
-@media (max-width: 620px) {
-  /* Restore the glass/translucent mobile navbar without allowing
-     page content to visually punch through it. */
-  .site-header.is-scrolled {
-    background: transparent !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-  }
-
-  .site-header.is-scrolled::before {
-    inset: 0 !important;
-    background: rgba(245, 241, 232, 0.78) !important;
-    border-color: rgba(17,16,15,.12) !important;
-    box-shadow: 0 8px 24px rgba(17,16,15,.08) !important;
-    opacity: 1 !important;
-    backdrop-filter: blur(18px) saturate(125%) !important;
-    -webkit-backdrop-filter: blur(18px) saturate(125%) !important;
-  }
-
-  /* The ticker is a viewport-edge strip, never constrained by
-     the page's inner horizontal padding. */
-  .ticker {
-    width: 100vw !important;
-    max-width: none !important;
-    margin-left: calc(50% - 50vw) !important;
-    margin-right: 0 !important;
-    padding-left: 24px !important;
-    padding-right: 24px !important;
-  }
-}
-
-
-/* =========================================================
-   MOBILE TICKER — TRUE VIEWPORT EDGE
-   ========================================================= */
-@media (max-width: 620px) {
-  .ticker {
-    position: relative !important;
-    left: 50% !important;
-    width: 100vw !important;
-    max-width: none !important;
-    margin-left: -50vw !important;
-    margin-right: 0 !important;
-    padding-left: 24px !important;
-    padding-right: 24px !important;
-    box-sizing: border-box !important;
-  }
-}
-
-
-/* =========================================================
-   MOBILE — WIDTH MUST FOLLOW THE ACTUAL PHONE
-   ========================================================= */
-@media (max-width: 620px) {
-  html,
-  body {
-    width: 100% !important;
-    max-width: 100% !important;
-    overflow-x: hidden !important;
-  }
-
-  main {
-    width: 100% !important;
-    max-width: 100% !important;
-    margin: 0 !important;
-  }
-
-  /* The hero composition scales with the available phone width.
-     No fixed device-width assumption. */
-  .visual {
-    width: 100% !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-  }
-
-  .dp-card {
-    width: 100% !important;
-    max-width: none !important;
-  }
-
-  /* Ticker is a direct full-width section of the phone viewport.
-     No centering trick, no fixed 360px assumption. */
-  .ticker {
-    position: relative !important;
-    left: auto !important;
-    width: 100% !important;
-    max-width: none !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    box-sizing: border-box !important;
-  }
-}
-
-
-/* =========================================================
-   FINAL PHONE SYSTEM — iPHONE 16 REFERENCE
-   One proportional composition for EVERY phone width.
-   Do not add device-specific phone overrides below this block.
-   ========================================================= */
-
-@media (max-width: 620px) {
-  :root {
-    --header-h: 56px;
-    --ticker-h: 38px;
-  }
-
-  html,
-  body {
-    width: 100%;
-    max-width: 100%;
-    overflow-x: hidden !important;
-  }
-
-  main {
-    width: 100%;
-    max-width: 100%;
-    margin: 0;
-    padding-top: 78px !important;
-  }
-
-  /* ---------- HEADER ---------- */
-
-  .site-header,
-  .site-header.is-scrolled {
-    position: fixed !important;
-    top: 10px !important;
-    left: 50% !important;
-    width: calc(100% - 28px) !important;
-    height: var(--header-h) !important;
-    margin: 0 !important;
-    padding: 0 10px 0 14px !important;
-    transform: translateX(-50%) !important;
-    z-index: 1000 !important;
-
-    border: 1px solid rgba(17,16,15,.12) !important;
-    border-radius: 999px !important;
-    border-bottom: 1px solid rgba(17,16,15,.12) !important;
-
-    background: rgba(245,241,232,.78) !important;
-    box-shadow: 0 8px 24px rgba(17,16,15,.08) !important;
-
-    backdrop-filter: blur(18px) saturate(125%) !important;
-    -webkit-backdrop-filter: blur(18px) saturate(125%) !important;
-  }
-
-  .site-header::before,
-  .site-header.is-scrolled::before {
-    inset: 0 !important;
-    border-radius: 999px !important;
-    background: transparent !important;
-    border-color: transparent !important;
-    box-shadow: none !important;
-    opacity: 0 !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-  }
-
-  .site-header .logo,
-  .site-header.is-scrolled .logo {
-    font-size: 28px !important;
-    line-height: 1 !important;
-    transform: none !important;
-  }
-
-  .site-header .header-ai,
-  .site-header.is-scrolled .header-ai {
-    padding: 8px 11px !important;
-    font-size: 10px !important;
-    line-height: 1 !important;
-    white-space: nowrap !important;
-    transform: none !important;
-  }
-
-  /* ---------- HERO CANVAS ---------- */
-
-  .hero {
-    width: 100% !important;
-    height: auto !important;
-    min-height: 0 !important;
-    max-height: none !important;
-    margin: 0 !important;
-
-    padding: 12px 6px 0 !important;
-
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: stretch !important;
-    gap: 0 !important;
-
-    overflow: visible !important;
-  }
-
-  /* Content keeps the same 16px inset as the iPhone 16 reference. */
-  .hero-copy {
-    width: 100% !important;
-    flex: none !important;
-    padding: 0 10px !important;
-    min-width: 0 !important;
-  }
-
-  .hero h1 {
-    font-size: clamp(44px, 12.2vw, 50px) !important;
-    line-height: .9 !important;
-    letter-spacing: -.07em !important;
-    margin: 10px 0 14px !important;
-  }
-
-  .hero p {
-    max-width: 340px !important;
-    font-size: clamp(13px, 3.56vw, 14px) !important;
-    line-height: 1.4 !important;
-  }
-
-  .hero-buttons {
-    width: 100% !important;
-    display: flex !important;
-    gap: 8px !important;
-    margin-top: 16px !important;
-  }
-
-  .hero-buttons .rect-button {
-    flex: 1 1 0 !important;
-    width: auto !important;
-    min-width: 0 !important;
-    min-height: 46px !important;
-    padding: 12px 13px !important;
-    font-size: clamp(10px, 2.9vw, 11px) !important;
-  }
-
-  .social-links {
-    margin-top: 10px !important;
-    gap: 8px !important;
-  }
-
-  .social-links a {
-    width: 32px !important;
-    height: 32px !important;
-  }
-
-  /* ---------- VISUAL STAGE ----------
-     Height follows PHONE WIDTH, not phone model/height.
-     This is the key rule that keeps every phone proportional.
-  */
-
-  .visual {
-    width: 100% !important;
-    height: clamp(250px, 70vw, 275px) !important;
-    min-height: clamp(250px, 70vw, 275px) !important;
-    max-height: clamp(250px, 70vw, 275px) !important;
-
-    flex: none !important;
-    margin: 0 !important;
-    padding: 0 !important;
-
-    display: flex !important;
-    align-items: stretch !important;
-    justify-content: center !important;
-
-    overflow: visible !important;
-  }
-
-  .dp-card {
-    position: relative !important;
-    flex: none !important;
-
-    width: 100% !important;
-    max-width: none !important;
-
-    height: 100% !important;
-    min-height: 0 !important;
-    max-height: none !important;
-
-    aspect-ratio: auto !important;
-    margin: 0 !important;
-
-    overflow: hidden !important;
-    isolation: isolate !important;
-    transform: none !important;
-  }
-
-  /* ---------- DECORATIVE CIRCLES ----------
-     Same percentages at every phone width.
-  */
-
-  .dp-card::before {
-    display: block !important;
-    width: 30% !important;
-    height: auto !important;
-    aspect-ratio: 1 / 1 !important;
-
-    right: 3% !important;
-    top: 7% !important;
-    bottom: auto !important;
-
-    border-radius: 50% !important;
-    transform: none !important;
-    z-index: 0 !important;
-  }
-
-  .dp-card::after {
-    display: block !important;
-    width: 30% !important;
-    height: auto !important;
-    aspect-ratio: 1 / 1 !important;
-
-    right: 3% !important;
-    top: auto !important;
-    bottom: -31% !important;
-
-    border-radius: 50% !important;
-    transform: none !important;
-    z-index: 0 !important;
-  }
-
-  /* ---------- ORBIT / PHOTO ---------- */
-
-  .orbit {
-    width: 68% !important;
-    left: 16% !important;
-    top: 10% !important;
-    z-index: 2 !important;
-  }
-
-  .dp {
-    width: 40% !important;
-    left: 30% !important;
-    top: 25% !important;
-    z-index: 5 !important;
-  }
-
-  .dp-card > b {
-    z-index: 8 !important;
-  }
-
-  .tag-one {
-    top: 16% !important;
-    left: 5% !important;
-  }
-
-  .tag-two {
-    right: 3% !important;
-    bottom: 22% !important;
-  }
-
-  .tag-three {
-    left: 6% !important;
-    bottom: 10% !important;
-  }
-
-  /* ---------- TICKER ----------
-     It belongs to the PHONE viewport, not the inner hero padding.
-     Therefore it always touches both physical screen edges.
-  */
-
-  .ticker {
-    position: relative !important;
-    z-index: 10 !important;
-
-    width: 100vw !important;
-    max-width: none !important;
-
-    margin-left: calc(50% - 50vw) !important;
-    margin-right: 0 !important;
-    margin-top: 0 !important;
-
-    height: var(--ticker-h) !important;
-    min-height: var(--ticker-h) !important;
-
-    padding: 0 24px !important;
-    box-sizing: border-box !important;
-  }
-}
-
-/* =========================================================
-   MOBILE FINAL — ONE STABLE PHONE COMPOSITION
-   Artwork follows the phone width. Ticker is a true full-width
-   main-level strip and its content is fitted by JS below.
-   ========================================================= */
-
-@media (max-width: 620px) {
-
-  .visual {
-    flex: 0 0 250px !important;
-    width: calc(100% + 32px) !important;
-    height: 250px !important;
-    min-height: 250px !important;
-    max-height: 250px !important;
-    margin-left: -16px !important;
-    margin-right: -16px !important;
-    padding: 0 !important;
-    display: flex !important;
-    align-items: stretch !important;
-    justify-content: center !important;
-    position: relative !important;
-    left: auto !important;
-    overflow: visible !important;
-  }
-
-  .dp-card {
-    flex: 0 0 100% !important;
-    width: 100% !important;
-    max-width: none !important;
-    height: 250px !important;
-    min-height: 250px !important;
-    max-height: 250px !important;
-    margin: 0 !important;
-    aspect-ratio: auto !important;
-    overflow: visible !important;
-    isolation: isolate !important;
-    transform: none !important;
-  }
-
-  /* The red/black circles belong to the screen composition, not
-     the card box. Let them run beyond the artwork and be clipped
-     only by the phone viewport/ticker edge. */
-  .dp-card::before {
-    width: 52% !important;
-    right: -18% !important;
-    top: 6% !important;
-    bottom: auto !important;
-    aspect-ratio: 1 / 1 !important;
-    height: auto !important;
-    border-radius: 50% !important;
-    transform: none !important;
-  }
-
-  .dp-card::after {
-    width: 52% !important;
-    right: -18% !important;
-    bottom: -35% !important;
-    top: auto !important;
-    aspect-ratio: 1 / 1 !important;
-    height: auto !important;
-    border-radius: 50% !important;
-    transform: none !important;
-  }
-
-  .orbit {
-    width: 68% !important;
-    left: 16% !important;
-    top: 13% !important;
-  }
-
-  .dp {
-    width: 40% !important;
-    left: 30% !important;
-    top: 27% !important;
-  }
-
-  .dp-card > b {
-    z-index: 8 !important;
-  }
-
-  .tag-one {
-    top: 18% !important;
-    left: 5% !important;
-  }
-
-  .tag-two {
-    right: 3% !important;
-    bottom: 24% !important;
-  }
-
-  .tag-three {
-    left: 6% !important;
-    bottom: 13% !important;
-  }
-
-  /* Ticker: escape the scrollbar-reduced main width and span the
-     actual phone viewport from its left edge to its right edge. */
+  /* Ticker is a sibling of the hero and therefore starts from
+     the same 100%-wide root coordinate system. Because the
+     mobile root scrollbar is hidden, 100% is the visible phone
+     width — no 100vw/negative-margin/JS offset is required. */
   .ticker {
     position: relative !important;
     z-index: 20 !important;
-    left: auto !important;
-    width: 100vw !important;
-    min-width: 100vw !important;
-    max-width: none !important;
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
     margin: 0 !important;
     padding: 0 8px !important;
-    height: 38px !important;
-    min-height: 38px !important;
+    height: var(--ticker-h) !important;
+    min-height: var(--ticker-h) !important;
     box-sizing: border-box !important;
-
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-
     overflow: hidden !important;
     white-space: nowrap !important;
-
     font-size: 10px !important;
     line-height: 1 !important;
     letter-spacing: .01em !important;
@@ -7588,6 +6271,7 @@ html {
     flex: 0 0 auto !important;
     font: inherit !important;
     line-height: 1 !important;
+    transform: none !important;
     transform-origin: center center !important;
   }
 
@@ -7597,7 +6281,6 @@ html {
     color: var(--red) !important;
   }
 
-  /* The landing page no longer shifts vertically on entry. */
   .hero-copy,
   .visual,
   .ticker {
@@ -7605,104 +6288,3 @@ html {
   }
 }
 
-
-/* =========================================================
-   MOBILE PRIORITY FIX — VIEWPORT TICKER + PROPORTIONAL SHAPES
-   ========================================================= */
-@media (max-width: 620px) {
-  html,
-  body {
-    scrollbar-width: none !important;
-  }
-
-  html::-webkit-scrollbar,
-  body::-webkit-scrollbar {
-    width: 0 !important;
-    height: 0 !important;
-    display: none !important;
-  }
-
-  /* The ticker must use the full visible phone width. */
-  .ticker {
-    position: relative !important;
-    left: calc(50% - 50vw) !important;
-    width: 100vw !important;
-    min-width: 100vw !important;
-    max-width: 100vw !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    overflow: hidden !important;
-    z-index: 20 !important;
-  }
-
-  /* Keep the circles proportional to the ticker/artwork width.
-     They are clipped by the artwork stage, not allowed to balloon
-     outside it. */
-  .dp-card {
-    overflow: hidden !important;
-  }
-
-  .dp-card::before {
-    width: 38% !important;
-    right: -8% !important;
-    top: 7% !important;
-    bottom: auto !important;
-    height: auto !important;
-    aspect-ratio: 1 / 1 !important;
-    border-radius: 50% !important;
-  }
-
-  .dp-card::after {
-    width: 42% !important;
-    right: -12% !important;
-    bottom: -27% !important;
-    top: auto !important;
-    height: auto !important;
-    aspect-ratio: 1 / 1 !important;
-    border-radius: 50% !important;
-  }
-}
-
-
-/* =========================================================
-   MOBILE ROOT WIDTH — MATCH THE PHYSICAL DEVICE VIEWPORT
-   The emulator is 360px wide, but the document layout was
-   collapsing to the scrollbar-reduced 349px content width.
-   Make the mobile root itself viewport-wide first; the ticker
-   then naturally reaches the exact same left/right edges.
-   ========================================================= */
-@media (max-width: 620px) {
-  html,
-  body {
-    width: 100vw !important;
-    min-width: 100vw !important;
-    max-width: 100vw !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    overflow-x: clip !important;
-  }
-
-  main {
-    width: 100vw !important;
-    min-width: 100vw !important;
-    max-width: 100vw !important;
-    margin: 0 !important;
-    box-sizing: border-box !important;
-  }
-
-  .ticker {
-    position: relative !important;
-    left: 0 !important;
-    width: 100% !important;
-    min-width: 100% !important;
-    max-width: 100% !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    box-sizing: border-box !important;
-  }
-
-  .visual,
-  .dp-card {
-    box-sizing: border-box !important;
-  }
-}
