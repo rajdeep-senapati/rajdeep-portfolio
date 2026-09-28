@@ -113,66 +113,62 @@ app.add_middleware(
 def is_general_coding_request(question: str) -> bool:
     q = question.lower().strip()
 
+    # Code is in scope when the visitor is explicitly asking about a documented
+    # Rajdeep project. This lets the AI explain Rajdeep's actual implementation
+    # without turning the portfolio into a general-purpose code generator.
     project_terms = [
-        "jobshield",
-        "stocksense",
-        "route optimizer",
-        "route_optimiser",
-        "exam seating",
-        "alzheimer",
-        "diwali sales",
-        "rajdeep",
+        "jobshield", "stocksense", "stock sense", "route optimizer",
+        "route_optimiser", "exam seating", "alzheimer", "diwali sales",
+        "diwali", "bapar", "binance account performance", "pizza review",
+        "nifty bank", "rajdeep's code", "your code", "your project",
+        "your implementation", "your eda",
     ]
 
-    # Project-specific technical questions remain in scope.
-    if any(term in q for term in project_terms):
-        return False
+    has_project_context = any(term in q for term in project_terms)
 
-    coding_signals = [
-        "give me code",
-        "give me the code",
-        "give me a code",
-        "give me some code",
-        "write code",
-        "write me code",
-        "generate code",
-        "generate me code",
-        "code for",
-        "code to",
-        "python code",
-        "javascript code",
-        "java code",
-        "c++ code",
-        "sql query",
-        "write a query",
-        "solve this",
-        "solve the problem",
-        "leetcode",
-        "hackerrank",
-        "implement this",
-        "build me",
-        "create an app",
-        "web scraper",
-        "scrape this",
-        "eda code",
-        "starting my eda",
-        "exploratory data analysis code",
+    # Questions asking to explain, walk through, or analyze Rajdeep's code
+    # should remain available when they are tied to his documented work.
+    explanation_signals = [
+        "explain", "walk me through", "how did you", "how do you",
+        "why did you", "why do you", "show me how", "what does this code",
+        "how does this code", "explain this code", "explain the code",
+        "with code", "using code",
+    ]
+
+    has_explanation_intent = any(signal in q for signal in explanation_signals)
+
+    # Generic code generation remains outside the portfolio assistant's scope.
+    generation_signals = [
+        "give me code", "give me the code", "give me a code",
+        "give me some code", "write code", "write me code",
+        "generate code", "generate me code", "code for", "code to",
+        "python code", "javascript code", "java code", "c++ code",
+        "sql query", "write a query", "solve this", "solve the problem",
+        "leetcode", "hackerrank", "implement this", "build me",
+        "create an app", "web scraper", "scrape this", "eda code",
+        "starting my eda", "exploratory data analysis code",
         "debug this code",
     ]
 
-    if any(signal in q for signal in coding_signals):
+    has_generation_intent = any(signal in q for signal in generation_signals)
+
+    if has_project_context and (has_explanation_intent or has_generation_intent):
+        return False
+
+    if has_generation_intent:
         return True
 
-    # Catch natural/typo-heavy requests such as "guve code to add three numbers".
+    # Catch natural/typo-heavy generic requests such as
+    # "guve code to add three numbers", but don't catch explanatory questions.
     has_code_word = bool(re.search(r"\bcode\b|\bpython\b|\bsql\b", q))
-    has_generation_intent = bool(
+    has_generation_verb = bool(
         re.search(
-            r"\b(add|calculate|create|build|write|make|generate|give|show|solve|implement|explain how to)\b",
+            r"\b(add|calculate|create|build|write|make|generate|give|solve|implement)\b",
             q,
         )
     )
 
-    return has_code_word and has_generation_intent
+    return has_code_word and has_generation_verb and not has_project_context
 
 
 def is_complex_question(question: str) -> bool:
