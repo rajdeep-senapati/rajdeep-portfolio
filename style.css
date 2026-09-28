@@ -6272,135 +6272,170 @@ html {
 
 
 /* =========================================================
-   MOBILE HERO — DEFINITIVE COMPOSITION
-   One controlled layout owns the mobile landing screen.
-   This intentionally overrides the older experimental mobile
-   rules above without changing desktop/tablet behaviour.
+   PHONE — ONE REFERENCE COMPOSITION
+   One mobile system for every phone width.
+   The iPhone SE composition is the reference; dimensions scale
+   horizontally, while the visual stage keeps a stable height.
    ========================================================= */
 
 @media (max-width: 620px) {
   :root {
-    --header-h: 70px;
+    --header-h: 76px;
     --ticker-h: 38px;
   }
 
+  .site-header,
+  .site-header.is-scrolled {
+    position: fixed !important;
+    top: 0 !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: calc(100% - 32px) !important;
+    height: var(--header-h) !important;
+    margin: 0 !important;
+    z-index: 1000 !important;
+  }
+
+  main {
+    padding-top: var(--header-h) !important;
+  }
+
   .hero {
-    width: 100%;
-    height: calc(100svh - var(--header-h) - var(--ticker-h)) !important;
+    width: 100% !important;
+    height: auto !important;
     min-height: 0 !important;
-    max-height: calc(100svh - var(--header-h) - var(--ticker-h));
+    max-height: none !important;
     padding: 18px 16px 0 !important;
     margin: 0 !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: stretch !important;
     gap: 0 !important;
-    overflow: hidden !important;
+    overflow: visible !important;
   }
 
   .hero-copy {
-    flex: 0 0 auto !important;
-    width: 100%;
+    flex: none !important;
+    width: 100% !important;
     padding: 0 !important;
   }
 
   .hero h1 {
-    font-size: clamp(45px, 12.7vw, 56px) !important;
+    font-size: clamp(45px, 12.7vw, 52px) !important;
     line-height: .89 !important;
+    letter-spacing: -.07em !important;
     margin: 11px 0 14px !important;
   }
 
   .hero p {
-    max-width: 340px;
+    max-width: 340px !important;
     font-size: 14px !important;
     line-height: 1.4 !important;
   }
 
   .hero-buttons {
+    width: 100% !important;
     margin-top: 16px !important;
     gap: 8px !important;
   }
 
-  .rect-button {
-    width: 168px;
-    min-height: 46px;
-    padding: 12px 13px;
-    font-size: 11px;
+  .hero-buttons .rect-button {
+    flex: 1 1 0 !important;
+    width: auto !important;
+    min-width: 0 !important;
+    min-height: 46px !important;
+    padding: 12px 13px !important;
+    font-size: 11px !important;
   }
 
   .social-links {
     margin-top: 12px !important;
-    gap: 9px;
+    gap: 9px !important;
   }
 
   .social-links a {
-    width: 32px;
-    height: 32px;
+    width: 32px !important;
+    height: 32px !important;
   }
 
-  /* The visual receives exactly the remaining hero height. */
+  /* Fixed visual stage: this prevents taller phones from pushing
+     the composition halfway down the screen. */
   .visual {
-    flex: 1 1 auto !important;
+    flex: none !important;
     width: calc(100% + 32px) !important;
-    min-width: 0 !important;
+    height: 250px !important;
     min-height: 250px !important;
-    height: auto !important;
+    max-height: 250px !important;
     margin: 0 -16px !important;
     padding: 0 !important;
     display: flex !important;
-    align-items: flex-end !important;
+    align-items: stretch !important;
     justify-content: center !important;
     overflow: visible !important;
   }
 
   .dp-card {
-    position: relative;
-    flex: 0 1 360px;
+    flex: none !important;
     width: min(100%, 360px) !important;
-    height: 100% !important;
-    max-height: 330px;
-    min-height: 250px;
+    height: 250px !important;
+    min-height: 250px !important;
+    max-height: 250px !important;
     aspect-ratio: auto !important;
     margin: 0 auto !important;
     overflow: hidden !important;
+    isolation: isolate !important;
+    transform: none !important;
   }
 
-  /* Original red UI circle — full circular geometry,
-     intentionally clipped only by the right edge. */
+  /* RED: a real circle, fully readable on every phone. */
   .dp-card::before {
     display: block !important;
-    width: 44% !important;
-    aspect-ratio: 1 !important;
-    right: -8% !important;
-    top: 4% !important;
+    width: 38% !important;
+    height: auto !important;
+    aspect-ratio: 1 / 1 !important;
+    right: 5% !important;
+    top: 6% !important;
+    bottom: auto !important;
     border-radius: 50% !important;
+    transform: none !important;
+    z-index: 0 !important;
   }
 
-  /* Original black anchor — its bottom is flush with the
-     visual/ticker boundary. */
+  /* BLACK: same circle language, anchored to the lower-right
+     corner but intentionally only partly visible. */
   .dp-card::after {
     display: block !important;
-    width: 45% !important;
-    aspect-ratio: 1 !important;
-    right: -9% !important;
-    bottom: -27% !important;
+    width: 38% !important;
+    height: auto !important;
+    aspect-ratio: 1 / 1 !important;
+    right: 5% !important;
+    bottom: -34% !important;
+    top: auto !important;
     border-radius: 50% !important;
+    transform: none !important;
+    z-index: 0 !important;
   }
 
   .orbit {
     width: 68% !important;
     left: 16% !important;
-    top: 13% !important;
+    top: 9% !important;
+    z-index: 2 !important;
   }
 
   .dp {
     width: 40% !important;
     left: 30% !important;
-    top: 27% !important;
+    top: 23% !important;
+    z-index: 5 !important;
+  }
+
+  .dp-card > b {
+    z-index: 8 !important;
   }
 
   .tag-one {
-    top: 18% !important;
+    top: 15% !important;
     left: 5% !important;
   }
 
@@ -6411,254 +6446,16 @@ html {
 
   .tag-three {
     left: 6% !important;
-    bottom: 13% !important;
+    bottom: 11% !important;
   }
 
-  /* Ticker is a separate sibling of .hero, so its top edge is
-     exactly the bottom edge of the hero — no cream gap. */
   .ticker {
-    position: relative;
-    z-index: 10;
+    position: relative !important;
+    z-index: 10 !important;
     width: 100% !important;
     height: var(--ticker-h) !important;
     min-height: var(--ticker-h) !important;
     margin: 0 !important;
-  }
-}
-
-
-/* =========================================================
-   MOBILE HERO — RED CIRCLE FINAL GEOMETRY
-   Keep the red accent as an actual circle. It must be fully
-   visible inside the mobile visual instead of being clipped
-   into a half/flat shape.
-   ========================================================= */
-
-@media (max-width: 620px) {
-  .dp-card::before {
-    width: 38% !important;
-    height: auto !important;
-    aspect-ratio: 1 / 1 !important;
-    right: 3% !important;
-    top: 4% !important;
-    border-radius: 50% !important;
-    transform: none !important;
-  }
-}
-
-
-/* =========================================================
-   MOBILE HERO — BLACK ACCENT FINAL FIT
-   Keep the original black circle language, but reduce its
-   footprint so it reads as a deliberate corner accent rather
-   than an oversized cut-off shape.
-   ========================================================= */
-
-@media (max-width: 620px) {
-  .dp-card::after {
-    width: 34% !important;
-    height: auto !important;
-    aspect-ratio: 1 / 1 !important;
-    right: -5% !important;
-    bottom: -17% !important;
-    border-radius: 50% !important;
-    transform: none !important;
-  }
-}
-
-
-/* =========================================================
-   MOBILE FINAL PASS — HEADER + BLACK ACCENT
-   ========================================================= */
-
-@media (max-width: 620px) {
-  /* Keep navigation permanently visible while the page scrolls. */
-  .site-header,
-  .site-header.is-scrolled {
-    position: fixed !important;
-    top: 0 !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    z-index: 1000 !important;
-    width: calc(100% - 32px) !important;
-    height: 76px !important;
-    margin: 0 !important;
-  }
-
-  /* Reserve the header's space so the landing content does not sit
-     underneath the fixed navigation. */
-  main {
-    padding-top: 76px !important;
-  }
-
-  /* Keep the scrolled glass treatment, but don't let it change
-     position or disappear during scrolling. */
-  .site-header.is-scrolled::before {
-    inset: 7px 0 !important;
-  }
-
-  /* The black accent is intentionally a small corner cut-out.
-     It should meet the ticker boundary without becoming a large
-     semicircle competing with the portrait. */
-  .dp-card::after {
-    width: 25% !important;
-    aspect-ratio: 1 / 1 !important;
-    right: -4% !important;
-    bottom: -16% !important;
-    border-radius: 50% !important;
-    transform: none !important;
-  }
-}
-
-
-/* =========================================================
-   MOBILE HERO — BLACK CIRCLE / TICKER INTEGRATION
-   Final geometry: keep the black accent as a deliberate
-   partial circle anchored to the bottom-right corner.
-   ========================================================= */
-
-@media (max-width: 620px) {
-  .dp-card::after {
-    width: 36% !important;
-    height: auto !important;
-    aspect-ratio: 1 / 1 !important;
-    right: -9% !important;
-    bottom: -20% !important;
-    border-radius: 50% !important;
-    transform: none !important;
-    z-index: 0 !important;
-  }
-
-  /* The portrait/orbits stay visually above the accent. */
-  .dp,
-  .orbit,
-  .dp-card b {
-    z-index: 3;
-  }
-}
-
-
-/* =========================================================
-   MOBILE HERO — FINAL BLACK CORNER SHAPE
-   Use the original UI language: a quarter-circle anchored
-   exactly to the bottom-right corner of the visual.
-   ========================================================= */
-
-@media (max-width: 620px) {
-  .dp-card::after {
-    width: 31% !important;
-    height: 31% !important;
-    right: 0 !important;
-    bottom: 0 !important;
-    border-radius: 100% 0 0 0 !important;
-    transform: none !important;
-    z-index: 0 !important;
-  }
-}
-
-
-/* =========================================================
-   MOBILE HERO — MATCH DESKTOP CIRCLE LANGUAGE
-   Both accent shapes use the same true-circle treatment.
-   They are simply positioned at opposite corners and clipped
-   naturally by the visual frame.
-   ========================================================= */
-
-@media (max-width: 620px) {
-  .dp-card::before {
-    width: 38% !important;
-    height: auto !important;
-    aspect-ratio: 1 / 1 !important;
-    right: -8% !important;
-    top: 4% !important;
-    border-radius: 50% !important;
-    transform: none !important;
-    z-index: 0 !important;
-  }
-
-  .dp-card::after {
-    width: 42% !important;
-    height: auto !important;
-    aspect-ratio: 1 / 1 !important;
-    right: -12% !important;
-    bottom: -27% !important;
-    border-radius: 50% !important;
-    transform: none !important;
-    z-index: 0 !important;
-  }
-
-  /* Keep the actual composition above both background accents. */
-  .orbit,
-  .dp,
-  .dp-card b {
-    position: relative;
-    z-index: 3;
-  }
-}
-
-
-
-/* =========================================================
-   MOBILE HERO — FINAL CIRCLE FIT
-   The accent circles stay visually inside the right boundary.
-   This avoids the accidental flat vertical cuts seen when the
-   circle is positioned too far off-canvas.
-   ========================================================= */
-
-@media (max-width: 620px) {
-  .dp-card {
-    overflow: hidden !important;
-    isolation: isolate !important;
-  }
-
-  /* Red accent: fully readable circle, with breathing room
-     from both the top edge and the right edge. */
-  .dp-card::before {
-    display: block !important;
-    width: 32% !important;
-    height: auto !important;
-    aspect-ratio: 1 / 1 !important;
-    right: 5% !important;
-    top: 7% !important;
-    bottom: auto !important;
-    border-radius: 50% !important;
-    transform: none !important;
-    background: var(--red) !important;
-    z-index: 0 !important;
-  }
-
-  /* Black accent: same visual scale and right alignment.
-     Only the bottom is allowed to pass behind the ticker edge. */
-  .dp-card::after {
-    display: block !important;
-    width: 32% !important;
-    height: auto !important;
-    aspect-ratio: 1 / 1 !important;
-    right: 5% !important;
-    bottom: -9% !important;
-    top: auto !important;
-    border-radius: 50% !important;
-    transform: none !important;
-    background: var(--ink) !important;
-    z-index: 0 !important;
-  }
-
-  .dp-card .orbit,
-  .dp-card .dp,
-  .dp-card > b {
-    position: absolute !important;
-  }
-
-  .dp-card .orbit {
-    z-index: 2 !important;
-  }
-
-  .dp-card .dp {
-    z-index: 5 !important;
-  }
-
-  .dp-card > b {
-    z-index: 8 !important;
   }
 }
 
