@@ -7548,13 +7548,14 @@ html {
     bottom: 13% !important;
   }
 
-  /* Ticker: direct child of 100%-wide main. */
+  /* Ticker: escape the scrollbar-reduced main width and span the
+     actual phone viewport from its left edge to its right edge. */
   .ticker {
     position: relative !important;
     left: auto !important;
-    width: 100% !important;
-    min-width: 100% !important;
-    max-width: 100% !important;
+    width: 100vw !important;
+    min-width: 100vw !important;
+    max-width: none !important;
     margin: 0 !important;
     padding: 0 8px !important;
     height: 38px !important;
