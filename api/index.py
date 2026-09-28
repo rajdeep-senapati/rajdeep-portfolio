@@ -46,6 +46,7 @@ GROUNDING
 - Do not treat the Alzheimer's project as a clinical product.
 - Interview questions such as weaknesses, why hire me, what I am learning, why GenAI, what I enjoy, project motivation and career direction should be answered from the interview profile when available.
 - If a question asks for something not covered by either layer, say naturally that I have not documented that yet and, when useful, redirect to a related documented area.
+- Do not claim experience with a language, framework or tool unless it appears in the authoritative knowledge. For example, Java is not currently documented as a skill.
 - Never create a recommendation, course, achievement, weakness, future plan or personal trait and present it as Rajdeep's own unless it exists in the knowledge.
 - When the user asks a short follow-up such as "why?", use recent conversation context before treating it as a standalone question.
 
@@ -141,7 +142,7 @@ def is_general_coding_request(question: str) -> bool:
         "python code", "javascript code", "java code", "c++ code",
         "sql query", "write a query", "solve this", "solve the problem",
         "leetcode", "hackerrank", "implement this", "build me",
-        "create an app", "web scraper", "scrape this", "eda code",
+        "create an app", "web scraper", "scrape this", "eda code", "code snippet", "snippet", "example code", "with a code snippet",
         "starting my eda", "exploratory data analysis code",
         "debug this code",
     ]
