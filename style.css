@@ -6661,3 +6661,98 @@ html {
     z-index: 8 !important;
   }
 }
+
+
+/* =========================================================
+   TABLET HERO — iPAD / MEDIUM SCREENS
+   Keep the desktop two-column composition, but give the hero
+   a controlled first viewport so the copy and visual don't
+   drift apart or collapse into a tiny composition.
+   ========================================================= */
+
+@media (min-width: 851px) and (max-width: 1100px) {
+  .hero {
+    min-height: calc(100svh - 76px - 38px) !important;
+    height: calc(100svh - 76px - 38px) !important;
+    padding: 28px 3% 20px !important;
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr) !important;
+    gap: 24px !important;
+    align-items: center !important;
+  }
+
+  .hero-copy {
+    padding-top: 0 !important;
+    align-self: center !important;
+  }
+
+  .hero h1 {
+    font-size: clamp(58px, 6.6vw, 76px) !important;
+    line-height: .9 !important;
+    margin: 17px 0 20px !important;
+  }
+
+  .hero p {
+    max-width: 460px !important;
+    font-size: 15px !important;
+    line-height: 1.45 !important;
+  }
+
+  .hero-buttons {
+    margin-top: 24px !important;
+  }
+
+  .social-links {
+    margin-top: 18px !important;
+  }
+
+  .visual {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    align-self: stretch !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow: visible !important;
+  }
+
+  .dp-card {
+    width: min(100%, 520px) !important;
+    height: auto !important;
+    aspect-ratio: 1.05 / 1 !important;
+    margin: 0 auto !important;
+    transform: none !important;
+  }
+
+  .orbit {
+    width: 67% !important;
+    left: 26% !important;
+    top: 17% !important;
+  }
+
+  .dp {
+    width: 40% !important;
+    left: 39% !important;
+    top: 26% !important;
+  }
+
+  .tag-one {
+    top: 13% !important;
+    left: 10% !important;
+  }
+
+  .tag-two {
+    right: 3% !important;
+    bottom: 23% !important;
+  }
+
+  .tag-three {
+    left: 11% !important;
+    bottom: 12% !important;
+  }
+
+  .ticker {
+    height: 38px !important;
+    min-height: 38px !important;
+  }
+}
