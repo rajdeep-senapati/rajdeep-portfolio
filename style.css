@@ -7457,90 +7457,84 @@ html {
 }
 
 /* =========================================================
-   MOBILE FINAL — VIEWPORT-ANCHORED COMPOSITION
-   The phone artwork and ticker are centered on the real
-   viewport, not the narrower inner containing block.
+   MOBILE FINAL — ONE STABLE PHONE COMPOSITION
+   The landing artwork and ticker use the actual main/hero
+   geometry. No viewport-width hacks or mobile animation shift.
    ========================================================= */
 
 @media (max-width: 620px) {
 
-  /* ---------- ARTWORK ---------- */
+  /* ---------- LANDING ARTWORK ---------- */
 
   .visual {
-    flex: none !important;
-
-    width: 100dvw !important;
+    flex: 0 0 250px !important;
+    width: calc(100% + 32px) !important;
     height: 250px !important;
     min-height: 250px !important;
     max-height: 250px !important;
 
-    /*
-      Center the viewport-width stage even when its parent has
-      a narrower content box (padding / scrollbar gutter).
-    */
-    position: relative !important;
-    left: calc(50% + (100dvw - 100%) / 2) !important;
-    margin-left: -50dvw !important;
-    margin-right: 0 !important;
-
+    margin-left: -16px !important;
+    margin-right: -16px !important;
     padding: 0 !important;
+
     display: flex !important;
     align-items: stretch !important;
     justify-content: center !important;
+
+    position: relative !important;
+    left: auto !important;
     overflow: visible !important;
   }
 
   .dp-card {
-    flex: none !important;
+    flex: 0 0 100% !important;
     width: 100% !important;
     max-width: none !important;
+
     height: 250px !important;
     min-height: 250px !important;
     max-height: 250px !important;
-    aspect-ratio: auto !important;
+
     margin: 0 !important;
+    aspect-ratio: auto !important;
     overflow: hidden !important;
     isolation: isolate !important;
     transform: none !important;
   }
 
-  /* Keep the established iPhone-reference geometry. */
+  /* Reference geometry — unchanged. */
   .dp-card::before {
     width: 38% !important;
-    height: auto !important;
-    aspect-ratio: 1 / 1 !important;
     right: -8% !important;
     top: 7% !important;
     bottom: auto !important;
+    aspect-ratio: 1 / 1 !important;
+    height: auto !important;
     border-radius: 50% !important;
     transform: none !important;
-    z-index: 0 !important;
   }
 
   .dp-card::after {
     width: 42% !important;
-    height: auto !important;
-    aspect-ratio: 1 / 1 !important;
     right: -12% !important;
-    top: auto !important;
     bottom: -27% !important;
+    top: auto !important;
+    aspect-ratio: 1 / 1 !important;
+    height: auto !important;
     border-radius: 50% !important;
     transform: none !important;
-    z-index: 0 !important;
   }
 
   .orbit {
     width: 68% !important;
     left: 16% !important;
     top: 13% !important;
-    z-index: 2 !important;
   }
 
   .dp {
     width: 40% !important;
     left: 30% !important;
     top: 27% !important;
-    z-index: 5 !important;
   }
 
   .dp-card > b {
@@ -7564,24 +7558,53 @@ html {
 
   /* ---------- TICKER ---------- */
 
+  /*
+     .ticker is a direct child of main, and main is already 100%
+     wide. Using 100% here is the reliable physical edge-to-edge
+     solution; no 100vw/100dvw/left-offset math is needed.
+  */
   .ticker {
     position: relative !important;
-    left: calc(50% + (100dvw - 100%) / 2) !important;
-    width: 100dvw !important;
-    min-width: 100dvw !important;
-    max-width: 100dvw !important;
+    left: auto !important;
 
-    margin-left: -50dvw !important;
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+
+    margin-left: 0 !important;
     margin-right: 0 !important;
     margin-top: 0 !important;
 
     height: 38px !important;
     min-height: 38px !important;
 
-    padding: 0 24px !important;
+    padding: 0 clamp(10px, 3vw, 16px) !important;
     box-sizing: border-box !important;
 
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: clamp(7px, 2.5vw, 10px) !important;
+
+    overflow: hidden !important;
+    white-space: nowrap !important;
+
+    font-size: clamp(7px, 2.25vw, 10px) !important;
+    line-height: 1 !important;
+    letter-spacing: .02em !important;
+
     transform: none !important;
-    align-self: auto !important;
+  }
+
+  .ticker span,
+  .ticker em {
+    flex: 0 0 auto !important;
+  }
+
+  /* No mobile layout shift from the page-load motion. */
+  .hero-copy,
+  .visual,
+  .ticker {
+    animation: none !important;
   }
 }
