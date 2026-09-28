@@ -864,9 +864,8 @@ document.querySelectorAll(".project-card[data-project]").forEach((card) => {
 
 /* =========================================================
    RESPONSIVE MOBILE TICKER
-   Measure the real rendered text and fit it to the actual
-   phone width. This prevents the last item from being clipped
-   on narrow devices while preserving the same ticker content.
+   Start with the complete ticker string, measure its real
+   rendered width, then fit that string to the phone width.
    ========================================================= */
 
 const mobileTicker = document.querySelector(".ticker");
@@ -878,40 +877,37 @@ function fitMobileTicker() {
   const isMobile = window.matchMedia("(max-width: 620px)").matches;
 
   if (!isMobile) {
-    mobileTicker.style.removeProperty("--ticker-font-size");
+    mobileTickerContent.style.fontSize = "";
     mobileTickerContent.style.transform = "";
     return;
   }
 
-  /*
-   * CSS owns the ticker width. JS only fits the text.
-   * clientWidth measures the actual rendered ticker content box
-   * and excludes any scrollbar, so the calculation cannot create
-   * a second viewport coordinate system.
-   */
   const availableWidth = Math.max(1, mobileTicker.clientWidth - 16);
-  /* Keep the complete skill ticker visible on narrow phones. */
-  const baseSize = 8.5;
+  const baseSize = 10;
 
+  /*
+   * Measure the complete string starting at:
+   * MACHINE LEARNING ✦ GENAI ✦ DATA ANALYTICS ✦ SQL ✦ CLOUD ✦ BI
+   */
   mobileTickerContent.style.transform = "none";
-  mobileTicker.style.setProperty("--ticker-font-size", `${baseSize}px`);
+  mobileTickerContent.style.fontSize = `${baseSize}px`;
 
-  const naturalWidth = mobileTickerContent.scrollWidth;
+  const naturalWidth =
+    mobileTickerContent.getBoundingClientRect().width;
 
-  if (naturalWidth > availableWidth) {
-    const fittedSize = Math.max(
-      5.5,
-      baseSize * (availableWidth / naturalWidth),
-    );
-    mobileTicker.style.setProperty("--ticker-font-size", `${fittedSize}px`);
-  }
+  const fittedSize = naturalWidth > availableWidth
+    ? Math.max(5.5, baseSize * (availableWidth / naturalWidth))
+    : baseSize;
 
-  const fittedWidth = mobileTickerContent.scrollWidth;
+  mobileTickerContent.style.fontSize = `${fittedSize}px`;
 
-  if (fittedWidth > availableWidth) {
-    mobileTickerContent.style.transform =
-      `scaleX(${availableWidth / fittedWidth})`;
-  }
+  const fittedWidth =
+    mobileTickerContent.getBoundingClientRect().width;
+
+  mobileTickerContent.style.transform =
+    fittedWidth > availableWidth
+      ? `scaleX(${availableWidth / fittedWidth})`
+      : "none";
 }
 
 const tickerResizeObserver =
