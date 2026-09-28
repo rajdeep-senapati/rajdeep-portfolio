@@ -1011,6 +1011,45 @@ if (aiTerminal && "IntersectionObserver" in window) {
    NAVIGATION
    ========================================================= */
 
+/* =========================================================
+   MOBILE HASH NAVIGATION
+   Fixed glass header must never cover the Work section when
+   #work is opened directly or through an anchor.
+   ========================================================= */
+
+function positionWorkSection() {
+  const work = document.querySelector("#work");
+  if (!work || window.innerWidth > 620) return;
+
+  const header = document.querySelector(".site-header");
+  const headerHeight = header?.getBoundingClientRect().height || 56;
+  const targetY =
+    work.getBoundingClientRect().top +
+    window.scrollY -
+    headerHeight -
+    24;
+
+  window.scrollTo({
+    top: Math.max(0, targetY),
+    behavior: "auto",
+  });
+}
+
+document.querySelectorAll('a[href="#work"]').forEach((link) => {
+  link.addEventListener("click", (event) => {
+    if (window.innerWidth > 620) return;
+
+    event.preventDefault();
+    history.pushState(null, "", "#work");
+    positionWorkSection();
+  });
+});
+
+if (window.location.hash === "#work") {
+  window.addEventListener("load", positionWorkSection, { once: true });
+  window.setTimeout(positionWorkSection, 100);
+}
+
 const navLinks = [...document.querySelectorAll(".main-nav a")];
 
 const navTargets = navLinks
