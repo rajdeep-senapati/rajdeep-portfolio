@@ -6168,3 +6168,104 @@ html {
     margin-top: 0;
   }
 }
+
+
+/* =========================================================
+   MOBILE HERO — FINAL COMPACT LANDING COMPOSITION
+   Keep the full hero + ticker in the first viewport without
+   sacrificing the original red/black visual language.
+   ========================================================= */
+
+@media (max-width: 620px) {
+  .hero {
+    height: calc(100svh - 76px - var(--ticker-h));
+    min-height: 0;
+    padding: 20px 16px 0;
+    gap: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    overflow: hidden;
+  }
+
+  .hero-copy {
+    flex: 0 0 auto;
+    padding-top: 0;
+  }
+
+  .hero h1 {
+    font-size: clamp(44px, 12.4vw, 55px);
+    line-height: .9;
+    margin: 11px 0 14px;
+  }
+
+  .hero p {
+    max-width: 340px;
+    font-size: 14px;
+    line-height: 1.38;
+  }
+
+  .hero-buttons {
+    margin-top: 15px;
+  }
+
+  .social-links {
+    margin-top: 11px;
+  }
+
+  /* A controlled visual height prevents the orbit from pushing
+     the ticker below the first viewport. */
+  .visual {
+    flex: 0 0 245px;
+    width: calc(100% + 32px);
+    height: 245px;
+    margin: 0 -16px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    overflow: visible;
+  }
+
+  .dp-card {
+    width: min(100%, 360px);
+    height: 245px;
+    aspect-ratio: auto;
+    margin: 0 auto;
+    overflow: hidden;
+  }
+
+  /* Original red UI circle: large, clean, and flush to right. */
+  .dp-card::before {
+    display: block;
+    width: 45%;
+    right: -8%;
+    top: -10%;
+  }
+
+  /* Original black anchor: its bottom edge meets the ticker. */
+  .dp-card::after {
+    display: block;
+    width: 46%;
+    right: -9%;
+    bottom: -31%;
+  }
+
+  .orbit {
+    width: 70%;
+    left: 15%;
+    top: 12%;
+  }
+
+  .dp {
+    width: 43%;
+    left: 28.5%;
+    top: 25%;
+  }
+
+  .ticker {
+    width: 100%;
+    height: var(--ticker-h);
+    min-height: var(--ticker-h);
+    margin: 0;
+  }
+}
