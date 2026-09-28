@@ -6821,20 +6821,24 @@ html {
     aspect-ratio: auto !important;
   }
 
-  /* Keep the original circular language, but give both accents
-     the same visual weight and a deliberate relationship to the
-     frame edges. */
+  /* Contained tablet accents:
+     both circles stay inside the visual frame instead of behaving
+     like clipped edge decorations. */
   .dp-card::before {
-    width: 28% !important;
-    right: -1% !important;
-    top: 10% !important;
+    width: 24% !important;
+    right: 4% !important;
+    top: 12% !important;
+    bottom: auto !important;
+    aspect-ratio: 1 / 1 !important;
     border-radius: 50% !important;
   }
 
   .dp-card::after {
-    width: 28% !important;
-    right: -1% !important;
-    bottom: -5% !important;
+    width: 24% !important;
+    right: 4% !important;
+    bottom: 4% !important;
+    top: auto !important;
+    aspect-ratio: 1 / 1 !important;
     border-radius: 50% !important;
   }
 
