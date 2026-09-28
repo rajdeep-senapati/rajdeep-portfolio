@@ -6536,3 +6536,22 @@ html {
     z-index: 3;
   }
 }
+
+
+/* =========================================================
+   MOBILE HERO — FINAL BLACK CORNER SHAPE
+   Use the original UI language: a quarter-circle anchored
+   exactly to the bottom-right corner of the visual.
+   ========================================================= */
+
+@media (max-width: 620px) {
+  .dp-card::after {
+    width: 31% !important;
+    height: 31% !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    border-radius: 100% 0 0 0 !important;
+    transform: none !important;
+    z-index: 0 !important;
+  }
+}
