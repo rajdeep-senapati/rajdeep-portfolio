@@ -6876,3 +6876,157 @@ html {
   }
 }
 
+
+
+/* =========================================================
+   PHONE — SINGLE REFERENCE COMPOSITION
+   All phone widths use the iPhone-SE composition as the
+   reference. Geometry scales with width instead of switching
+   to different layouts between phone sizes.
+   ========================================================= */
+
+@media (max-width: 620px) {
+  :root {
+    --header-h: 76px;
+    --ticker-h: 38px;
+  }
+
+  .site-header,
+  .site-header.is-scrolled {
+    width: calc(100% - 32px) !important;
+    height: var(--header-h) !important;
+  }
+
+  main {
+    padding-top: var(--header-h) !important;
+  }
+
+  .hero {
+    height: calc(100svh - var(--header-h) - var(--ticker-h)) !important;
+    max-height: calc(100svh - var(--header-h) - var(--ticker-h)) !important;
+    padding: 18px 16px 0 !important;
+    gap: 0 !important;
+  }
+
+  .hero h1 {
+    font-size: clamp(42px, 12.7vw, 52px) !important;
+    line-height: .89 !important;
+    margin: 11px 0 14px !important;
+  }
+
+  .hero p {
+    max-width: 92% !important;
+    font-size: clamp(13px, 3.73vw, 14px) !important;
+    line-height: 1.4 !important;
+  }
+
+  .hero-buttons {
+    width: 100% !important;
+    gap: 8px !important;
+    margin-top: 16px !important;
+  }
+
+  .hero-buttons .rect-button {
+    width: calc((100% - 8px) / 2) !important;
+    min-width: 0 !important;
+    min-height: 46px !important;
+    padding: 12px 13px !important;
+    font-size: clamp(10px, 2.9vw, 11px) !important;
+  }
+
+  .social-links {
+    margin-top: 12px !important;
+    gap: 9px !important;
+  }
+
+  .social-links a {
+    width: 32px !important;
+    height: 32px !important;
+  }
+
+  .visual {
+    flex: 1 1 auto !important;
+    width: calc(100% + 32px) !important;
+    margin: 0 -16px !important;
+    min-height: 0 !important;
+    height: auto !important;
+    align-items: flex-end !important;
+    justify-content: center !important;
+    overflow: visible !important;
+  }
+
+  .dp-card {
+    width: min(96vw, 360px) !important;
+    height: clamp(245px, 38svh, 290px) !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    aspect-ratio: auto !important;
+    margin: 0 auto !important;
+    overflow: hidden !important;
+    isolation: isolate !important;
+  }
+
+  /* Reference red circle. */
+  .dp-card::before {
+    width: 38% !important;
+    height: auto !important;
+    aspect-ratio: 1 / 1 !important;
+    right: -8% !important;
+    top: 7% !important;
+    border-radius: 50% !important;
+    transform: none !important;
+    z-index: 0 !important;
+  }
+
+  /* Reference black corner circle. */
+  .dp-card::after {
+    width: 42% !important;
+    height: auto !important;
+    aspect-ratio: 1 / 1 !important;
+    right: -12% !important;
+    bottom: -27% !important;
+    border-radius: 50% !important;
+    transform: none !important;
+    z-index: 0 !important;
+  }
+
+  .orbit {
+    width: 68% !important;
+    left: 16% !important;
+    top: 13% !important;
+    z-index: 2 !important;
+  }
+
+  .dp {
+    width: 40% !important;
+    left: 30% !important;
+    top: 27% !important;
+    z-index: 5 !important;
+  }
+
+  .dp-card > b {
+    z-index: 8 !important;
+  }
+
+  .tag-one {
+    top: 18% !important;
+    left: 5% !important;
+  }
+
+  .tag-two {
+    right: 3% !important;
+    bottom: 24% !important;
+  }
+
+  .tag-three {
+    left: 6% !important;
+    bottom: 13% !important;
+  }
+
+  .ticker {
+    width: 100% !important;
+    height: var(--ticker-h) !important;
+    min-height: var(--ticker-h) !important;
+    margin: 0 !important;
+  }
+}
