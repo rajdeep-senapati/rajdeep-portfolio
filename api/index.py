@@ -229,7 +229,11 @@ async def health() -> dict[str, str]:
     return {"status": "ok", "service": "rajdeep-ai"}
 
 
-# Vercel reliably reaches this FastAPI function at /api.\n# POST /api is also used as the internal target for the public /api/chat rewrite.\n@app.post("/api")\n@app.post("/api/chat")\nasync def chat(request: Request):
+# Vercel reliably reaches this FastAPI function at /api.
+# POST /api is also used as the internal target for the public /api/chat rewrite.
+@app.post("/api")
+@app.post("/api/chat")
+async def chat(request: Request):
     api_key = os.getenv("GROQ_API_KEY")
 
     if not api_key:
