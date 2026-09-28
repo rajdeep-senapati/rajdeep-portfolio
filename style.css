@@ -2256,7 +2256,7 @@ h2 i {
 }
 
 .about.is-visible .facts::after {
-  animation: aboutSignalSweep 0.8s cubic-bezier(.22, 1, .36, 1) 0.3s both;
+  animation: aboutSignalSweep 3.6s linear 0.3s infinite;
 }
 
 .facts > div {
