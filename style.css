@@ -6509,3 +6509,30 @@ html {
     transform: none !important;
   }
 }
+
+
+/* =========================================================
+   MOBILE HERO — BLACK CIRCLE / TICKER INTEGRATION
+   Final geometry: keep the black accent as a deliberate
+   partial circle anchored to the bottom-right corner.
+   ========================================================= */
+
+@media (max-width: 620px) {
+  .dp-card::after {
+    width: 36% !important;
+    height: auto !important;
+    aspect-ratio: 1 / 1 !important;
+    right: -9% !important;
+    bottom: -20% !important;
+    border-radius: 50% !important;
+    transform: none !important;
+    z-index: 0 !important;
+  }
+
+  /* The portrait/orbits stay visually above the accent. */
+  .dp,
+  .orbit,
+  .dp-card b {
+    z-index: 3;
+  }
+}
