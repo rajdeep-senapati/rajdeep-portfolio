@@ -439,6 +439,7 @@ async function streamRemoteAnswer(question) {
   const renderVisible = () => {
     output.innerHTML = renderAIText(displayText);
     placeAIResponseCursor(output, cursor);
+    scrollAIChat();
   };
 
   const revealLoop = async () => {
