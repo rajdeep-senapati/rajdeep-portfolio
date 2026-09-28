@@ -4,6 +4,7 @@ import logging
 import os
 from pathlib import Path
 from typing import Any, AsyncIterator
+from urllib.parse import quote
 
 import httpx
 from fastapi import FastAPI, Request
@@ -161,6 +162,38 @@ def is_general_coding_request(question: str) -> bool:
     )
 
     return has_code_word and has_generation_verb and not has_project_context
+
+
+async def get_project_code_context(question: str) -> str:
+    q = question.lower()
+    sources = []
+    if "eda" in q or "diwali" in q:
+        sources.append(("Diwali Sales", "rajdeep-senapati/Diwali_Sales", "Diwali_Sales_Analysis.ipynb"))
+    if "stocksense" in q or "stock sense" in q:
+        sources.append(("StockSense", "rajdeep-senapati/stocksense", "app.py"))
+    if "jobshield" in q:
+        sources.append(("JobShield", "rajdeep-senapati/JobShield", "app.py"))
+    if not sources:
+        return ""
+    chunks = []
+    async with httpx.AsyncClient(timeout=httpx.Timeout(12.0, connect=5.0)) as client:
+        for project, repo, path in sources[:2]:
+            url = "https://raw.githubusercontent.com/" + repo + "/main/" + quote(path)
+            try:
+                response = await client.get(url)
+                response.raise_for_status()
+                source = response.text
+                if path.endswith(".ipynb"):
+                    notebook = json.loads(source)
+                    source = "\n\n".join(
+                        "".join(cell.get("source", []))
+                        for cell in notebook.get("cells", [])
+                        if cell.get("cell_type") == "code"
+                    )
+                chunks.append(f"PROJECT: {project}\nFILE: {path}\nSOURCE:\n{source[:14000]}")
+            except Exception as exc:
+                logger.warning("Project source retrieval failed for %s: %s", project, exc)
+    return "\n\n".join(chunks)
 
 
 def is_complex_question(question: str) -> bool:
