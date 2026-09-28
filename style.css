@@ -7131,3 +7131,47 @@ html {
     box-sizing: border-box !important;
   }
 }
+
+
+/* =========================================================
+   MOBILE — WIDTH MUST FOLLOW THE ACTUAL PHONE
+   ========================================================= */
+@media (max-width: 620px) {
+  html,
+  body {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  main {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+  }
+
+  /* The hero composition scales with the available phone width.
+     No fixed device-width assumption. */
+  .visual {
+    width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  .dp-card {
+    width: 100% !important;
+    max-width: none !important;
+  }
+
+  /* Ticker is a direct full-width section of the phone viewport.
+     No centering trick, no fixed 360px assumption. */
+  .ticker {
+    position: relative !important;
+    left: auto !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    box-sizing: border-box !important;
+  }
+}
