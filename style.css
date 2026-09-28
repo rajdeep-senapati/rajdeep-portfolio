@@ -6136,20 +6136,22 @@ body.modal-open {
 
 /* =========================================================
    PHONE HERO — SINGLE PROPORTIONAL COMPOSITION
-   The iPhone 16 composition is the reference. Every phone
-   width uses the same geometry; only the available width changes.
+   Full-bleed artwork uses the phone width. The copy keeps its
+   16px inset; the artwork intentionally breaks out of it.
    ========================================================= */
 @media (max-width: 620px) {
-  /* Artwork uses the exact same containing block as the phone
-     content. No viewport-width hacks and no JS repositioning. */
+  .hero {
+    overflow: visible !important;
+  }
+
   .visual {
-    width: 100% !important;
+    width: calc(100% + 32px) !important;
     max-width: none !important;
-    height: clamp(250px, 70vw, 275px) !important;
-    min-height: clamp(250px, 70vw, 275px) !important;
-    max-height: clamp(250px, 70vw, 275px) !important;
+    height: 250px !important;
+    min-height: 250px !important;
+    max-height: 250px !important;
     flex: none !important;
-    margin: 0 !important;
+    margin: 0 -16px !important;
     padding: 0 !important;
     display: flex !important;
     align-items: stretch !important;
@@ -6162,11 +6164,11 @@ body.modal-open {
     position: relative !important;
     flex: 0 0 100% !important;
     width: 100% !important;
-    max-width: none !important;
-    height: 100% !important;
-    min-height: 0 !important;
-    max-height: none !important;
-    margin: 0 !important;
+    max-width: 360px !important;
+    height: 250px !important;
+    min-height: 250px !important;
+    max-height: 250px !important;
+    margin: 0 auto !important;
     aspect-ratio: auto !important;
     overflow: hidden !important;
     isolation: isolate !important;
@@ -6174,16 +6176,16 @@ body.modal-open {
     box-sizing: border-box !important;
   }
 
-  /* Same geometry at 360, 375 and 393px.
-     The circles therefore scale with the artwork instead of
-     being recalculated per device. */
+  /* Corner circles stay inside the artwork coordinate system.
+     The red circle is fully readable; the black circle remains
+     intentionally anchored below the frame. */
   .dp-card::before {
     display: block !important;
     width: 38% !important;
     height: auto !important;
     aspect-ratio: 1 / 1 !important;
-    right: -8% !important;
-    top: 7% !important;
+    right: 5% !important;
+    top: 6% !important;
     bottom: auto !important;
     border-radius: 50% !important;
     transform: none !important;
@@ -6192,12 +6194,12 @@ body.modal-open {
 
   .dp-card::after {
     display: block !important;
-    width: 42% !important;
+    width: 38% !important;
     height: auto !important;
     aspect-ratio: 1 / 1 !important;
-    right: -12% !important;
+    right: 5% !important;
+    bottom: -34% !important;
     top: auto !important;
-    bottom: -27% !important;
     border-radius: 50% !important;
     transform: none !important;
     z-index: 0 !important;
@@ -6206,14 +6208,14 @@ body.modal-open {
   .orbit {
     width: 68% !important;
     left: 16% !important;
-    top: 13% !important;
+    top: 9% !important;
     z-index: 2 !important;
   }
 
   .dp {
     width: 40% !important;
     left: 30% !important;
-    top: 27% !important;
+    top: 23% !important;
     z-index: 5 !important;
   }
 
@@ -6222,7 +6224,7 @@ body.modal-open {
   }
 
   .tag-one {
-    top: 18% !important;
+    top: 15% !important;
     left: 5% !important;
   }
 
@@ -6233,13 +6235,11 @@ body.modal-open {
 
   .tag-three {
     left: 6% !important;
-    bottom: 13% !important;
+    bottom: 11% !important;
   }
 
-  /* Ticker is a sibling of the hero and therefore starts from
-     the same 100%-wide root coordinate system. Because the
-     mobile root scrollbar is hidden, 100% is the visible phone
-     width — no 100vw/negative-margin/JS offset is required. */
+  /* Ticker is a direct child of main, so it is already at the
+     phone's full content width. No viewport-unit or JS offset. */
   .ticker {
     position: relative !important;
     z-index: 20 !important;
@@ -6287,4 +6287,3 @@ body.modal-open {
     animation: none !important;
   }
 }
-
