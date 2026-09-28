@@ -5909,7 +5909,7 @@ body.modal-open .site-header {
   .site-header .header-ai,
   .site-header.is-scrolled .header-ai {
     padding: 8px 11px !important;
-    font-size: 10px !important;
+    font-size: var(--ticker-font-size, 10px) !important;
     line-height: 1 !important;
     white-space: nowrap !important;
     transform: none !important;
