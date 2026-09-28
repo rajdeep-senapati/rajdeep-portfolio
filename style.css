@@ -6269,7 +6269,7 @@ body.modal-open .site-header {
     justify-content: center !important;
     overflow: hidden !important;
     white-space: nowrap !important;
-    font-size: 10px !important;
+    font-size: var(--ticker-font-size, 10px) !important;
     line-height: 1 !important;
     letter-spacing: .01em !important;
     gap: 0 !important;
