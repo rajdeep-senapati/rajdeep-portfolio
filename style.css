@@ -5957,3 +5957,36 @@ html {
     aspect-ratio: 1.5 / 1;
   }
 }
+
+
+/* =========================================================
+   MOBILE LANDING — ORBIT / TICKER ALIGNMENT
+   Make the background circles feel physically connected to
+   the visual frame and the ticker.
+   ========================================================= */
+
+@media (max-width: 620px) {
+  .hero {
+    padding-bottom: 0;
+  }
+
+  .dp-card {
+    margin-bottom: 0;
+  }
+
+  /* Red circle: reveal more of the curve instead of clipping
+     a large flat section against the top edge. */
+  .dp-card::before {
+    width: 40%;
+    right: -7%;
+    top: -9%;
+  }
+
+  /* Black circle: bring its lower edge into the ticker boundary
+     so there is no cream gap between the two elements. */
+  .dp-card::after {
+    width: 44%;
+    right: -8%;
+    bottom: -18%;
+  }
+}
