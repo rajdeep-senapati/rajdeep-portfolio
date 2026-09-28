@@ -7490,15 +7490,18 @@ html {
     max-height: 250px !important;
     margin: 0 !important;
     aspect-ratio: auto !important;
-    overflow: hidden !important;
+    overflow: visible !important;
     isolation: isolate !important;
     transform: none !important;
   }
 
+  /* The red/black circles belong to the screen composition, not
+     the card box. Let them run beyond the artwork and be clipped
+     only by the phone viewport/ticker edge. */
   .dp-card::before {
-    width: 38% !important;
-    right: -8% !important;
-    top: 7% !important;
+    width: 52% !important;
+    right: -18% !important;
+    top: 6% !important;
     bottom: auto !important;
     aspect-ratio: 1 / 1 !important;
     height: auto !important;
@@ -7507,9 +7510,9 @@ html {
   }
 
   .dp-card::after {
-    width: 42% !important;
-    right: -12% !important;
-    bottom: -27% !important;
+    width: 52% !important;
+    right: -18% !important;
+    bottom: -35% !important;
     top: auto !important;
     aspect-ratio: 1 / 1 !important;
     height: auto !important;
@@ -7552,6 +7555,7 @@ html {
      actual phone viewport from its left edge to its right edge. */
   .ticker {
     position: relative !important;
+    z-index: 20 !important;
     left: auto !important;
     width: 100vw !important;
     min-width: 100vw !important;
