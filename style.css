@@ -6673,10 +6673,12 @@ html {
     top: 7% !important;
   }
 
+  /* Match the red accent's edge treatment, but keep enough of the
+     black circle visible to read as the same visual system. */
   .dp-card::after {
-    width: 28% !important;
-    right: -4% !important;
-    bottom: -9% !important;
+    width: 27% !important;
+    right: -3% !important;
+    bottom: -6% !important;
   }
 }
 
