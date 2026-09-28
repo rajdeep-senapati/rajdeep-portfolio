@@ -890,7 +890,8 @@ function fitMobileTicker() {
    * a second viewport coordinate system.
    */
   const availableWidth = Math.max(1, mobileTicker.clientWidth - 16);
-  const baseSize = 10;
+  /* Keep the complete skill ticker visible on narrow phones. */
+  const baseSize = 8.5;
 
   mobileTickerContent.style.transform = "none";
   mobileTickerContent.style.fontSize = `${baseSize}px`;
@@ -900,7 +901,7 @@ function fitMobileTicker() {
 
   if (naturalWidth > availableWidth) {
     const fittedSize = Math.max(
-      7,
+      6.5,
       baseSize * (availableWidth / naturalWidth),
     );
     mobileTickerContent.style.fontSize = `${fittedSize}px`;
