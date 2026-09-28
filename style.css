@@ -5990,3 +5990,36 @@ html {
     bottom: -18%;
   }
 }
+
+
+/* =========================================================
+   MOBILE LANDING — CLEANER COMPOSITION
+   The red corner circle competes with the profile/orbit system
+   at narrow widths, so remove it on mobile. Keep the black
+   anchor shape flush with the ticker.
+   ========================================================= */
+
+@media (max-width: 620px) {
+  .dp-card::before {
+    display: none;
+  }
+
+  .dp-card::after {
+    display: block;
+    width: 46%;
+    right: -10%;
+    bottom: -28%;
+  }
+
+  .dp-card {
+    aspect-ratio: 1.5 / 1;
+  }
+
+  .visual {
+    margin-bottom: 0;
+  }
+
+  .ticker {
+    margin-top: 0;
+  }
+}
