@@ -6790,3 +6790,39 @@ html {
     min-height: 38px !important;
   }
 }
+
+/* =========================================================
+   PORTRAIT TABLET — iPAD PRO / iPAD MINI
+   Do not use the full tall viewport as hero whitespace.
+   Keep the two-column composition, but compact the stage so
+   copy, portrait and ticker belong to the same visual frame.
+   ========================================================= */
+
+@media (min-width: 851px) and (max-width: 1100px) and (orientation: portrait) {
+  .hero {
+    min-height: 820px !important;
+    height: 820px !important;
+    padding: 34px 4% 28px !important;
+    align-items: center !important;
+  }
+
+  .hero-copy {
+    align-self: center !important;
+  }
+
+  .visual {
+    height: 100% !important;
+    align-self: stretch !important;
+  }
+
+  .dp-card {
+    width: min(100%, 500px) !important;
+    height: 100% !important;
+    aspect-ratio: auto !important;
+  }
+
+  .ticker {
+    height: 40px !important;
+    min-height: 40px !important;
+  }
+}
