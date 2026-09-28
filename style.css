@@ -7457,53 +7457,33 @@ html {
 }
 
 /* =========================================================
-   MOBILE FINAL — ONE REFERENCE COMPOSITION
-   Keep the iPhone 16 artwork geometry identical across phones.
-   The ticker is independent and spans the actual page viewport.
+   MOBILE FINAL — VIEWPORT-ANCHORED COMPOSITION
+   The phone artwork and ticker are centered on the real
+   viewport, not the narrower inner containing block.
    ========================================================= */
 
 @media (max-width: 620px) {
 
-  html,
-  body {
-    width: 100% !important;
-    max-width: 100% !important;
-    overflow-x: hidden !important;
-  }
-
-  main {
-    width: 100% !important;
-    max-width: none !important;
-    margin: 0 !important;
-    padding-top: 78px !important;
-  }
-
-  /* ---------- HERO / COPY: leave existing visual styling intact ---------- */
-
-  .hero {
-    width: 100% !important;
-    height: auto !important;
-    min-height: 0 !important;
-    max-height: none !important;
-    padding: 12px 16px 0 !important;
-    margin: 0 !important;
-    gap: 0 !important;
-    display: flex !important;
-    flex-direction: column !important;
-    overflow: visible !important;
-  }
-
-  /* ---------- iPHONE 16 REFERENCE ARTWORK ---------- */
+  /* ---------- ARTWORK ---------- */
 
   .visual {
     flex: none !important;
-    width: calc(100% + 32px) !important;
+
+    width: 100dvw !important;
     height: 250px !important;
     min-height: 250px !important;
     max-height: 250px !important;
-    margin: 0 -16px !important;
-    padding: 0 !important;
 
+    /*
+      Center the viewport-width stage even when its parent has
+      a narrower content box (padding / scrollbar gutter).
+    */
+    position: relative !important;
+    left: calc(50% + (100dvw - 100%) / 2) !important;
+    margin-left: -50dvw !important;
+    margin-right: 0 !important;
+
+    padding: 0 !important;
     display: flex !important;
     align-items: stretch !important;
     justify-content: center !important;
@@ -7512,21 +7492,20 @@ html {
 
   .dp-card {
     flex: none !important;
-    width: min(100%, 360px) !important;
-    max-width: 360px !important;
+    width: 100% !important;
+    max-width: none !important;
     height: 250px !important;
     min-height: 250px !important;
     max-height: 250px !important;
     aspect-ratio: auto !important;
-    margin: 0 auto !important;
+    margin: 0 !important;
     overflow: hidden !important;
     isolation: isolate !important;
     transform: none !important;
   }
 
-  /* Exact reference corner geometry. */
+  /* Keep the established iPhone-reference geometry. */
   .dp-card::before {
-    display: block !important;
     width: 38% !important;
     height: auto !important;
     aspect-ratio: 1 / 1 !important;
@@ -7539,7 +7518,6 @@ html {
   }
 
   .dp-card::after {
-    display: block !important;
     width: 42% !important;
     height: auto !important;
     aspect-ratio: 1 / 1 !important;
@@ -7551,7 +7529,6 @@ html {
     z-index: 0 !important;
   }
 
-  /* Exact reference orbit/photo relationship. */
   .orbit {
     width: 68% !important;
     left: 16% !important;
@@ -7585,27 +7562,26 @@ html {
     bottom: 13% !important;
   }
 
-  /* ---------- TICKER: FULL WIDTH, NO 100vw/TRANSFORM TRICKS ---------- */
+  /* ---------- TICKER ---------- */
 
   .ticker {
     position: relative !important;
-    left: auto !important;
-    right: auto !important;
-    transform: none !important;
+    left: calc(50% + (100dvw - 100%) / 2) !important;
+    width: 100dvw !important;
+    min-width: 100dvw !important;
+    max-width: 100dvw !important;
 
-    display: flex !important;
-    width: 100% !important;
-    min-width: 0 !important;
-    max-width: none !important;
-
-    margin: 0 !important;
-    padding-left: 24px !important;
-    padding-right: 24px !important;
+    margin-left: -50dvw !important;
+    margin-right: 0 !important;
+    margin-top: 0 !important;
 
     height: 38px !important;
     min-height: 38px !important;
+
+    padding: 0 24px !important;
     box-sizing: border-box !important;
 
-    align-self: stretch !important;
+    transform: none !important;
+    align-self: auto !important;
   }
 }
