@@ -5835,6 +5835,9 @@ body.modal-open {
   .hero-buttons {
     width: 100% !important;
     display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;
     gap: 8px !important;
     margin-top: 16px !important;
   }
