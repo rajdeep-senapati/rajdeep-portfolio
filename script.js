@@ -12,9 +12,9 @@ const aiQuestions = document.querySelector("#aiQuestions");
 
 const RAJDEEP_AI_API =
   window.RAJDEEP_AI_API ||
-  ((window.location.protocol === "http:" || window.location.protocol === "https:")
-    ? "/api/chat"
-    : "");
+  (["localhost", "127.0.0.1"].includes(window.location.hostname)
+    ? "http://127.0.0.1:8000/api/chat"
+    : "/api/chat");
 
 const quickAnswers = {
   "Who are you?":
