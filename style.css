@@ -6269,3 +6269,159 @@ html {
     margin: 0;
   }
 }
+
+
+/* =========================================================
+   MOBILE HERO — DEFINITIVE COMPOSITION
+   One controlled layout owns the mobile landing screen.
+   This intentionally overrides the older experimental mobile
+   rules above without changing desktop/tablet behaviour.
+   ========================================================= */
+
+@media (max-width: 620px) {
+  :root {
+    --header-h: 70px;
+    --ticker-h: 38px;
+  }
+
+  .hero {
+    width: 100%;
+    height: calc(100svh - var(--header-h) - var(--ticker-h)) !important;
+    min-height: 0 !important;
+    max-height: calc(100svh - var(--header-h) - var(--ticker-h));
+    padding: 18px 16px 0 !important;
+    margin: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .hero-copy {
+    flex: 0 0 auto !important;
+    width: 100%;
+    padding: 0 !important;
+  }
+
+  .hero h1 {
+    font-size: clamp(45px, 12.7vw, 56px) !important;
+    line-height: .89 !important;
+    margin: 11px 0 14px !important;
+  }
+
+  .hero p {
+    max-width: 340px;
+    font-size: 14px !important;
+    line-height: 1.4 !important;
+  }
+
+  .hero-buttons {
+    margin-top: 16px !important;
+    gap: 8px !important;
+  }
+
+  .rect-button {
+    width: 168px;
+    min-height: 46px;
+    padding: 12px 13px;
+    font-size: 11px;
+  }
+
+  .social-links {
+    margin-top: 12px !important;
+    gap: 9px;
+  }
+
+  .social-links a {
+    width: 32px;
+    height: 32px;
+  }
+
+  /* The visual receives exactly the remaining hero height. */
+  .visual {
+    flex: 1 1 auto !important;
+    width: calc(100% + 32px) !important;
+    min-width: 0 !important;
+    min-height: 250px !important;
+    height: auto !important;
+    margin: 0 -16px !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: flex-end !important;
+    justify-content: center !important;
+    overflow: visible !important;
+  }
+
+  .dp-card {
+    position: relative;
+    flex: 0 1 360px;
+    width: min(100%, 360px) !important;
+    height: 100% !important;
+    max-height: 330px;
+    min-height: 250px;
+    aspect-ratio: auto !important;
+    margin: 0 auto !important;
+    overflow: hidden !important;
+  }
+
+  /* Original red UI circle — full circular geometry,
+     intentionally clipped only by the right edge. */
+  .dp-card::before {
+    display: block !important;
+    width: 44% !important;
+    aspect-ratio: 1 !important;
+    right: -8% !important;
+    top: 4% !important;
+    border-radius: 50% !important;
+  }
+
+  /* Original black anchor — its bottom is flush with the
+     visual/ticker boundary. */
+  .dp-card::after {
+    display: block !important;
+    width: 45% !important;
+    aspect-ratio: 1 !important;
+    right: -9% !important;
+    bottom: -27% !important;
+    border-radius: 50% !important;
+  }
+
+  .orbit {
+    width: 68% !important;
+    left: 16% !important;
+    top: 13% !important;
+  }
+
+  .dp {
+    width: 40% !important;
+    left: 30% !important;
+    top: 27% !important;
+  }
+
+  .tag-one {
+    top: 18% !important;
+    left: 5% !important;
+  }
+
+  .tag-two {
+    right: 3% !important;
+    bottom: 24% !important;
+  }
+
+  .tag-three {
+    left: 6% !important;
+    bottom: 13% !important;
+  }
+
+  /* Ticker is a separate sibling of .hero, so its top edge is
+     exactly the bottom edge of the hero — no cream gap. */
+  .ticker {
+    position: relative;
+    z-index: 10;
+    width: 100% !important;
+    height: var(--ticker-h) !important;
+    min-height: var(--ticker-h) !important;
+    margin: 0 !important;
+  }
+}
