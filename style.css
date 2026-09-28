@@ -7455,3 +7455,52 @@ html {
     box-sizing: border-box !important;
   }
 }
+
+/* =========================================================
+   MOBILE — PRESERVE iPHONE 16 ARTWORK + TRUE EDGE TICKER
+   Only mobile artwork geometry and ticker anchoring.
+   ========================================================= */
+
+@media (max-width: 620px) {
+
+  /* Keep the proven iPhone 16 artwork proportions. */
+  .orbit {
+    width: 70% !important;
+    left: 15% !important;
+    top: 14% !important;
+  }
+
+  .dp {
+    width: 42% !important;
+    left: 29% !important;
+    top: 27% !important;
+  }
+
+  .dp-card::before {
+    width: 45% !important;
+    right: -8% !important;
+    top: -5% !important;
+    bottom: auto !important;
+    aspect-ratio: 1 / 1 !important;
+  }
+
+  .dp-card::after {
+    width: 48% !important;
+    right: -10% !important;
+    bottom: -25% !important;
+    top: auto !important;
+    aspect-ratio: 1 / 1 !important;
+  }
+
+  /* Ticker is centered against the real viewport, not its parent. */
+  .ticker {
+    position: relative !important;
+    left: 50% !important;
+    width: 100vw !important;
+    min-width: 100vw !important;
+    max-width: 100vw !important;
+    margin: 0 !important;
+    transform: translateX(-50%) !important;
+    box-sizing: border-box !important;
+  }
+}
