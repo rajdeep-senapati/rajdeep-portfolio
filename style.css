@@ -7054,3 +7054,27 @@ html {
     padding-top: 78px !important;
   }
 }
+
+
+/* =========================================================
+   FINAL MOBILE SCROLL FIX — OPAQUE HEADER
+   Prevent hero content from bleeding through the navbar
+   while scrolling on phones.
+   ========================================================= */
+@media (max-width: 620px) {
+  .site-header.is-scrolled {
+    background: var(--cream) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .site-header.is-scrolled::before {
+    inset: 0 !important;
+    background: var(--cream) !important;
+    border-color: rgba(17,16,15,.12) !important;
+    box-shadow: 0 8px 24px rgba(17,16,15,.08) !important;
+    opacity: 1 !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+}
