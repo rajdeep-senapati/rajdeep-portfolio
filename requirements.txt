@@ -1,1 +1,3 @@
-fastapi>=0.141.0\ngroq>=0.31.0\nhttpx>=0.28.0\n
+fastapi
+groq
+httpx
