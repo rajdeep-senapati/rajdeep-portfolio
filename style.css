@@ -4396,6 +4396,11 @@ body.modal-open {
   overflow: hidden;
 }
 
+/* Hide the site navbar while a full-screen AI or project modal is open. */
+body.modal-open .site-header {
+  display: none !important;
+}
+
 .case-modal {
   position: fixed;
   inset: 0;
