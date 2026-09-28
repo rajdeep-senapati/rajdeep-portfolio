@@ -6826,7 +6826,7 @@ html {
      the visual frame instead of floating independently. */
   .dp-card::before {
     width: 24% !important;
-    right: -4% !important;
+    right: -3% !important;
     top: 16% !important;
     bottom: auto !important;
     aspect-ratio: 1 / 1 !important;
@@ -6835,8 +6835,8 @@ html {
 
   .dp-card::after {
     width: 24% !important;
-    right: -4% !important;
-    bottom: -12% !important;
+    right: -3% !important;
+    bottom: -2% !important;
     top: auto !important;
     aspect-ratio: 1 / 1 !important;
     border-radius: 50% !important;
