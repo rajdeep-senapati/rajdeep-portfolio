@@ -6555,3 +6555,43 @@ html {
     z-index: 0 !important;
   }
 }
+
+
+/* =========================================================
+   MOBILE HERO — MATCH DESKTOP CIRCLE LANGUAGE
+   Both accent shapes use the same true-circle treatment.
+   They are simply positioned at opposite corners and clipped
+   naturally by the visual frame.
+   ========================================================= */
+
+@media (max-width: 620px) {
+  .dp-card::before {
+    width: 38% !important;
+    height: auto !important;
+    aspect-ratio: 1 / 1 !important;
+    right: -8% !important;
+    top: 4% !important;
+    border-radius: 50% !important;
+    transform: none !important;
+    z-index: 0 !important;
+  }
+
+  .dp-card::after {
+    width: 42% !important;
+    height: auto !important;
+    aspect-ratio: 1 / 1 !important;
+    right: -12% !important;
+    bottom: -27% !important;
+    border-radius: 50% !important;
+    transform: none !important;
+    z-index: 0 !important;
+  }
+
+  /* Keep the actual composition above both background accents. */
+  .orbit,
+  .dp,
+  .dp-card b {
+    position: relative;
+    z-index: 3;
+  }
+}
