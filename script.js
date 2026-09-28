@@ -864,8 +864,8 @@ document.querySelectorAll(".project-card[data-project]").forEach((card) => {
 
 /* =========================================================
    RESPONSIVE MOBILE TICKER
-   Start with the complete ticker string, measure its real
-   rendered width, then fit that string to the phone width.
+   Fit the complete ticker string from its first character to
+   its last character inside the actual ticker content box.
    ========================================================= */
 
 const mobileTicker = document.querySelector(".ticker");
@@ -874,40 +874,36 @@ const mobileTickerContent = mobileTicker?.querySelector(".ticker-content");
 function fitMobileTicker() {
   if (!mobileTicker || !mobileTickerContent) return;
 
-  const isMobile = window.matchMedia("(max-width: 620px)").matches;
-
-  if (!isMobile) {
+  if (!window.matchMedia("(max-width: 620px)").matches) {
     mobileTickerContent.style.fontSize = "";
     mobileTickerContent.style.transform = "";
     return;
   }
 
   const availableWidth = Math.max(1, mobileTicker.clientWidth - 16);
-  const baseSize = 10;
+  const maxSize = 10;
+  const minSize = 5.5;
 
-  /*
-   * Measure the complete string starting at:
-   * MACHINE LEARNING ✦ GENAI ✦ DATA ANALYTICS ✦ SQL ✦ CLOUD ✦ BI
-   */
   mobileTickerContent.style.transform = "none";
-  mobileTickerContent.style.fontSize = `${baseSize}px`;
+  mobileTickerContent.style.fontSize = `${maxSize}px`;
 
   const naturalWidth =
     mobileTickerContent.getBoundingClientRect().width;
 
-  const fittedSize = naturalWidth > availableWidth
-    ? Math.max(5.5, baseSize * (availableWidth / naturalWidth))
-    : baseSize;
+  const fittedSize = Math.max(
+    minSize,
+    maxSize * Math.min(1, availableWidth / naturalWidth),
+  );
 
   mobileTickerContent.style.fontSize = `${fittedSize}px`;
 
-  const fittedWidth =
+  const finalWidth =
     mobileTickerContent.getBoundingClientRect().width;
 
-  mobileTickerContent.style.transform =
-    fittedWidth > availableWidth
-      ? `scaleX(${availableWidth / fittedWidth})`
-      : "none";
+  if (finalWidth > availableWidth) {
+    mobileTickerContent.style.transform =
+      `scaleX(${availableWidth / finalWidth})`;
+  }
 }
 
 const tickerResizeObserver =
