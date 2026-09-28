@@ -881,8 +881,25 @@ function fitMobileTicker() {
 
   if (!isMobile) {
     mobileTickerContent.style.fontSize = "";
+    mobileTicker.style.width = "";
+    mobileTicker.style.marginLeft = "";
     return;
   }
+
+  /*
+   * The mobile emulator/device can reserve a scrollbar gutter inside
+   * the page layout. CSS 100vw then follows that reduced layout width.
+   * Anchor the ticker to the real visual viewport instead.
+   */
+  const viewportWidth =
+    window.visualViewport?.width ||
+    window.innerWidth;
+
+  const parentLeft =
+    mobileTicker.parentElement?.getBoundingClientRect().left || 0;
+
+  mobileTicker.style.width = `${viewportWidth}px`;
+  mobileTicker.style.marginLeft = `${-parentLeft}px`;
 
   const baseSize = 10;
   const horizontalPadding = 16;
