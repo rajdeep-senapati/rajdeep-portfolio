@@ -1,16 +1,21 @@
 import json
+import logging
 import os
 from pathlib import Path
-from typing import Any
+from typing import Any, AsyncIterator
 
+import httpx
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, StreamingResponse
-from groq import AsyncGroq
 
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger("rajdeep-ai")
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 KNOWLEDGE_PATH = BASE_DIR / "data" / "rajdeep.json"
+GROQ_URL = "https://api.groq.com/openai/v1/chat/completions"
 
 PRIMARY_MODEL = os.getenv("GROQ_PRIMARY_MODEL", "openai/gpt-oss-20b")
 ESCALATION_MODEL = os.getenv("GROQ_ESCALATION_MODEL", "openai/gpt-oss-120b")
@@ -61,6 +66,7 @@ app = FastAPI(title="Rajdeep AI", version="1.0.0")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
+        "https://rajdeep-senapati.vercel.app",
         "http://localhost:3000",
         "http://127.0.0.1:3000",
         "http://localhost:8000",
@@ -158,22 +164,64 @@ def sse(data: dict[str, Any]) -> str:
 
 
 async def stream_model(
-    client: AsyncGroq,
+    api_key: str,
     model: str,
     messages: list[dict[str, str]],
-):
-    stream = await client.chat.completions.create(
-        model=model,
-        messages=messages,
-        stream=True,
-        max_completion_tokens=700,
+) -> AsyncIterator[str]:
+    payload = {
+        "model": model,
+        "messages": messages,
+        "stream": True,
+        "max_completion_tokens": 700,
         **model_config(model),
-    )
+    }
 
-    async for chunk in stream:
-        text = chunk.choices[0].delta.content if chunk.choices else None
-        if text:
-            yield sse({"text": text})
+    timeout = httpx.Timeout(75.0, connect=10.0)
+
+    async with httpx.AsyncClient(timeout=timeout) as client:
+        async with client.stream(
+            "POST",
+            GROQ_URL,
+            headers={
+                "Authorization": f"Bearer {api_key}",
+                "Content-Type": "application/json",
+            },
+            json=payload,
+        ) as response:
+            if response.status_code < 200 or response.status_code >= 300:
+                error_body = (await response.aread()).decode("utf-8", errors="replace")
+                logger.error(
+                    "Groq request failed: model=%s status=%s body=%s",
+                    model,
+                    response.status_code,
+                    error_body[:500],
+                )
+                raise RuntimeError(f"Groq request failed with status {response.status_code}")
+
+            async for line in response.aiter_lines():
+                if not line.startswith("data:"):
+                    continue
+
+                raw = line[5:].strip()
+
+                if not raw or raw == "[DONE]":
+                    continue
+
+                try:
+                    chunk = json.loads(raw)
+                except json.JSONDecodeError:
+                    logger.warning("Ignored malformed Groq SSE chunk.")
+                    continue
+
+                choices = chunk.get("choices") or []
+                if not choices:
+                    continue
+
+                delta = choices[0].get("delta") or {}
+                text = delta.get("content")
+
+                if text:
+                    yield sse({"text": text})
 
 
 @app.get("/api")
@@ -238,19 +286,25 @@ async def chat(request: Request):
         else [PRIMARY_MODEL, FALLBACK_MODEL]
     )
 
-    client = AsyncGroq(api_key=api_key)
-
-    async def event_stream():
+    async def event_stream() -> AsyncIterator[str]:
         for model in models:
+            streamed_any = False
+
             try:
-                async for event in stream_model(client, model, messages):
+                async for event in stream_model(api_key, model, messages):
+                    streamed_any = True
                     yield event
 
                 yield sse({"done": True, "model": model})
                 return
 
             except Exception:
-                continue
+                logger.exception("AI stream failed for model=%s", model)
+
+                # Never start a second model after partial output.
+                if streamed_any:
+                    yield sse({"error": "The AI stream ended unexpectedly."})
+                    return
 
         yield sse({"error": "No AI model is currently available."})
 
@@ -259,6 +313,7 @@ async def chat(request: Request):
         media_type="text/event-stream",
         headers={
             "Cache-Control": "no-cache, no-transform",
+            "Connection": "keep-alive",
             "X-Accel-Buffering": "no",
         },
     )
