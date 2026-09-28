@@ -1027,7 +1027,7 @@ function positionWorkSection() {
     work.getBoundingClientRect().top +
     window.scrollY -
     headerHeight -
-    24;
+    80;
 
   window.scrollTo({
     top: Math.max(0, targetY),
