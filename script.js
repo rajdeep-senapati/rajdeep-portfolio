@@ -898,8 +898,12 @@ function fitMobileTicker() {
   const parentLeft =
     mobileTicker.parentElement?.getBoundingClientRect().left || 0;
 
-  mobileTicker.style.width = `${viewportWidth}px`;
-  mobileTicker.style.marginLeft = `${-parentLeft}px`;
+  mobileTicker.style.setProperty("width", `${viewportWidth}px`, "important");
+  mobileTicker.style.setProperty(
+    "margin-left",
+    `${-parentLeft}px`,
+    "important",
+  );
 
   const baseSize = 10;
   const horizontalPadding = 16;
