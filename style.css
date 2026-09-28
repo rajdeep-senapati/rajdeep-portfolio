@@ -7556,3 +7556,137 @@ html {
     box-sizing: border-box !important;
   }
 }
+
+
+/* =========================================================
+   MOBILE FINAL CORRECTION — MATCH iPHONE 16 COMPOSITION
+   Restore the proven mobile artwork proportions.
+   Only the outer canvas responds to viewport width.
+   ========================================================= */
+
+@media (max-width: 620px) {
+
+  html,
+  body {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  .hero {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: clip !important;
+  }
+
+  /* Full phone-width artwork canvas. */
+  .visual {
+    width: calc(100% + 32px) !important;
+    min-width: 0 !important;
+    max-width: none !important;
+
+    height: 245px !important;
+    min-height: 245px !important;
+    max-height: 245px !important;
+
+    margin-left: -16px !important;
+    margin-right: -16px !important;
+
+    position: relative !important;
+    left: auto !important;
+    transform: none !important;
+
+    display: flex !important;
+    align-items: flex-end !important;
+    justify-content: center !important;
+
+    overflow: visible !important;
+    flex: 0 0 245px !important;
+  }
+
+  .dp-card {
+    width: 100% !important;
+    max-width: 360px !important;
+    min-width: 0 !important;
+
+    height: 245px !important;
+    min-height: 245px !important;
+    max-height: 245px !important;
+
+    margin: 0 auto !important;
+    aspect-ratio: auto !important;
+
+    overflow: hidden !important;
+    transform: none !important;
+  }
+
+  /* EXACT mobile artwork proportions used by the
+     iPhone-16 reference composition. */
+  .orbit {
+    width: 70% !important;
+    left: 15% !important;
+    top: 14% !important;
+
+    transform: none !important;
+  }
+
+  .dp {
+    width: 42% !important;
+    left: 29% !important;
+    top: 27% !important;
+
+    transform: none !important;
+  }
+
+  .dp-card::before {
+    display: block !important;
+    width: 45% !important;
+    right: -8% !important;
+    top: -5% !important;
+    bottom: auto !important;
+
+    height: auto !important;
+    aspect-ratio: 1 / 1 !important;
+    border-radius: 50% !important;
+  }
+
+  .dp-card::after {
+    display: block !important;
+    width: 48% !important;
+    right: -10% !important;
+    bottom: -25% !important;
+    top: auto !important;
+
+    height: auto !important;
+    aspect-ratio: 1 / 1 !important;
+    border-radius: 50% !important;
+  }
+
+  .tag-one {
+    top: 16% !important;
+    left: 5% !important;
+  }
+
+  .tag-two {
+    right: 3% !important;
+    bottom: 22% !important;
+  }
+
+  .tag-three {
+    left: 6% !important;
+    bottom: 10% !important;
+  }
+
+  /* Ticker is tied to the actual viewport edges. */
+  .ticker {
+    position: relative !important;
+    width: 100vw !important;
+    min-width: 100vw !important;
+    max-width: none !important;
+
+    margin-left: calc(50% - 50vw) !important;
+    margin-right: 0 !important;
+
+    box-sizing: border-box !important;
+  }
+}
