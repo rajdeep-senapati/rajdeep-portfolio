@@ -896,19 +896,17 @@ function fitMobileTicker() {
   mobileTickerContent.style.transform = "none";
   mobileTicker.style.setProperty("--ticker-font-size", `${baseSize}px`);
 
-  const naturalWidth =
-    mobileTickerContent.getBoundingClientRect().width;
+  const naturalWidth = mobileTickerContent.scrollWidth;
 
   if (naturalWidth > availableWidth) {
     const fittedSize = Math.max(
-      6.5,
+      5.5,
       baseSize * (availableWidth / naturalWidth),
     );
     mobileTicker.style.setProperty("--ticker-font-size", `${fittedSize}px`);
   }
 
-  const fittedWidth =
-    mobileTickerContent.getBoundingClientRect().width;
+  const fittedWidth = mobileTickerContent.scrollWidth;
 
   if (fittedWidth > availableWidth) {
     mobileTickerContent.style.transform =
