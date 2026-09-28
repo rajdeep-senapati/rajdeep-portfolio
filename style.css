@@ -5701,36 +5701,3 @@ body.modal-open {
   content: none !important;
   display: none !important;
 }
-
-
-/* =========================================================
-   RECRUITER CLARITY
-   ========================================================= */
-
-.project-card[data-project="jobshield"],
-.project-card[data-project="stocksense"] {
-  position: relative;
-}
-
-.project-card[data-project="jobshield"]::after,
-.project-card[data-project="stocksense"]::after {
-  content: "FEATURED";
-  position: absolute;
-  top: 13px;
-  right: 13px;
-  z-index: 2;
-  padding: 4px 7px;
-  background: var(--red);
-  color: var(--paper);
-  font: 500 8px "DM Mono", monospace;
-  letter-spacing: .08em;
-  pointer-events: none;
-}
-
-@media (max-width: 850px) {
-  .project-card[data-project="jobshield"]::after,
-  .project-card[data-project="stocksense"]::after {
-    top: 12px;
-    right: 12px;
-  }
-}
