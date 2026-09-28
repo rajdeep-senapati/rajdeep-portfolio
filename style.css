@@ -5748,3 +5748,97 @@ body.modal-open {
   border: 0;
   border-top: 1px solid rgba(17, 16, 15, .12);
 }
+
+
+/* =========================================================
+   MOBILE STABILITY FIX — 393px / iPhone
+   - Prevent horizontal clipping from oversized children.
+   - Keep anchored sections clear of the sticky header.
+   - Preserve the existing desktop/mobile visual design.
+   ========================================================= */
+
+html {
+  scroll-padding-top: 92px;
+}
+
+@media (max-width: 850px) {
+  html,
+  body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  .site-header {
+    max-width: calc(100% - 32px);
+  }
+
+  .hero {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip;
+  }
+
+  .hero-copy,
+  .visual,
+  .dp-card {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .hero-copy {
+    width: 100%;
+    overflow-wrap: break-word;
+  }
+
+  .hero small {
+    display: block;
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .hero h1,
+  .hero p {
+    max-width: 100%;
+  }
+
+  .hero h1 {
+    overflow-wrap: anywhere;
+  }
+
+  .section,
+  .profile-sections {
+    max-width: 100%;
+  }
+
+  #top,
+  #work,
+  #skills,
+  #ai,
+  #about,
+  #contact,
+  #experience,
+  #certifications {
+    scroll-margin-top: 92px;
+  }
+}
+
+@media (max-width: 620px) {
+  .hero {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .hero-copy {
+    width: 100%;
+  }
+
+  .visual {
+    width: 100%;
+  }
+
+  .dp-card {
+    width: 100%;
+  }
+}
