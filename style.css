@@ -5701,3 +5701,50 @@ body.modal-open {
   content: none !important;
   display: none !important;
 }
+
+
+/* AI markdown output */
+.ai-response h4 {
+  margin: 14px 0 6px;
+  font-size: 13px;
+  line-height: 1.35;
+  font-weight: 800;
+}
+
+.ai-response h4:first-child {
+  margin-top: 0;
+}
+
+.ai-response ul,
+.ai-response ol {
+  margin: 7px 0 10px;
+  padding-left: 20px;
+}
+
+.ai-response li {
+  margin: 3px 0;
+}
+
+.ai-response pre {
+  margin: 10px 0;
+  padding: 12px 14px;
+  overflow-x: auto;
+  border: 1px solid rgba(17, 16, 15, .12);
+  background: rgba(17, 16, 15, .045);
+  border-radius: 8px;
+  white-space: pre;
+}
+
+.ai-response pre code {
+  display: block;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 11.5px;
+  line-height: 1.55;
+  white-space: pre;
+}
+
+.ai-response hr {
+  margin: 12px 0;
+  border: 0;
+  border-top: 1px solid rgba(17, 16, 15, .12);
+}
