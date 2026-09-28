@@ -864,12 +864,29 @@ document.querySelectorAll(".project-card[data-project]").forEach((card) => {
 
 /* =========================================================
    RESPONSIVE MOBILE TICKER
-   Fit the complete ticker string from its first character to
-   its last character inside the actual ticker content box.
+   Measure the actual rendered ticker text, not its 100%-wide
+   container, then fit the complete string to the phone width.
    ========================================================= */
 
 const mobileTicker = document.querySelector(".ticker");
 const mobileTickerContent = mobileTicker?.querySelector(".ticker-content");
+
+function getTickerTextWidth() {
+  if (!mobileTickerContent) return 0;
+
+  const range = document.createRange();
+  range.selectNodeContents(mobileTickerContent);
+
+  const rects = [...range.getClientRects()];
+  range.detach();
+
+  if (!rects.length) return 0;
+
+  const left = Math.min(...rects.map((rect) => rect.left));
+  const right = Math.max(...rects.map((rect) => rect.right));
+
+  return right - left;
+}
 
 function fitMobileTicker() {
   if (!mobileTicker || !mobileTickerContent) return;
@@ -887,8 +904,9 @@ function fitMobileTicker() {
   mobileTickerContent.style.transform = "none";
   mobileTickerContent.style.fontSize = `${maxSize}px`;
 
-  const naturalWidth =
-    mobileTickerContent.getBoundingClientRect().width;
+  const naturalWidth = getTickerTextWidth();
+
+  if (!naturalWidth) return;
 
   const fittedSize = Math.max(
     minSize,
@@ -897,12 +915,11 @@ function fitMobileTicker() {
 
   mobileTickerContent.style.fontSize = `${fittedSize}px`;
 
-  const finalWidth =
-    mobileTickerContent.getBoundingClientRect().width;
+  const fittedWidth = getTickerTextWidth();
 
-  if (finalWidth > availableWidth) {
+  if (fittedWidth > availableWidth) {
     mobileTickerContent.style.transform =
-      `scaleX(${availableWidth / finalWidth})`;
+      `scaleX(${availableWidth / fittedWidth})`;
   }
 }
 
