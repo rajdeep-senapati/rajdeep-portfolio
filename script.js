@@ -877,56 +877,35 @@ function fitMobileTicker() {
 
   const isMobile = window.matchMedia("(max-width: 620px)").matches;
 
-  mobileTickerContent.style.transform = "none";
-
   if (!isMobile) {
     mobileTickerContent.style.fontSize = "";
-    mobileTicker.style.width = "";
-    mobileTicker.style.marginLeft = "";
+    mobileTickerContent.style.transform = "";
     return;
   }
 
   /*
-   * The mobile emulator/device can reserve a scrollbar gutter inside
-   * the page layout. CSS 100vw then follows that reduced layout width.
-   * Anchor the ticker to the real visual viewport instead.
+   * CSS owns the ticker width. JS only fits the text.
+   * clientWidth measures the actual rendered ticker content box
+   * and excludes any scrollbar, so the calculation cannot create
+   * a second viewport coordinate system.
    */
-  const viewportWidth =
-    window.visualViewport?.width ||
-    window.innerWidth;
-
-  const parentLeft =
-    mobileTicker.parentElement?.getBoundingClientRect().left || 0;
-
-  mobileTicker.style.setProperty("width", `${viewportWidth}px`, "important");
-  mobileTicker.style.setProperty(
-    "margin-left",
-    `${-parentLeft}px`,
-    "important",
-  );
-
+  const availableWidth = Math.max(1, mobileTicker.clientWidth - 16);
   const baseSize = 10;
-  const horizontalPadding = 16;
-  const availableWidth = Math.max(
-    1,
-    mobileTicker.clientWidth - horizontalPadding,
-  );
 
+  mobileTickerContent.style.transform = "none";
   mobileTickerContent.style.fontSize = `${baseSize}px`;
 
   const naturalWidth =
     mobileTickerContent.getBoundingClientRect().width;
 
-  if (naturalWidth <= availableWidth) return;
+  if (naturalWidth > availableWidth) {
+    const fittedSize = Math.max(
+      7,
+      baseSize * (availableWidth / naturalWidth),
+    );
+    mobileTickerContent.style.fontSize = `${fittedSize}px`;
+  }
 
-  const fittedSize = Math.max(
-    6.2,
-    baseSize * (availableWidth / naturalWidth),
-  );
-
-  mobileTickerContent.style.fontSize = `${fittedSize}px`;
-
-  /* Extreme-width fallback: never clip the final item. */
   const fittedWidth =
     mobileTickerContent.getBoundingClientRect().width;
 
