@@ -87,12 +87,25 @@ function addAssistantMessage() {
     <span class="ai-avatar">R.</span>
     <div class="ai-bubble">
       <small>RAJDEEP AI</small>
-      <p></p>
+      <div class="ai-response"></div>
     </div>
   `;
   aiChat.appendChild(message);
   scrollAIChat();
-  return message.querySelector("p");
+  return message.querySelector(".ai-response");
+}
+
+function placeAIResponseCursor(response, cursor) {
+  if (!response || !cursor) return;
+
+  const candidates = response.querySelectorAll(
+    ".ai-table-row span, li, h4, p, code"
+  );
+
+  const target = candidates[candidates.length - 1] || response;
+
+  target.appendChild(cursor);
+  scrollAIChat();
 }
 
 function addThinkingMessage() {
@@ -363,8 +376,8 @@ async function streamRemoteAnswer(question) {
   let buffer = "";
   let streamedText = "";
   let displayText = "";
-  let revealTimer = null;
   let streamFinished = false;
+  let streamFailed = false;
   let revealResolve = null;
   const revealDone = new Promise((resolve) => {
     revealResolve = resolve;
@@ -374,8 +387,7 @@ async function streamRemoteAnswer(question) {
 
   const renderVisible = () => {
     output.innerHTML = renderAIText(displayText);
-    output.appendChild(cursor);
-    scrollAIChat();
+    placeAIResponseCursor(output, cursor);
   };
 
   const revealLoop = async () => {
@@ -425,6 +437,7 @@ async function streamRemoteAnswer(question) {
       }
 
       if (data.error) {
+        streamFailed = true;
         throw new Error(data.error);
       }
 
@@ -463,8 +476,13 @@ async function streamRemoteAnswer(question) {
     if (!streamedText) {
       throw new Error("Rajdeep AI returned an empty response.");
     }
+
+    if (streamFailed) {
+      throw new Error("Rajdeep AI stream ended unexpectedly.");
+    }
   } finally {
     streamFinished = true;
+    reader.releaseLock?.();
   }
 
   aiHistory.push(
@@ -504,9 +522,15 @@ async function askRajdeep(question) {
     const thinking = aiChat?.querySelector(".ai-thinking-message");
     thinking?.remove();
 
-    await streamLocalAnswer(
-      "I couldn't reach the live AI layer right now. Try one of the suggested questions, or check back once the AI endpoint is available."
+    const hasAssistantResponse = aiChat?.querySelector(
+      ".ai-message.assistant:not(.ai-thinking-message) .ai-response"
     );
+
+    if (!hasAssistantResponse?.textContent?.trim()) {
+      await streamLocalAnswer(
+        "I couldn't reach the live AI layer right now. Try one of the suggested questions, or check back once the AI endpoint is available."
+      );
+    }
   } finally {
     setComposerBusy(false);
     aiInput?.focus();
