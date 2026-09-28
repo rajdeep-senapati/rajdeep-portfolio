@@ -6751,6 +6751,20 @@ html {
     bottom: 12% !important;
   }
 
+  /* Keep the decorative shapes fully intentional on tablet.
+     They should read as circles, not as clipped blocks. */
+  .dp-card::before {
+    width: 30% !important;
+    right: 1% !important;
+    top: 5% !important;
+  }
+
+  .dp-card::after {
+    width: 32% !important;
+    right: 1% !important;
+    bottom: 3% !important;
+  }
+
   .ticker {
     height: 38px !important;
     min-height: 38px !important;
