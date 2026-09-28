@@ -5842,3 +5842,19 @@ html {
     width: 100%;
   }
 }
+
+
+/* =========================================================
+   MOBILE HERO — TIGHTER FIRST VIEW
+   Keep the composition intact while reducing its vertical footprint.
+   ========================================================= */
+
+@media (max-width: 620px) {
+  .hero {
+    padding-bottom: 32px;
+  }
+
+  .dp-card {
+    aspect-ratio: 1.18 / 1;
+  }
+}
