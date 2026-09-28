@@ -6800,9 +6800,9 @@ html {
 
 @media (min-width: 851px) and (max-width: 1100px) and (orientation: portrait) {
   .hero {
-    min-height: 820px !important;
-    height: 820px !important;
-    padding: 34px 4% 28px !important;
+    min-height: 770px !important;
+    height: 770px !important;
+    padding: 30px 4% 24px !important;
     align-items: center !important;
   }
 
@@ -6819,6 +6819,23 @@ html {
     width: min(100%, 500px) !important;
     height: 100% !important;
     aspect-ratio: auto !important;
+  }
+
+  /* Keep the original circular language, but give both accents
+     the same visual weight and a deliberate relationship to the
+     frame edges. */
+  .dp-card::before {
+    width: 28% !important;
+    right: -1% !important;
+    top: 10% !important;
+    border-radius: 50% !important;
+  }
+
+  .dp-card::after {
+    width: 28% !important;
+    right: -1% !important;
+    bottom: -5% !important;
+    border-radius: 50% !important;
   }
 
   .ticker {
