@@ -6821,13 +6821,13 @@ html {
     aspect-ratio: auto !important;
   }
 
-  /* Contained tablet accents:
-     both circles stay inside the visual frame instead of behaving
-     like clipped edge decorations. */
+  /* Tablet corner accents:
+     anchor both shapes to the same right edge so they belong to
+     the visual frame instead of floating independently. */
   .dp-card::before {
     width: 24% !important;
-    right: 4% !important;
-    top: 12% !important;
+    right: -4% !important;
+    top: 16% !important;
     bottom: auto !important;
     aspect-ratio: 1 / 1 !important;
     border-radius: 50% !important;
@@ -6835,8 +6835,8 @@ html {
 
   .dp-card::after {
     width: 24% !important;
-    right: 4% !important;
-    bottom: 4% !important;
+    right: -4% !important;
+    bottom: -12% !important;
     top: auto !important;
     aspect-ratio: 1 / 1 !important;
     border-radius: 50% !important;
