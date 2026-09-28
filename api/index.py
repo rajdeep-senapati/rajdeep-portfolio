@@ -52,6 +52,9 @@ VOICE
 - Do not repeatedly say "in the portfolio" when answering an interview question.
 - Be honest about gaps without sounding robotic.
 - Keep answers concise unless the question calls for detail.
+- For straightforward portfolio questions, answer in 2–4 short sentences or a few bullets.
+- For deeper interview or technical questions, answer in roughly 3–6 short paragraphs or bullets.
+- Do not pad answers to use the token limit.
 
 OUTPUT FORMAT
 - Return clean Markdown/plain text only.
@@ -193,7 +196,7 @@ async def stream_model(
         "model": model,
         "messages": messages,
         "stream": True,
-        "max_completion_tokens": 700,
+        "max_completion_tokens": 400,
         **model_config(model),
     }
 
