@@ -6599,74 +6599,65 @@ html {
 
 
 /* =========================================================
-   MOBILE HERO — FINAL GEOMETRY
-   The two accent circles intentionally share the exact same
-   geometry and are mirrored vertically. This keeps the hero
-   visually balanced instead of making the black accent look
-   like a different shape.
+   MOBILE HERO — FINAL CIRCLE FIT
+   The accent circles stay visually inside the right boundary.
+   This avoids the accidental flat vertical cuts seen when the
+   circle is positioned too far off-canvas.
    ========================================================= */
 
 @media (max-width: 620px) {
-
   .dp-card {
-    position: relative !important;
     overflow: hidden !important;
     isolation: isolate !important;
   }
 
-  /* Keep the original portrait/orbit composition intact. */
-  .dp-card .orbit {
+  /* Red accent: fully readable circle, with breathing room
+     from both the top edge and the right edge. */
+  .dp-card::before {
+    display: block !important;
+    width: 32% !important;
+    height: auto !important;
+    aspect-ratio: 1 / 1 !important;
+    right: 5% !important;
+    top: 7% !important;
+    bottom: auto !important;
+    border-radius: 50% !important;
+    transform: none !important;
+    background: var(--red) !important;
+    z-index: 0 !important;
+  }
+
+  /* Black accent: same visual scale and right alignment.
+     Only the bottom is allowed to pass behind the ticker edge. */
+  .dp-card::after {
+    display: block !important;
+    width: 32% !important;
+    height: auto !important;
+    aspect-ratio: 1 / 1 !important;
+    right: 5% !important;
+    bottom: -9% !important;
+    top: auto !important;
+    border-radius: 50% !important;
+    transform: none !important;
+    background: var(--ink) !important;
+    z-index: 0 !important;
+  }
+
+  .dp-card .orbit,
+  .dp-card .dp,
+  .dp-card > b {
     position: absolute !important;
-    width: 67% !important;
-    left: 26% !important;
-    top: 17% !important;
+  }
+
+  .dp-card .orbit {
     z-index: 2 !important;
   }
 
   .dp-card .dp {
-    position: absolute !important;
-    width: 40% !important;
-    left: 39% !important;
-    top: 26% !important;
     z-index: 5 !important;
   }
 
-  /*
-     Both accents use identical size, horizontal position and
-     edge clipping. Only the vertical edge is mirrored:
-       red  -> top
-       black -> bottom
-  */
-  .dp-card::before,
-  .dp-card::after {
-    width: 44% !important;
-    aspect-ratio: 1 / 1 !important;
-    right: -11% !important;
-    border-radius: 50% !important;
-    transform: none !important;
-    z-index: 0 !important;
-  }
-
-  .dp-card::before {
-    top: -14% !important;
-    bottom: auto !important;
-    background: var(--red) !important;
-  }
-
-  .dp-card::after {
-    bottom: -14% !important;
-    top: auto !important;
-    background: var(--ink) !important;
-  }
-
   .dp-card > b {
-    position: absolute !important;
     z-index: 8 !important;
   }
-
-  /*
-     The black accent reaches the actual bottom edge of the
-     composition through its clipping, so the ticker reads as
-     the intentional boundary of the hero rather than a gap.
-  */
 }
