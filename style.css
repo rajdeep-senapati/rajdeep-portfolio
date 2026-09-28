@@ -6277,15 +6277,17 @@ body.modal-open .site-header {
   }
 
   .ticker-content {
-    display: inline-block !important;
-    width: max-content !important;
-    max-width: none !important;
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
     white-space: nowrap !important;
-    flex: 0 0 auto !important;
+    flex: 0 0 100% !important;
     font-family: inherit !important;
     font-weight: inherit !important;
     line-height: 1 !important;
+    text-align: center !important;
     transform-origin: center center !important;
+    overflow: visible !important;
   }
 
   .ticker-content em {
