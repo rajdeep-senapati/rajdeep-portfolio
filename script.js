@@ -22,7 +22,9 @@ const quickAnswers = {
   "Tell me about JobShield.":
     "JobShield is an AI job discovery and safety assistant built around the flow Find → Verify → Match → Improve. It uses resume parsing, job-risk signals and evidence-based resume matching to help job seekers make better-informed decisions.",
   "What are your skills?":
-    "Rajdeep works with Python, machine learning, data analytics, SQL, GenAI/LLMs and cloud technologies. His project work includes XGBoost, Streamlit, Groq, OR-Tools, Flask, Pandas and Azure/AWS technologies."
+    "Rajdeep works with Python, machine learning, data analytics, SQL, GenAI/LLMs and cloud technologies. His project work includes XGBoost, Streamlit, Groq, OR-Tools, Flask, Pandas and Azure/AWS technologies.",
+  "What is the tech stack of this portfolio?":
+    "The portfolio itself uses HTML, CSS and Vanilla JavaScript on the frontend, Python with FastAPI on the backend, Groq with GPT-OSS 20B/120B and a Qwen fallback for AI, a structured JSON knowledge base, Server-Sent Events for streaming, and Vercel for deployment."
 };
 
 let aiBusy = false;
@@ -54,8 +56,26 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
-function scrollAIChat() {
-  if (aiChat) aiChat.scrollTop = aiChat.scrollHeight;
+let aiUserScrolledUp = false;
+
+function isAIChatAtBottom() {
+  if (!aiChat) return true;
+  return aiChat.scrollHeight - aiChat.scrollTop - aiChat.clientHeight < 28;
+}
+
+function scrollAIChat(force = false) {
+  if (!aiChat) return;
+  if (!force && aiUserScrolledUp) return;
+  aiChat.scrollTop = aiChat.scrollHeight;
+}
+
+aiChat?.addEventListener("scroll", () => {
+  aiUserScrolledUp = !isAIChatAtBottom();
+});
+
+function resumeAIAutoScroll() {
+  aiUserScrolledUp = false;
+  scrollAIChat(true);
 }
 
 /* The terminal-style cursor is singular: only the active response owns it. */
@@ -105,7 +125,6 @@ function placeAIResponseCursor(response, cursor) {
   const target = candidates[candidates.length - 1] || response;
 
   target.appendChild(cursor);
-  scrollAIChat();
 }
 
 function addThinkingMessage() {
@@ -328,6 +347,7 @@ async function revealAIText(output, cursor, text, delay) {
 
 async function streamLocalAnswer(text, question = "") {
   clearActiveCursor();
+  resumeAIAutoScroll();
 
   const thinking = addThinkingMessage();
   await wait(520);
@@ -345,6 +365,7 @@ async function streamLocalAnswer(text, question = "") {
 
 async function streamRemoteAnswer(question) {
   clearActiveCursor();
+  resumeAIAutoScroll();
 
   const thinking = addThinkingMessage();
 
@@ -499,6 +520,7 @@ async function askRajdeep(question) {
   const cleanQuestion = question.trim();
   if (!cleanQuestion || aiBusy) return;
 
+  resumeAIAutoScroll();
   addUserMessage(cleanQuestion);
   setComposerBusy(true);
 
