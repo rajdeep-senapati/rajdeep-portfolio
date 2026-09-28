@@ -5911,7 +5911,6 @@ body.modal-open {
   }
 
   #top,
-  #work,
   #skills,
   #ai,
   #about,
@@ -5919,6 +5918,12 @@ body.modal-open {
   #experience,
   #certifications {
     scroll-margin-top: 92px;
+  }
+
+  /* Keep the Work section completely below the fixed mobile header
+     when opened from the hero/nav anchor. */
+  #work {
+    scroll-margin-top: 124px !important;
   }
 }
 
