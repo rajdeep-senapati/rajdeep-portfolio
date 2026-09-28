@@ -7,7 +7,9 @@
       "practical machine learning",
       "data analytics",
       "GenAI/LLM applications",
-      "useful AI products"
+      "useful AI products",
+      "RAG",
+      "agentic AI"
     ],
     "languages": [
       "English",
@@ -128,7 +130,6 @@
   "career": {
     "target_roles": [
       "Data Analyst",
-      "Business Analyst",
       "Data Scientist",
       "Machine Learning Engineer",
       "GenAI Developer"
