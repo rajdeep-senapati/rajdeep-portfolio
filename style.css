@@ -6663,6 +6663,24 @@ html {
 }
 
 
+/* ---------------------------------------------------------
+   TABLET PORTRAIT — CONTROLLED BACKGROUND SHAPES
+   --------------------------------------------------------- */
+@media (min-width: 621px) and (max-width: 850px) {
+  .dp-card::before {
+    width: 27% !important;
+    right: -3% !important;
+    top: 7% !important;
+  }
+
+  .dp-card::after {
+    width: 28% !important;
+    right: -4% !important;
+    bottom: -9% !important;
+  }
+}
+
+
 /* =========================================================
    TABLET HERO — iPAD / MEDIUM SCREENS
    Keep the desktop two-column composition, but give the hero
