@@ -1,3 +1,4 @@
+import re
 import json
 import logging
 import os
@@ -120,21 +121,24 @@ def is_general_coding_request(question: str) -> bool:
         "exam seating",
         "alzheimer",
         "diwali sales",
-        "portfolio",
         "rajdeep",
     ]
 
+    # Project-specific technical questions remain in scope.
     if any(term in q for term in project_terms):
         return False
 
     coding_signals = [
         "give me code",
         "give me the code",
+        "give me a code",
+        "give me some code",
         "write code",
         "write me code",
         "generate code",
         "generate me code",
         "code for",
+        "code to",
         "python code",
         "javascript code",
         "java code",
@@ -156,7 +160,19 @@ def is_general_coding_request(question: str) -> bool:
         "debug this code",
     ]
 
-    return any(signal in q for signal in coding_signals)
+    if any(signal in q for signal in coding_signals):
+        return True
+
+    # Catch natural/typo-heavy requests such as "guve code to add three numbers".
+    has_code_word = bool(re.search(r"\bcode\b|\bpython\b|\bsql\b", q))
+    has_generation_intent = bool(
+        re.search(
+            r"\b(add|calculate|create|build|write|make|generate|give|show|solve|implement|explain how to)\b",
+            q,
+        )
+    )
+
+    return has_code_word and has_generation_intent
 
 
 def is_complex_question(question: str) -> bool:
