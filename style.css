@@ -5858,3 +5858,63 @@ html {
     aspect-ratio: 1.18 / 1;
   }
 }
+
+
+/* =========================================================
+   MOBILE LANDING — FIRST-VIEW BALANCE
+   Keep the hero composition, but make the landing screen feel
+   like a landing screen instead of a long stacked section.
+   ========================================================= */
+
+@media (max-width: 620px) {
+  .hero {
+    padding: 24px 16px 22px;
+    gap: 20px;
+  }
+
+  .hero h1 {
+    font-size: clamp(48px, 13.2vw, 58px);
+    line-height: .9;
+    margin: 14px 0 18px;
+  }
+
+  .hero p {
+    font-size: 15px;
+    line-height: 1.45;
+    max-width: 340px;
+  }
+
+  .hero-buttons {
+    flex-direction: row;
+    gap: 8px;
+    margin-top: 20px;
+  }
+
+  .rect-button {
+    width: 168px;
+    min-height: 46px;
+    padding: 12px 13px;
+    gap: 10px;
+    font-size: 11px;
+  }
+
+  .social-links {
+    margin-top: 16px;
+    gap: 9px;
+  }
+
+  .social-links a {
+    width: 32px;
+    height: 32px;
+  }
+
+  .visual {
+    justify-content: center;
+  }
+
+  .dp-card {
+    width: min(88vw, 350px);
+    aspect-ratio: 1.35 / 1;
+    height: auto;
+  }
+}
