@@ -6023,3 +6023,45 @@ html {
     margin-top: 0;
   }
 }
+
+
+/* =========================================================
+   MOBILE LANDING — RESTORE ORIGINAL VISUAL LANGUAGE
+   Keep the red/black corner shapes from the desktop composition,
+   but position them cleanly inside the smaller mobile visual.
+   ========================================================= */
+
+@media (max-width: 620px) {
+  .dp-card {
+    width: min(78vw, 290px);
+    aspect-ratio: 1.5 / 1;
+    margin-bottom: 0;
+  }
+
+  /* Restore the signature red corner shape, but keep its full
+     curve visible instead of cutting it at the card's top edge. */
+  .dp-card::before {
+    display: block;
+    width: 43%;
+    right: -9%;
+    top: 1%;
+  }
+
+  /* Keep the black shape anchored to the lower-right edge so
+     the visual ends directly where the ticker begins. */
+  .dp-card::after {
+    display: block;
+    width: 47%;
+    right: -13%;
+    bottom: -29%;
+  }
+
+  .visual {
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .ticker {
+    margin-top: 0;
+  }
+}
