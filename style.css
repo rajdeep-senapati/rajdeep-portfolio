@@ -6445,3 +6445,23 @@ html {
     transform: none !important;
   }
 }
+
+
+/* =========================================================
+   MOBILE HERO — BLACK ACCENT FINAL FIT
+   Keep the original black circle language, but reduce its
+   footprint so it reads as a deliberate corner accent rather
+   than an oversized cut-off shape.
+   ========================================================= */
+
+@media (max-width: 620px) {
+  .dp-card::after {
+    width: 34% !important;
+    height: auto !important;
+    aspect-ratio: 1 / 1 !important;
+    right: -5% !important;
+    bottom: -17% !important;
+    border-radius: 50% !important;
+    transform: none !important;
+  }
+}
