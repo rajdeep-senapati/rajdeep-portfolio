@@ -258,7 +258,62 @@ function renderAIText(text) {
 }
 
 
-async function streamLocalAnswer(text) {
+function getAIStreamSpeed(question, textLength = 0) {
+  const lower = question.toLowerCase();
+
+  const fastPatterns = [
+    "who are you",
+    "what are your skills",
+    "what skills do you have",
+    "tell me about your skills",
+    "tell me about jobshield",
+    "tell me about stocksense",
+    "what projects have you built",
+    "where did you study",
+    "what did you study"
+  ];
+
+  const deepPatterns = [
+    "compare",
+    "difference between",
+    "how did you",
+    "why did you",
+    "explain your approach",
+    "technical",
+    "architecture",
+    "walk me through",
+    "how does",
+    "weakness",
+    "why should i hire you"
+  ];
+
+  if (fastPatterns.some((pattern) => lower.includes(pattern))) {
+    return 7;
+  }
+
+  if (deepPatterns.some((pattern) => lower.includes(pattern))) {
+    return 24;
+  }
+
+  if (textLength > 900) return 18;
+  return 14;
+}
+
+async function revealAIText(output, cursor, text, delay) {
+  const chars = [...text];
+
+  for (let i = 0; i < chars.length; i += 1) {
+    cursor.before(document.createTextNode(chars[i]));
+
+    if (i % 2 === 0) scrollAIChat();
+
+    await wait(chars[i] === " " ? Math.max(4, delay * 0.45) : delay);
+  }
+
+  scrollAIChat();
+}
+
+async function streamLocalAnswer(text, question = "") {
   clearActiveCursor();
 
   const thinking = addThinkingMessage();
@@ -272,14 +327,7 @@ async function streamLocalAnswer(text) {
   cursor.className = "ai-cursor";
   output.appendChild(cursor);
 
-  const chars = [...text];
-  for (let i = 0; i < chars.length; i += 1) {
-    cursor.before(document.createTextNode(chars[i]));
-    if (i % 2 === 0) scrollAIChat();
-    await wait(chars[i] === " " ? 7 : 13);
-  }
-
-  scrollAIChat();
+  await revealAIText(output, cursor, text, getAIStreamSpeed(question, text.length));
 }
 
 async function streamRemoteAnswer(question) {
@@ -314,6 +362,51 @@ async function streamRemoteAnswer(question) {
   const decoder = new TextDecoder();
   let buffer = "";
   let streamedText = "";
+  let displayText = "";
+  let revealTimer = null;
+  let streamFinished = false;
+  let revealResolve = null;
+  const revealDone = new Promise((resolve) => {
+    revealResolve = resolve;
+  });
+
+  const delay = getAIStreamSpeed(question);
+
+  const renderVisible = () => {
+    output.innerHTML = renderAIText(displayText);
+    output.appendChild(cursor);
+    scrollAIChat();
+  };
+
+  const revealLoop = async () => {
+    while (!streamFinished || displayText.length < streamedText.length) {
+      if (displayText.length < streamedText.length) {
+        const nextChar = [...streamedText][[...displayText].length];
+        if (nextChar !== undefined) {
+          displayText += nextChar;
+          renderVisible();
+        }
+      } else {
+        await wait(16);
+      }
+
+      if (displayText.length < streamedText.length) {
+        await wait(nextCharDelay(displayText, delay));
+      }
+    }
+
+    revealResolve();
+  };
+
+  const nextCharDelay = (visible, baseDelay) => {
+    const last = visible.slice(-1);
+    if (last === " " || last === "\n") return Math.max(4, baseDelay * 0.45);
+    if (/[.!?]/.test(last)) return baseDelay * 2.2;
+    if (/[,:;]/.test(last)) return baseDelay * 1.35;
+    return baseDelay;
+  };
+
+  const revealPromise = revealLoop();
 
   const processEvent = (event) => {
     const lines = event.split(/\r?\n/);
@@ -337,37 +430,41 @@ async function streamRemoteAnswer(question) {
 
       if (data.text) {
         streamedText += data.text;
-        output.innerHTML = renderAIText(streamedText);
-        output.appendChild(cursor);
-        scrollAIChat();
       }
     }
   };
 
-  while (true) {
-    const { value, done } = await reader.read();
+  try {
+    while (true) {
+      const { value, done } = await reader.read();
 
-    if (done) {
-      buffer += decoder.decode();
-      break;
+      if (done) {
+        buffer += decoder.decode();
+        break;
+      }
+
+      buffer += decoder.decode(value, { stream: true });
+
+      const events = buffer.split(/\r?\n\r?\n/);
+      buffer = events.pop() || "";
+
+      for (const event of events) {
+        processEvent(event);
+      }
     }
 
-    buffer += decoder.decode(value, { stream: true });
-
-    const events = buffer.split(/\r?\n\r?\n/);
-    buffer = events.pop() || "";
-
-    for (const event of events) {
-      processEvent(event);
+    if (buffer.trim()) {
+      processEvent(buffer);
     }
-  }
 
-  if (buffer.trim()) {
-    processEvent(buffer);
-  }
+    streamFinished = true;
+    await revealPromise;
 
-  if (!streamedText) {
-    throw new Error("Rajdeep AI returned an empty response.");
+    if (!streamedText) {
+      throw new Error("Rajdeep AI returned an empty response.");
+    }
+  } finally {
+    streamFinished = true;
   }
 
   aiHistory.push(
