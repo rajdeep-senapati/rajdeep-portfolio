@@ -7455,3 +7455,104 @@ html {
     box-sizing: border-box !important;
   }
 }
+
+
+/* =========================================================
+   PHONE MASTER CANVAS — 393px iPHONE 16 REFERENCE
+   The visual composition must NOT shrink on narrower phones.
+   Narrow viewports crop the same reference canvas instead.
+   ========================================================= */
+
+@media (max-width: 620px) {
+
+  html,
+  body {
+    overflow-x: hidden !important;
+  }
+
+  .hero {
+    overflow-x: hidden !important;
+  }
+
+  /* Keep text responsive, but make the artwork one fixed
+     393px reference canvas for every phone. */
+  .visual {
+    width: 393px !important;
+    min-width: 393px !important;
+    max-width: 393px !important;
+
+    height: 275px !important;
+    min-height: 275px !important;
+    max-height: 275px !important;
+
+    position: relative !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding: 0 !important;
+
+    overflow: hidden !important;
+    flex: none !important;
+  }
+
+  .dp-card {
+    width: 393px !important;
+    min-width: 393px !important;
+    max-width: 393px !important;
+
+    height: 275px !important;
+    min-height: 275px !important;
+    max-height: 275px !important;
+
+    margin: 0 !important;
+    transform: none !important;
+  }
+
+  /* Keep the iPhone-16 artwork proportions exactly. */
+  .orbit {
+    width: 68% !important;
+    left: 16% !important;
+    top: 10% !important;
+  }
+
+  .dp {
+    width: 40% !important;
+    left: 30% !important;
+    top: 25% !important;
+  }
+
+  .dp-card::before,
+  .dp-card::after {
+    width: 30% !important;
+    aspect-ratio: 1 / 1 !important;
+  }
+
+  .tag-one {
+    top: 16% !important;
+    left: 5% !important;
+  }
+
+  .tag-two {
+    right: 3% !important;
+    bottom: 22% !important;
+  }
+
+  .tag-three {
+    left: 6% !important;
+    bottom: 10% !important;
+  }
+
+  /* Ticker is independent of the 393px artwork canvas. */
+  .ticker {
+    width: 100vw !important;
+    min-width: 100vw !important;
+    max-width: none !important;
+
+    margin-left: calc(50% - 50vw) !important;
+    margin-right: 0 !important;
+
+    box-sizing: border-box !important;
+  }
+}
