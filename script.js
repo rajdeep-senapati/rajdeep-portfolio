@@ -878,7 +878,7 @@ function fitMobileTicker() {
   const isMobile = window.matchMedia("(max-width: 620px)").matches;
 
   if (!isMobile) {
-    mobileTickerContent.style.fontSize = "";
+    mobileTicker.style.removeProperty("--ticker-font-size");
     mobileTickerContent.style.transform = "";
     return;
   }
@@ -894,7 +894,7 @@ function fitMobileTicker() {
   const baseSize = 8.5;
 
   mobileTickerContent.style.transform = "none";
-  mobileTickerContent.style.fontSize = `${baseSize}px`;
+  mobileTicker.style.setProperty("--ticker-font-size", `${baseSize}px`);
 
   const naturalWidth =
     mobileTickerContent.getBoundingClientRect().width;
@@ -904,7 +904,7 @@ function fitMobileTicker() {
       6.5,
       baseSize * (availableWidth / naturalWidth),
     );
-    mobileTickerContent.style.fontSize = `${fittedSize}px`;
+    mobileTicker.style.setProperty("--ticker-font-size", `${fittedSize}px`);
   }
 
   const fittedWidth =
