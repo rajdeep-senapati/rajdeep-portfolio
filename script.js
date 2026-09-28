@@ -207,47 +207,68 @@ async function streamRemoteAnswer(question) {
   let buffer = "";
   let streamedText = "";
 
+  const processEvent = (event) => {
+    const lines = event.split(/\r?\n/);
+
+    for (const line of lines) {
+      if (!line.startsWith("data:")) continue;
+
+      const payload = line.slice(5).trim();
+      if (!payload || payload === "[DONE]") continue;
+
+      let data;
+      try {
+        data = JSON.parse(payload);
+      } catch {
+        continue;
+      }
+
+      if (data.error) {
+        throw new Error(data.error);
+      }
+
+      if (data.text) {
+        streamedText += data.text;
+        output.innerHTML = renderAIText(streamedText);
+        output.appendChild(cursor);
+        scrollAIChat();
+      }
+    }
+  };
+
   while (true) {
     const { value, done } = await reader.read();
-    if (done) break;
+
+    if (done) {
+      buffer += decoder.decode();
+      break;
+    }
 
     buffer += decoder.decode(value, { stream: true });
-    const events = buffer.split("\n\n");
+
+    const events = buffer.split(/\r?\n\r?\n/);
     buffer = events.pop() || "";
 
     for (const event of events) {
-      const lines = event.split("\n");
-      for (const line of lines) {
-        if (!line.startsWith("data:")) continue;
-        const payload = line.slice(5).trim();
-        if (!payload || payload === "[DONE]") continue;
-
-        try {
-          const data = JSON.parse(payload);
-
-          if (data.error) {
-            throw new Error(data.error);
-          }
-
-          if (data.text) {
-            streamedText += data.text;
-            output.innerHTML = renderAIText(streamedText);
-            output.appendChild(cursor);
-            scrollAIChat();
-          }
-        } catch {
-          // Ignore incomplete SSE frames.
-        }
-      }
+      processEvent(event);
     }
   }
 
-  if (streamedText) {
-    aiHistory.push(
-      { role: "user", content: question },
-      { role: "assistant", content: streamedText }
-    );
-    if (aiHistory.length > 12) aiHistory.splice(0, aiHistory.length - 12);
+  if (buffer.trim()) {
+    processEvent(buffer);
+  }
+
+  if (!streamedText) {
+    throw new Error("Rajdeep AI returned an empty response.");
+  }
+
+  aiHistory.push(
+    { role: "user", content: question },
+    { role: "assistant", content: streamedText }
+  );
+
+  if (aiHistory.length > 12) {
+    aiHistory.splice(0, aiHistory.length - 12);
   }
 }
 
