@@ -6399,56 +6399,59 @@ body.modal-open .site-header {
   }
 }
 
-.mobile-section-indicator { display: none; }
+
+/* =========================================================
+   MOBILE SECTION INDICATOR
+   Minimal current-section label; native scrolling stays intact.
+   ========================================================= */
+
+.mobile-section-indicator {
+  display: none;
+}
 
 @media (max-width: 620px) {
   .mobile-section-indicator {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    gap: 8px;
-    min-width: 78px;
+    justify-content: flex-end;
+    width: 76px;
     height: 34px;
-    padding: 0 10px;
-    border: 1px solid transparent;
-    border-radius: 999px;
+    overflow: hidden;
     color: var(--ink);
     font: 500 10px "DM Mono", monospace;
     letter-spacing: 0.08em;
-    transition: color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
-  }
-
-  .mobile-section-indicator:hover {
-    color: var(--red);
-    border-color: var(--red);
-  }
-
-  .mobile-section-indicator b {
-    font: 500 12px "DM Mono", monospace;
-    line-height: 1;
-    transition: transform 0.25s ease;
-  }
-
-  .mobile-section-indicator.is-changing b {
-    transform: translateY(3px);
+    white-space: nowrap;
   }
 
   .mobile-section-indicator span {
-    display: inline-block;
-    min-width: 42px;
-    text-align: center;
+    display: block;
+    min-width: 76px;
+    text-align: right;
+    will-change: transform, opacity;
   }
 
   .mobile-section-indicator.is-changing span {
-    animation: mobileSectionSwap 0.24s ease both;
+    animation: mobileSectionSlide 0.24s cubic-bezier(.22, 1, .36, 1) both;
   }
 
-  @keyframes mobileSectionSwap {
-    from { opacity: 0; transform: translateY(-5px); }
-    to { opacity: 1; transform: translateY(0); }
+  .mobile-section-indicator b {
+    display: none;
+  }
+
+  @keyframes mobileSectionSlide {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .mobile-section-indicator.is-changing span { animation: none; }
+    .mobile-section-indicator.is-changing span {
+      animation: none;
+    }
   }
 }
