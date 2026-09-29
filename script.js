@@ -33,6 +33,55 @@ const aiHistory = [];
 let activeDialog = null;
 let lastDialogTrigger = null;
 
+/*
+ * Preserve the page position while a full-screen modal is open.
+ * Using a fixed body prevents the underlying page from jumping to the
+ * top when the modal takes control of scrolling.
+ */
+let lockedPageScrollY = 0;
+const MODAL_SCROLL_STORAGE_KEY = "rajdeep-modal-scroll-y";
+
+function lockPageScroll() {
+  lockedPageScrollY = window.scrollY || window.pageYOffset || 0;
+  document.body.style.position = "fixed";
+  document.body.style.top = `-${lockedPageScrollY}px`;
+  document.body.style.left = "0";
+  document.body.style.right = "0";
+  document.body.style.width = "100%";
+}
+
+function unlockPageScroll() {
+  const restoreY = lockedPageScrollY;
+  document.body.style.position = "";
+  document.body.style.top = "";
+  document.body.style.left = "";
+  document.body.style.right = "";
+  document.body.style.width = "";
+  window.scrollTo(0, restoreY);
+}
+
+function rememberModalScrollForReload() {
+  if (!document.body.classList.contains("modal-open")) return;
+  sessionStorage.setItem(MODAL_SCROLL_STORAGE_KEY, String(lockedPageScrollY));
+}
+
+function restoreModalScrollAfterReload() {
+  const saved = sessionStorage.getItem(MODAL_SCROLL_STORAGE_KEY);
+  if (!saved) return;
+
+  sessionStorage.removeItem(MODAL_SCROLL_STORAGE_KEY);
+  const restoreY = Number(saved);
+
+  if (!Number.isFinite(restoreY)) return;
+
+  window.requestAnimationFrame(() => {
+    window.scrollTo(0, restoreY);
+  });
+}
+
+window.addEventListener("pagehide", rememberModalScrollForReload);
+window.addEventListener("load", restoreModalScrollAfterReload);
+
 function getDialogFocusableElements(dialog) {
   if (!dialog) return [];
 
@@ -96,6 +145,7 @@ function trapDialogFocus(event) {
 
 function openAI(e) {
   if (e) e.preventDefault();
+  lockPageScroll();
   modal?.classList.add("open");
   document.body.classList.add("modal-open");
   activateDialog(modal, e?.currentTarget);
@@ -104,6 +154,7 @@ function openAI(e) {
 function closeAI() {
   modal?.classList.remove("open");
   document.body.classList.remove("modal-open");
+  unlockPageScroll();
   deactivateDialog(modal);
 }
 
@@ -899,6 +950,7 @@ function openCaseStudy(key, trigger = document.activeElement) {
     .join("");
   caseGithub.href = project.github;
 
+  lockPageScroll();
   caseModal.classList.add("open");
   document.body.classList.add("modal-open");
   activateDialog(caseModal, trigger);
@@ -909,6 +961,7 @@ function closeCaseStudy() {
   if (!caseModal) return;
   caseModal.classList.remove("open");
   document.body.classList.remove("modal-open");
+  unlockPageScroll();
   deactivateDialog(caseModal);
 }
 
