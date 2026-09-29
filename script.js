@@ -265,13 +265,34 @@ function addAssistantMessage() {
 function placeAIResponseCursor(response, cursor) {
   if (!response || !cursor) return;
 
-  const candidates = response.querySelectorAll(
-    ".ai-table-row span, li, h4, p, code"
+  /*
+   * Put the blinking cursor immediately after the final rendered text node,
+   * rather than at the end of the containing paragraph/list/code element.
+   * This keeps it visually attached to the actual last character.
+   */
+  const walker = document.createTreeWalker(
+    response,
+    NodeFilter.SHOW_TEXT,
+    {
+      acceptNode(node) {
+        return node.nodeValue?.length
+          ? NodeFilter.FILTER_ACCEPT
+          : NodeFilter.FILTER_REJECT;
+      }
+    }
   );
 
-  const target = candidates[candidates.length - 1] || response;
+  let lastTextNode = null;
+  while (walker.nextNode()) {
+    lastTextNode = walker.currentNode;
+  }
 
-  target.appendChild(cursor);
+  if (!lastTextNode?.parentNode) {
+    response.appendChild(cursor);
+    return;
+  }
+
+  lastTextNode.parentNode.insertBefore(cursor, lastTextNode.nextSibling);
 }
 
 function addThinkingMessage() {
