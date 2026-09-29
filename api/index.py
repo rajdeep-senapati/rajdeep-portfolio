@@ -1,5 +1,6 @@
 import re
 import json
+import asyncio
 import logging
 import os
 from pathlib import Path
@@ -275,11 +276,11 @@ def project_source_specs(question: str) -> list[tuple[str, str, str]]:
 
     if "jobshield" in q:
         if any(term in q for term in ["resume", "parser", "parse", "clean"]):
-            specs = [x for x in specs if "resume parser" in x[0] or "resume cleaner" in x[0] or x[2] == "app.py"]
+            specs = [x for x in specs if "resume parser" in x[0] or "resume cleaner" in x[0]]
         elif any(term in q for term in ["risk", "scam", "safety"]):
-            specs = [x for x in specs if "risk analyzer" in x[0] or x[2] == "app.py"]
+            specs = [x for x in specs if "risk analyzer" in x[0]]
         elif any(term in q for term in ["reason", "match", "job", "resume-job"]):
-            specs = [x for x in specs if "reasoner" in x[0] or "AI router" in x[0] or x[2] == "app.py"]
+            specs = [x for x in specs if "reasoner" in x[0] or "AI router" in x[0]]
     return specs[:6]
 
 
@@ -288,13 +289,13 @@ async def get_project_code_context(question: str) -> tuple[str, bool]:
     if not specs:
         return "", False
 
-    chunks: list[str] = []
-    failed = False
-    async with httpx.AsyncClient(timeout=httpx.Timeout(15.0, connect=5.0)) as client:
-        for project, repo, path in specs:
+    async with httpx.AsyncClient(timeout=httpx.Timeout(10.0, connect=4.0)) as client:
+        async def fetch_source(spec: tuple[str, str, str]) -> tuple[str, bool]:
+            project, repo, path = spec
             cache_key = f"{repo}:{path}"
             now = __import__("time").time()
             cached = PROJECT_SOURCE_CACHE.get(cache_key)
+
             try:
                 if cached and now - cached[0] < PROJECT_SOURCE_CACHE_TTL_SECONDS:
                     source = cached[1]
@@ -321,10 +322,16 @@ async def get_project_code_context(question: str) -> tuple[str, bool]:
                         for cell in notebook.get("cells", [])
                         if cell.get("cell_type") == "code"
                     )
-                chunks.append(f"PROJECT: {project}\nFILE: {path}\nSOURCE:\n{source[:12000]}")
+
+                return f"PROJECT: {project}\nFILE: {path}\nSOURCE:\n{source[:12000]}", False
             except Exception as exc:
-                failed = True
                 logger.warning("Project source retrieval failed for %s/%s: %s", repo, path, exc)
+                return "", True
+
+        results = await asyncio.gather(*(fetch_source(spec) for spec in specs))
+        chunks = [chunk for chunk, _ in results if chunk]
+        failed = any(item_failed for _, item_failed in results)
+
     return "\n\n".join(chunks), failed
 
 
