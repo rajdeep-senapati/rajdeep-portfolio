@@ -1202,13 +1202,23 @@ if (window.location.hash === "#work") {
 
 const navLinks = [...document.querySelectorAll(".main-nav a")];
 
+function resolveSectionTarget(href) {
+  if (!href || !href.startsWith("#")) return null;
+
+  // #top is the <main> wrapper for the entire page, not the Home section.
+  // Use the hero as the actual Home detection target so section tracking
+  // cannot fall back to HOME while the user is deeper in the page.
+  if (href === "#top") {
+    return document.querySelector(".hero");
+  }
+
+  return document.querySelector(href);
+}
+
 const navTargets = navLinks
   .map((link) => {
     const href = link.getAttribute("href");
-
-    if (!href || !href.startsWith("#")) return null;
-
-    const target = document.querySelector(href);
+    const target = resolveSectionTarget(href);
 
     if (!target) return null;
 
@@ -1227,8 +1237,7 @@ const mobileSectionLinks=[...document.querySelectorAll(".mobile-section-menu a")
 const mobileSectionTargets=mobileSectionLinks
   .map((link)=>{
     const href=link.getAttribute("href");
-    if(!href||!href.startsWith("#")) return null;
-    const target=document.querySelector(href);
+    const target=resolveSectionTarget(href);
     if(!target) return null;
     return {link,target};
   })
