@@ -1242,12 +1242,35 @@ function setMobileSectionMenu(open){
 
 function getActiveMobileSection(){
   const headerHeight=document.querySelector(".site-header")?.getBoundingClientRect().height||76;
-  const marker=window.scrollY+headerHeight+30;
+  const probeY=Math.min(
+    window.innerHeight-1,
+    headerHeight+Math.max(120, (window.innerHeight-headerHeight)*0.45)
+  );
+  const probeX=Math.min(window.innerWidth/2,window.innerWidth-1);
+  const element=document.elementFromPoint(probeX,probeY);
+  const visibleSection=element?.closest("section, footer");
+
+  if(visibleSection){
+    const match=mobileSectionTargets.find((item)=>item.target===visibleSection);
+    if(match) return match;
+  }
+
+  const marker=window.scrollY+probeY;
   let active=mobileSectionTargets[0];
+  let bestDistance=Infinity;
 
   for(const item of mobileSectionTargets){
-    const targetTop=item.target.getBoundingClientRect().top+window.scrollY;
-    if(targetTop<=marker) active=item;
+    const rect=item.target.getBoundingClientRect();
+    const top=rect.top+window.scrollY;
+    const bottom=top+rect.height;
+
+    if(marker>=top&&marker<=bottom) return item;
+
+    const distance=marker<top?top-marker:marker-bottom;
+    if(distance<bestDistance){
+      bestDistance=distance;
+      active=item;
+    }
   }
 
   return active;
