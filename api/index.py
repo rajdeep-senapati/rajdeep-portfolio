@@ -5,7 +5,6 @@ import os
 from pathlib import Path
 from typing import Any, AsyncIterator
 from urllib.parse import quote
-from urllib.parse import quote
 
 import httpx
 from fastapi import FastAPI, Request
@@ -23,6 +22,16 @@ GROQ_URL = "https://api.groq.com/openai/v1/chat/completions"
 PRIMARY_MODEL = os.getenv("GROQ_PRIMARY_MODEL", "openai/gpt-oss-20b")
 ESCALATION_MODEL = os.getenv("GROQ_ESCALATION_MODEL", "openai/gpt-oss-120b")
 FALLBACK_MODEL = os.getenv("GROQ_FALLBACK_MODEL", "qwen/qwen3.8-27b")
+
+# Lightweight in-process protection suitable for the current free-tier setup.
+# It is intentionally conservative and does not require a paid datastore.
+RATE_LIMIT_WINDOW_SECONDS = 10 * 60
+RATE_LIMIT_MAX_REQUESTS = 20
+RATE_LIMIT_BUCKETS: dict[str, list[float]] = {}
+
+# Project source changes infrequently, so cache successful GitHub fetches briefly.
+PROJECT_SOURCE_CACHE: dict[str, tuple[float, str]] = {}
+PROJECT_SOURCE_CACHE_TTL_SECONDS = 10 * 60
 
 with KNOWLEDGE_PATH.open("r", encoding="utf-8") as file:
     knowledge = json.load(file)
@@ -204,6 +213,42 @@ def is_out_of_scope_general_request(question: str) -> bool:
 
 
 
+def client_rate_limit_key(request: Request) -> str:
+    forwarded = request.headers.get("x-forwarded-for", "")
+    if forwarded:
+        return forwarded.split(",")[0].strip()
+
+    return request.headers.get("x-real-ip", "unknown").strip() or "unknown"
+
+
+def allow_request(request: Request) -> bool:
+    now = __import__("time").time()
+    key = client_rate_limit_key(request)
+    bucket = RATE_LIMIT_BUCKETS.get(key, [])
+
+    cutoff = now - RATE_LIMIT_WINDOW_SECONDS
+    bucket = [timestamp for timestamp in bucket if timestamp > cutoff]
+
+    if len(bucket) >= RATE_LIMIT_MAX_REQUESTS:
+        RATE_LIMIT_BUCKETS[key] = bucket
+        return False
+
+    bucket.append(now)
+    RATE_LIMIT_BUCKETS[key] = bucket
+
+    # Keep the small in-memory structure bounded.
+    if len(RATE_LIMIT_BUCKETS) > 1000:
+        oldest_key = min(
+            RATE_LIMIT_BUCKETS,
+            key=lambda item: RATE_LIMIT_BUCKETS[item][-1]
+            if RATE_LIMIT_BUCKETS[item]
+            else 0,
+        )
+        RATE_LIMIT_BUCKETS.pop(oldest_key, None)
+
+    return True
+
+
 async def get_project_code_context(question: str) -> str:
     q = question.lower()
     sources = []
@@ -223,9 +268,17 @@ async def get_project_code_context(question: str) -> str:
         for project, repo, path in sources[:2]:
             url = "https://raw.githubusercontent.com/" + repo + "/main/" + quote(path)
             try:
-                response = await client.get(url)
-                response.raise_for_status()
-                source = response.text
+                cache_key = f"{repo}:{path}"
+                now = __import__("time").time()
+                cached = PROJECT_SOURCE_CACHE.get(cache_key)
+
+                if cached and now - cached[0] < PROJECT_SOURCE_CACHE_TTL_SECONDS:
+                    source = cached[1]
+                else:
+                    response = await client.get(url)
+                    response.raise_for_status()
+                    source = response.text
+                    PROJECT_SOURCE_CACHE[cache_key] = (now, source)
                 if path.endswith(".ipynb"):
                     notebook = json.loads(source)
                     source = "\n\n".join(
@@ -329,12 +382,13 @@ async def stream_model(
     api_key: str,
     model: str,
     messages: list[dict[str, str]],
+    max_completion_tokens: int,
 ) -> AsyncIterator[str]:
     payload = {
         "model": model,
         "messages": messages,
         "stream": True,
-        "max_completion_tokens": 1600,
+        "max_completion_tokens": max_completion_tokens,
         **model_config(model),
     }
 
@@ -434,6 +488,15 @@ async def chat(request: Request):
             content={"error": "Message is too long."},
         )
 
+    if not allow_request(request):
+        return JSONResponse(
+            status_code=429,
+            content={
+                "error": "AI request limit reached. Please try again in a few minutes."
+            },
+            headers={"Retry-After": str(RATE_LIMIT_WINDOW_SECONDS)},
+        )
+
     # Keep generic coding/learning requests outside the portfolio assistant.
     history = clean_history(
         body.get("messages") if isinstance(body, dict) else None
@@ -508,6 +571,7 @@ async def chat(request: Request):
         messages[0]["content"] += "\n\nRETRIEVED RAJDEEP PROJECT SOURCE:\n" + code_context + "\n\nCODE RULE: Use only this retrieved source for code. Do not invent, generalize into a new snippet, or fabricate missing source.";
 
     complex_question = is_complex_question(message)
+    max_completion_tokens = 1400 if complex_question else 1000
     models = (
         [ESCALATION_MODEL, FALLBACK_MODEL]
         if complex_question
@@ -519,7 +583,9 @@ async def chat(request: Request):
             streamed_any = False
 
             try:
-                async for event in stream_model(api_key, model, messages):
+                async for event in stream_model(
+                    api_key, model, messages, max_completion_tokens
+                ):
                     streamed_any = True
                     yield event
 

@@ -30,18 +30,81 @@ const quickAnswers = {
 let aiBusy = false;
 const aiHistory = [];
 
+let activeDialog = null;
+let lastDialogTrigger = null;
+
+function getDialogFocusableElements(dialog) {
+  if (!dialog) return [];
+
+  return [
+    ...dialog.querySelectorAll(
+      'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    ),
+  ].filter((element) => {
+    const style = window.getComputedStyle(element);
+    return style.display !== "none" && style.visibility !== "hidden";
+  });
+}
+
+function activateDialog(dialog, trigger) {
+  activeDialog = dialog;
+  lastDialogTrigger = trigger || document.activeElement;
+  dialog?.setAttribute("aria-hidden", "false");
+  window.setTimeout(() => {
+    const focusables = getDialogFocusableElements(dialog);
+    (focusables[0] || dialog)?.focus?.();
+  }, 80);
+}
+
+function deactivateDialog(dialog) {
+  if (!dialog) return;
+
+  dialog.setAttribute("aria-hidden", "true");
+
+  if (activeDialog === dialog) {
+    activeDialog = null;
+    const trigger = lastDialogTrigger;
+    lastDialogTrigger = null;
+
+    if (trigger && document.contains(trigger)) {
+      window.setTimeout(() => trigger.focus(), 0);
+    }
+  }
+}
+
+function trapDialogFocus(event) {
+  if (event.key !== "Tab" || !activeDialog) return;
+
+  const focusables = getDialogFocusableElements(activeDialog);
+  if (!focusables.length) {
+    event.preventDefault();
+    activeDialog.focus?.();
+    return;
+  }
+
+  const first = focusables[0];
+  const last = focusables[focusables.length - 1];
+
+  if (event.shiftKey && document.activeElement === first) {
+    event.preventDefault();
+    last.focus();
+  } else if (!event.shiftKey && document.activeElement === last) {
+    event.preventDefault();
+    first.focus();
+  }
+}
+
 function openAI(e) {
   if (e) e.preventDefault();
   modal?.classList.add("open");
-  modal?.setAttribute("aria-hidden", "false");
   document.body.classList.add("modal-open");
-  window.setTimeout(() => aiInput?.focus(), 80);
+  activateDialog(modal, e?.currentTarget);
 }
 
 function closeAI() {
   modal?.classList.remove("open");
-  modal?.setAttribute("aria-hidden", "true");
   document.body.classList.remove("modal-open");
+  deactivateDialog(modal);
 }
 
 openButton?.addEventListener("click", openAI);
@@ -53,7 +116,10 @@ document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") {
     closeAI();
     closeCaseStudy();
+    return;
   }
+
+  trapDialogFocus(event);
 });
 
 let aiUserScrolledUp = false;
@@ -816,7 +882,7 @@ const caseNotes = document.querySelector("#caseNotes");
 const caseTags = document.querySelector("#caseTags");
 const caseGithub = document.querySelector("#caseGithub");
 
-function openCaseStudy(key) {
+function openCaseStudy(key, trigger = document.activeElement) {
   const project = projectData[key];
   if (!project || !caseModal) return;
 
@@ -832,23 +898,23 @@ function openCaseStudy(key) {
   caseGithub.href = project.github;
 
   caseModal.classList.add("open");
-  caseModal.setAttribute("aria-hidden", "false");
   document.body.classList.add("modal-open");
-  caseClose?.focus();
+  activateDialog(caseModal, trigger);
+
 }
 
 function closeCaseStudy() {
   if (!caseModal) return;
   caseModal.classList.remove("open");
-  caseModal.setAttribute("aria-hidden", "true");
   document.body.classList.remove("modal-open");
+  deactivateDialog(caseModal);
 }
 
 caseClose?.addEventListener("click", closeCaseStudy);
 caseBackdrop?.addEventListener("click", closeCaseStudy);
 
 document.querySelectorAll(".project-card[data-project]").forEach((card) => {
-  const open = () => openCaseStudy(card.dataset.project);
+  const open = () => openCaseStudy(card.dataset.project, card);
   card.addEventListener("click", open);
   card.addEventListener("keydown", (event) => {
     if (event.key === "Enter" || event.key === " ") {
