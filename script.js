@@ -1219,52 +1219,13 @@ const navTargets = navLinks
   })
   .filter(Boolean);
 
-const mobileSectionIndicator = document.querySelector(".mobile-section-indicator");
-const mobileSectionLabel = mobileSectionIndicator?.querySelector("span");
-let lastActiveNav = null;
-
-function updateActiveNav() {
-  const headerHeight =
-    document.querySelector(".site-header")?.offsetHeight || 76;
-
-  const marker =
-    window.scrollY + headerHeight + Math.min(window.innerHeight * 0.22, 180);
-
-  let activeLink = navLinks[0];
-
-  for (const item of navTargets) {
-    if (item.target.offsetTop <= marker) {
-      activeLink = item.link;
-    }
-  }
-
-  navLinks.forEach((link) => {
-    link.classList.toggle("active", link === activeLink);
-  });
-
-  if (
-    mobileSectionIndicator &&
-    mobileSectionLabel &&
-    activeLink &&
-    activeLink !== lastActiveNav
-  ) {
-    mobileSectionIndicator.href = activeLink.getAttribute("href") || "#top";
-    mobileSectionIndicator.setAttribute(
-      "aria-label",
-      "Current section: " + activeLink.textContent.trim(),
-    );
-
-    if (lastActiveNav) {
-      mobileSectionIndicator.classList.remove("is-changing");
-      void mobileSectionIndicator.offsetWidth;
-      mobileSectionIndicator.classList.add("is-changing");
-    }
-
-    mobileSectionLabel.textContent = activeLink.textContent.trim().toUpperCase();
-    lastActiveNav = activeLink;
-  }
-}
-
-window.addEventListener("scroll", updateActiveNav, { passive: true });
-window.addEventListener("resize", updateActiveNav);
-updateActiveNav();
+const mobileSectionNav=document.querySelector(".mobile-section-nav");
+const mobileSectionIndicator=document.querySelector(".mobile-section-indicator");
+const mobileSectionLabel=mobileSectionIndicator?.querySelector("span");
+const mobileSectionLinks=[...document.querySelectorAll(".mobile-section-menu a")];
+function setMobileSectionMenu(open){if(!mobileSectionNav||!mobileSectionIndicator)return;mobileSectionNav.classList.toggle("is-open",open);mobileSectionIndicator.setAttribute("aria-expanded",String(open));}
+mobileSectionIndicator?.addEventListener("click",()=>setMobileSectionMenu(!mobileSectionNav?.classList.contains("is-open")));
+mobileSectionLinks.forEach(link=>link.addEventListener("click",()=>setMobileSectionMenu(false)));
+document.addEventListener("click",event=>{if(mobileSectionNav?.classList.contains("is-open")&&!mobileSectionNav.contains(event.target))setMobileSectionMenu(false);});
+function updateActiveNav(){const headerHeight=document.querySelector(".site-header")?.offsetHeight||76;const marker=window.scrollY+headerHeight+Math.min(window.innerHeight*.22,180);let activeLink=navLinks[0];for(const item of navTargets){if(item.target.offsetTop<=marker)activeLink=item.link;}navLinks.forEach(link=>link.classList.toggle("active",link===activeLink));const href=activeLink?.getAttribute("href")||"#top";mobileSectionLinks.forEach(link=>link.classList.toggle("active",link.getAttribute("href")===href));if(mobileSectionLabel&&activeLink)mobileSectionLabel.textContent=activeLink.textContent.trim().toUpperCase();}
+window.addEventListener("scroll",updateActiveNav,{passive:true});window.addEventListener("resize",updateActiveNav);updateActiveNav();
