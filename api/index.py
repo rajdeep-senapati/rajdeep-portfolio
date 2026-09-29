@@ -319,13 +319,23 @@ async def get_project_code_context(question: str) -> tuple[str, bool]:
 
                 if path.endswith(".ipynb"):
                     notebook = json.loads(source)
-                    source = "\n\n".join(
+                    cells = [
                         "".join(cell.get("source", []))
                         for cell in notebook.get("cells", [])
                         if cell.get("cell_type") == "code"
-                    )
+                    ]
+                    source = "\n\n".join(cells)
 
-                return f"PROJECT: {project}\nFILE: {path}\nSOURCE:\n{source[:12000]}", False
+                # Exact-code requests must be source-bounded before the model sees them.
+                # This prevents an entire notebook/file from being reproduced in chat.
+                if is_exact_code_request(question):
+                    lines = source.splitlines()
+                    source = "\n".join(lines[:30])
+                    source += "\n\n[Only a short source excerpt is provided here. Full implementation is on GitHub.]"
+                else:
+                    source = source[:12000]
+
+                return f"PROJECT: {project}\nFILE: {path}\nSOURCE:\n{source}", False
             except Exception as exc:
                 logger.warning("Project source retrieval failed for %s/%s: %s", repo, path, exc)
                 return "", True
