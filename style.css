@@ -6405,10 +6405,10 @@ body.modal-open .site-header {
    ========================================================= */
 .mobile-section-nav { display:none; }
 @media (max-width:620px) {
-  .mobile-section-nav { position:relative; display:block; z-index:40; }
+  .mobile-section-nav { position:relative; display:block; z-index:40; margin-left:auto; margin-right:8px; }
   .mobile-section-indicator { display:inline-flex; align-items:center; justify-content:center; min-width:76px; height:34px; padding:0 10px; border:1px solid transparent; border-radius:999px; background:transparent; color:var(--ink); cursor:pointer; font:500 10px "DM Mono",monospace; letter-spacing:.08em; white-space:nowrap; transition:color .2s ease,border-color .2s ease; }
   .mobile-section-nav.is-open .mobile-section-indicator { color:var(--red); border-color:var(--red); }
-  .mobile-section-menu { position:absolute; top:calc(100% + 8px); right:0; display:flex; gap:2px; padding:5px; border:1px solid var(--red); border-radius:999px; background:var(--cream); box-shadow:4px 4px 0 var(--ink); opacity:0; visibility:hidden; transform:translateY(-5px) scale(.98); pointer-events:none; transition:opacity .18s ease,transform .18s ease,visibility .18s ease; }
+  .mobile-section-menu { position:absolute; top:calc(100% + 8px); right:0; display:flex; flex-wrap:wrap; justify-content:center; gap:2px; padding:5px; border:1px solid var(--red); border-radius:999px; background:var(--cream); box-shadow:4px 4px 0 var(--ink); opacity:0; visibility:hidden; transform:translateY(-5px) scale(.98); pointer-events:none; transition:opacity .18s ease,transform .18s ease,visibility .18s ease; }
   .mobile-section-nav.is-open .mobile-section-menu { opacity:1; visibility:visible; transform:translateY(0) scale(1); pointer-events:auto; }
   .mobile-section-menu a { display:inline-flex; align-items:center; justify-content:center; min-height:30px; padding:0 8px; border-radius:999px; color:var(--ink); font:500 8.5px "DM Mono",monospace; letter-spacing:.04em; }
   .mobile-section-menu a.active,.mobile-section-menu a:hover { color:var(--red); }

@@ -1223,9 +1223,78 @@ const mobileSectionNav=document.querySelector(".mobile-section-nav");
 const mobileSectionIndicator=document.querySelector(".mobile-section-indicator");
 const mobileSectionLabel=mobileSectionIndicator?.querySelector("span");
 const mobileSectionLinks=[...document.querySelectorAll(".mobile-section-menu a")];
-function setMobileSectionMenu(open){if(!mobileSectionNav||!mobileSectionIndicator)return;mobileSectionNav.classList.toggle("is-open",open);mobileSectionIndicator.setAttribute("aria-expanded",String(open));}
-mobileSectionIndicator?.addEventListener("click",()=>setMobileSectionMenu(!mobileSectionNav?.classList.contains("is-open")));
-mobileSectionLinks.forEach(link=>link.addEventListener("click",()=>setMobileSectionMenu(false)));
-document.addEventListener("click",event=>{if(mobileSectionNav?.classList.contains("is-open")&&!mobileSectionNav.contains(event.target))setMobileSectionMenu(false);});
-function updateActiveNav(){const headerHeight=document.querySelector(".site-header")?.offsetHeight||76;const marker=window.scrollY+headerHeight+Math.min(window.innerHeight*.22,180);let activeLink=navLinks[0];for(const item of navTargets){if(item.target.offsetTop<=marker)activeLink=item.link;}navLinks.forEach(link=>link.classList.toggle("active",link===activeLink));const href=activeLink?.getAttribute("href")||"#top";mobileSectionLinks.forEach(link=>link.classList.toggle("active",link.getAttribute("href")===href));if(mobileSectionLabel&&activeLink)mobileSectionLabel.textContent=activeLink.textContent.trim().toUpperCase();}
-window.addEventListener("scroll",updateActiveNav,{passive:true});window.addEventListener("resize",updateActiveNav);updateActiveNav();
+
+const mobileSectionTargets=mobileSectionLinks
+  .map((link)=>{
+    const href=link.getAttribute("href");
+    if(!href||!href.startsWith("#")) return null;
+    const target=document.querySelector(href);
+    if(!target) return null;
+    return {link,target};
+  })
+  .filter(Boolean);
+
+function setMobileSectionMenu(open){
+  if(!mobileSectionNav||!mobileSectionIndicator) return;
+  mobileSectionNav.classList.toggle("is-open",open);
+  mobileSectionIndicator.setAttribute("aria-expanded",String(open));
+}
+
+function getActiveMobileSection(){
+  const headerHeight=document.querySelector(".site-header")?.offsetHeight||76;
+  const marker=window.scrollY+headerHeight+Math.min(window.innerHeight*.22,180);
+  let active=mobileSectionTargets[0];
+  for(const item of mobileSectionTargets){
+    if(item.target.offsetTop<=marker) active=item;
+  }
+  return active;
+}
+
+mobileSectionIndicator?.addEventListener("click",()=>{
+  setMobileSectionMenu(!mobileSectionNav?.classList.contains("is-open"));
+});
+
+mobileSectionLinks.forEach((link)=>{
+  link.addEventListener("click",()=>{
+    setMobileSectionMenu(false);
+  });
+});
+
+document.addEventListener("click",(event)=>{
+  if(mobileSectionNav?.classList.contains("is-open")&&!mobileSectionNav.contains(event.target)){
+    setMobileSectionMenu(false);
+  }
+});
+
+document.addEventListener("keydown",(event)=>{
+  if(event.key==="Escape"&&mobileSectionNav?.classList.contains("is-open")){
+    setMobileSectionMenu(false);
+    mobileSectionIndicator?.focus();
+  }
+});
+
+function updateActiveNav(){
+  const headerHeight=document.querySelector(".site-header")?.offsetHeight||76;
+  const marker=window.scrollY+headerHeight+Math.min(window.innerHeight*.22,180);
+
+  let activeLink=navLinks[0];
+  for(const item of navTargets){
+    if(item.target.offsetTop<=marker) activeLink=item.link;
+  }
+  navLinks.forEach((link)=>link.classList.toggle("active",link===activeLink));
+
+  const activeMobile=getActiveMobileSection();
+  if(activeMobile){
+    const href=activeMobile.link.getAttribute("href")||"#top";
+    mobileSectionLinks.forEach((link)=>{
+      link.classList.toggle("active",link===activeMobile.link);
+    });
+    if(mobileSectionLabel){
+      mobileSectionLabel.textContent=activeMobile.link.textContent.trim().toUpperCase();
+    }
+  }
+}
+
+window.addEventListener("scroll",updateActiveNav,{passive:true});
+window.addEventListener("resize",updateActiveNav);
+updateActiveNav();
