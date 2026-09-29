@@ -6302,3 +6302,99 @@ body.modal-open .site-header {
     animation: none !important;
   }
 }
+
+/* =========================================================
+   FINAL RESPONSIVE POLISH
+   Keep the existing desktop composition intact while making
+   tablet/mobile layouts fit the viewport cleanly.
+   ========================================================= */
+
+@media (max-width: 850px) {
+  .ai-chat-panel {
+    width: min(720px, calc(100vw - 24px));
+    max-width: calc(100vw - 24px);
+    max-height: calc(100dvh - 24px);
+  }
+
+  .ai-chat {
+    min-height: 0;
+    max-height: none;
+    overscroll-behavior: contain;
+  }
+
+  .ai-composer input {
+    min-width: 0;
+  }
+
+  .case-panel {
+    width: min(900px, calc(100vw - 24px));
+    max-width: calc(100vw - 24px);
+  }
+}
+
+@media (max-width: 620px) {
+  .ai-chat-panel {
+    width: calc(100vw - 16px);
+    max-width: calc(100vw - 16px);
+    height: min(760px, calc(100dvh - 16px));
+    max-height: calc(100dvh - 16px);
+  }
+
+  .ai-chat-head {
+    padding-top: 20px;
+    padding-bottom: 16px;
+  }
+
+  .ai-chat-head h2 {
+    font-size: clamp(28px, 9vw, 38px);
+  }
+
+  .ai-chat {
+    padding-top: 18px;
+    padding-bottom: 18px;
+  }
+
+  .ai-bubble {
+    max-width: calc(100% - 40px);
+  }
+
+  .ai-chat-panel .questions {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-bottom: 10px;
+  }
+
+  .ai-chat-panel .questions::-webkit-scrollbar {
+    display: none;
+  }
+
+  .ai-chat-panel .questions button {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  .ai-composer {
+    align-items: stretch;
+  }
+
+  .ai-composer input {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .ai-composer button {
+    flex: 0 0 44px;
+  }
+
+  .case-modal {
+    padding: 8px;
+  }
+
+  .case-panel {
+    width: 100%;
+    max-width: 100%;
+    max-height: calc(100dvh - 16px);
+    overflow-y: auto;
+  }
+}
