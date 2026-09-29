@@ -1219,6 +1219,10 @@ const navTargets = navLinks
   })
   .filter(Boolean);
 
+const mobileSectionIndicator = document.querySelector(".mobile-section-indicator");
+const mobileSectionLabel = mobileSectionIndicator?.querySelector("span");
+let lastActiveNav = null;
+
 function updateActiveNav() {
   const headerHeight =
     document.querySelector(".site-header")?.offsetHeight || 76;
@@ -1237,10 +1241,30 @@ function updateActiveNav() {
   navLinks.forEach((link) => {
     link.classList.toggle("active", link === activeLink);
   });
+
+  if (
+    mobileSectionIndicator &&
+    mobileSectionLabel &&
+    activeLink &&
+    activeLink !== lastActiveNav
+  ) {
+    mobileSectionIndicator.href = activeLink.getAttribute("href") || "#top";
+    mobileSectionIndicator.setAttribute(
+      "aria-label",
+      "Current section: " + activeLink.textContent.trim(),
+    );
+
+    if (lastActiveNav) {
+      mobileSectionIndicator.classList.remove("is-changing");
+      void mobileSectionIndicator.offsetWidth;
+      mobileSectionIndicator.classList.add("is-changing");
+    }
+
+    mobileSectionLabel.textContent = activeLink.textContent.trim().toUpperCase();
+    lastActiveNav = activeLink;
+  }
 }
 
 window.addEventListener("scroll", updateActiveNav, { passive: true });
-
 window.addEventListener("resize", updateActiveNav);
-
 updateActiveNav();
