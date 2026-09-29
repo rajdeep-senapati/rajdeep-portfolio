@@ -521,14 +521,8 @@ async function streamLocalAnswer(text, question = "") {
 
   const thinking = addThinkingMessage();
   await wait(520);
-  thinking?.remove();
-
-  const output = addAssistantMessage();
-  if (!output) return;
-
-  const cursor = document.createElement("span");
-  cursor.className = "ai-cursor";
-  output.appendChild(cursor);
+  let output = null;
+  let cursor = null;
 
   await revealAIText(output, cursor, text, getAIStreamSpeed(question, text.length));
 }
@@ -634,6 +628,14 @@ async function streamRemoteAnswer(question) {
       }
 
       if (data.text) {
+        if (!output) {
+          thinking?.remove();
+          output = addAssistantMessage();
+          if (!output) return;
+          cursor = document.createElement("span");
+          cursor.className = "ai-cursor";
+          output.appendChild(cursor);
+        }
         streamedText += data.text;
       }
     }
