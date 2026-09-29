@@ -1242,7 +1242,7 @@ function setMobileSectionMenu(open){
 
 function getActiveMobileSection(){
   const headerHeight=document.querySelector(".site-header")?.offsetHeight||76;
-  const marker=window.scrollY+headerHeight+Math.min(window.innerHeight*.22,180);
+  const marker=window.scrollY+headerHeight+30;
   let active=mobileSectionTargets[0];
   for(const item of mobileSectionTargets){
     if(item.target.offsetTop<=marker) active=item;
@@ -1275,7 +1275,7 @@ document.addEventListener("keydown",(event)=>{
 
 function updateActiveNav(){
   const headerHeight=document.querySelector(".site-header")?.offsetHeight||76;
-  const marker=window.scrollY+headerHeight+Math.min(window.innerHeight*.22,180);
+  const marker=window.scrollY+headerHeight+30;
 
   let activeLink=navLinks[0];
   for(const item of navTargets){
