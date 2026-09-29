@@ -1256,8 +1256,22 @@ mobileSectionIndicator?.addEventListener("click",()=>{
 
 mobileSectionLinks.forEach((link)=>{
   link.addEventListener("click",()=>{
+    if(mobileSectionLabel){
+      mobileSectionLabel.textContent=link.textContent.trim().toUpperCase();
+    }
+    mobileSectionLinks.forEach((item)=>item.classList.toggle("active",item===link));
     setMobileSectionMenu(false);
   });
+});
+
+window.addEventListener("hashchange",()=>{
+  const hash=window.location.hash||"#top";
+  const activeLink=mobileSectionLinks.find((link)=>link.getAttribute("href")===hash);
+  if(!activeLink) return;
+  if(mobileSectionLabel){
+    mobileSectionLabel.textContent=activeLink.textContent.trim().toUpperCase();
+  }
+  mobileSectionLinks.forEach((item)=>item.classList.toggle("active",item===activeLink));
 });
 
 document.addEventListener("click",(event)=>{
