@@ -362,6 +362,7 @@ function renderInlineMarkdown(text) {
     .replace(/\`([^\`]+)\`/g, "<code>$1</code>");
 }
 
+
 function renderAIText(text) {
   const normalized = normalizeAIText(text.trim());
   if (!normalized) return "";
@@ -725,6 +726,7 @@ async function streamRemoteAnswer(question) {
         streamFailed = true;
         throw new Error(data.error);
       }
+
       if (data.text) {
         if (!output) {
           thinking?.remove();
@@ -1075,6 +1077,7 @@ function fitMobileTicker() {
   mobileTickerContent.style.fontSize = `${maxSize}px`;
 
   const naturalWidth = getTickerTextWidth();
+
   if (!naturalWidth) return;
 
   const fittedSize = Math.max(

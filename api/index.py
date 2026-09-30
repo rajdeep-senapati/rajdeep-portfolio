@@ -246,6 +246,7 @@ def client_rate_limit_key(request: Request) -> str:
 
     return request.headers.get("x-real-ip", "unknown").strip() or "unknown"
 
+
 def allow_request(request: Request) -> bool:
     now = __import__("time").time()
     key = client_rate_limit_key(request)
@@ -463,7 +464,8 @@ async def stream_model(
     model: str,
     messages: list[dict[str, str]],
     max_completion_tokens: int,
-) -> AsyncIterator[str]:    payload = {
+) -> AsyncIterator[str]:
+    payload = {
         "model": model,
         "messages": messages,
         "stream": True,
@@ -686,7 +688,8 @@ async def chat(request: Request):
         yield sse({"error": "No AI model is currently available."})
 
     return StreamingResponse(
-        event_stream(),        media_type="text/event-stream",
+        event_stream(),
+        media_type="text/event-stream",
         headers={
             "Cache-Control": "no-cache, no-transform",
             "Connection": "keep-alive",
