@@ -1112,7 +1112,6 @@ function updateHeaderState() {
   siteHeader?.classList.toggle("is-scrolled", window.scrollY > 24);
 }
 
-window.addEventListener("scroll", updateHeaderState, { passive: true });
 window.addEventListener("load", updateHeaderState);
 updateHeaderState();
 
@@ -1362,18 +1361,37 @@ function updateActiveNav(){
   }
   navLinks.forEach((link)=>link.classList.toggle("active",link===activeLink));
 
-  const activeMobile=getActiveMobileSection();
-  if(activeMobile){
-    const href=activeMobile.link.getAttribute("href")||"#top";
-    mobileSectionLinks.forEach((link)=>{
-      link.classList.toggle("active",link===activeMobile.link);
-    });
-    if(mobileSectionLabel){
-      mobileSectionLabel.textContent=activeMobile.link.textContent.trim().toUpperCase();
+  // The mobile section tracker does extra layout reads, so do not
+  // run it at all on desktop where it is not visible.
+  if (window.innerWidth <= 620) {
+    const activeMobile = getActiveMobileSection();
+    if (activeMobile) {
+      const href = activeMobile.link.getAttribute("href") || "#top";
+      mobileSectionLinks.forEach((link) => {
+        link.classList.toggle("active", link === activeMobile.link);
+      });
+      if (mobileSectionLabel) {
+        mobileSectionLabel.textContent =
+          activeMobile.link.textContent.trim().toUpperCase();
+      }
     }
   }
 }
 
-window.addEventListener("scroll",updateActiveNav,{passive:true});
-window.addEventListener("resize",updateActiveNav);
+let scrollUpdatePending = false;
+
+function scheduleScrollUpdate() {
+  if (scrollUpdatePending) return;
+
+  scrollUpdatePending = true;
+
+  window.requestAnimationFrame(() => {
+    scrollUpdatePending = false;
+    updateHeaderState();
+    updateActiveNav();
+  });
+}
+
+window.addEventListener("scroll", scheduleScrollUpdate, { passive: true });
+window.addEventListener("resize", updateActiveNav);
 updateActiveNav();
