@@ -65,10 +65,6 @@ html {
   scrollbar-color: var(--ink) transparent;
 }
 
-html:hover {
-  scrollbar-color: var(--red) transparent;
-}
-
 html::-webkit-scrollbar-corner {
   background: transparent;
 }
