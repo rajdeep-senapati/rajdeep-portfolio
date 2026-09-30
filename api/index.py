@@ -1,7 +1,6 @@
 import re
 import json
 import asyncio
-import asyncio
 import logging
 import os
 from pathlib import Path
@@ -191,6 +190,34 @@ def is_unrelated_general_coding_request(question: str) -> bool:
         "explain code", "show me how to code", "how do i code",
         "write a program", "programming example", "coding example",
     ])
+
+
+
+def is_general_math_request(question: str) -> bool:
+    q = question.lower().strip()
+
+    simple_expression = re.fullmatch(
+        r"(?:what is|calculate|solve)\s+[\d\s()+\-*/%.^=]+\??",
+        q,
+    )
+    if simple_expression:
+        return True
+
+    math_signals = [
+        "sin square",
+        "cos square",
+        "tan square",
+        "trigonometry",
+        "sine rule",
+        "cosine rule",
+        "integral of",
+        "derivative of",
+        "differentiate",
+        "integrate",
+        "solve this equation",
+        "quadratic equation",
+    ]
+    return any(signal in q for signal in math_signals)
 
 
 def is_out_of_scope_general_request(question: str) -> bool:
@@ -555,11 +582,15 @@ async def chat(request: Request):
         body.get("messages") if isinstance(body, dict) else None
     )
 
-    if is_out_of_scope_general_request(message) or is_unrelated_general_coding_request(message):
+    if (
+        is_general_math_request(message)
+        or is_out_of_scope_general_request(message)
+        or is_unrelated_general_coding_request(message)
+    ):
         refusal = (
             "I’m Rajdeep’s portfolio AI, so I stay focused on Rajdeep’s "
             "work, projects, skills and experience. I can explain documented "
-            "project concepts and code, but I’m not a general coding tutor."
+            "project concepts and code, but I’m not a general-purpose assistant."
         )
 
         async def scoped_event_stream() -> AsyncIterator[str]:

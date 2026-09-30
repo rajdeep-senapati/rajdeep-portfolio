@@ -333,6 +333,20 @@ function escapeHTML(text) {
     .replace(/>/g, "&gt;");
 }
 
+function renderAIMath(element) {
+  if (!element || typeof window.renderMathInElement !== "function") return;
+
+  window.renderMathInElement(element, {
+    delimiters: [
+      { left: "$", right: "$", display: true },
+      { left: "\\[", right: "\\]", display: true },
+      { left: "\\(", right: "\\)", display: false },
+    ],
+    throwOnError: false,
+    preProcess: (math) => math.replace(/\\\\/g, "\\"),
+  });
+}
+
 function normalizeAIText(text) {
   return text
     .replace(/<br\s*\/?>/gi, "\n")
@@ -593,10 +607,24 @@ async function streamLocalAnswer(text, question = "") {
 
   const thinking = addThinkingMessage();
   await wait(520);
-  let output = null;
-  let cursor = null;
+  thinking?.remove();
 
-  await revealAIText(output, cursor, text, getAIStreamSpeed(question, text.length));
+  const output = addAssistantMessage();
+  if (!output) return;
+
+  const cursor = document.createElement("span");
+  cursor.className = "ai-cursor";
+  output.appendChild(cursor);
+
+  await revealAIText(
+    output,
+    cursor,
+    text,
+    getAIStreamSpeed(question, text.length),
+  );
+
+  cursor.remove();
+  renderAIMath(output);
 }
 
 async function streamRemoteAnswer(question) {
@@ -742,6 +770,8 @@ async function streamRemoteAnswer(question) {
     if (!streamedText) {
       throw new Error("Rajdeep AI returned an empty response.");
     }
+
+    renderAIMath(output);
 
     if (streamFailed) {
       throw new Error("Rajdeep AI stream ended unexpectedly.");
