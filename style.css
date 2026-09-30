@@ -48,7 +48,7 @@ html::-webkit-scrollbar-thumb {
   border: 2px solid transparent;
   border-radius: 999px;
   background:
-    radial-gradient(circle at 50% 7px, var(--red) 0 2px, transparent 2.6px),
+    radial-gradient(circle at 50% 9px, var(--red) 0 3px, transparent 3.6px),
     var(--ink);
   background-clip: padding-box;
 }
