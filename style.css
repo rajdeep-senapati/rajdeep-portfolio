@@ -53,11 +53,20 @@ html::-webkit-scrollbar-thumb {
   background-clip: padding-box;
 }
 
-html::-webkit-scrollbar-thumb:hover {
+html::-webkit-scrollbar-thumb:hover,
+html::-webkit-scrollbar-thumb:active {
   background:
     linear-gradient(var(--cream), var(--cream)) center 6px / 5px 5px no-repeat,
     var(--red);
   background-clip: padding-box;
+}
+
+html {
+  scrollbar-color: var(--ink) transparent;
+}
+
+html:hover {
+  scrollbar-color: var(--red) transparent;
 }
 
 html::-webkit-scrollbar-corner {
