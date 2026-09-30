@@ -48,14 +48,14 @@ html::-webkit-scrollbar-thumb {
   border: 2px solid transparent;
   border-radius: 999px;
   background:
-    radial-gradient(circle at 50% 9px, var(--red) 0 3px, transparent 3.6px),
+    linear-gradient(var(--red), var(--red)) center 6px / 5px 5px no-repeat,
     var(--ink);
   background-clip: padding-box;
 }
 
 html::-webkit-scrollbar-thumb:hover {
   background:
-    radial-gradient(circle at 50% 7px, var(--cream) 0 2px, transparent 2.6px),
+    linear-gradient(var(--cream), var(--cream)) center 6px / 5px 5px no-repeat,
     var(--red);
   background-clip: padding-box;
 }
