@@ -23,6 +23,47 @@ html {
   scroll-behavior: smooth;
 }
 
+/* =========================================================
+   CUSTOM SCROLLBAR — ORBIT ACCENT
+   Keep the browser scrollbar inside the site's cream / ink /
+   red visual system instead of using the default Chrome UI.
+   ========================================================= */
+
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--ink) transparent;
+}
+
+html::-webkit-scrollbar {
+  width: 11px;
+  height: 11px;
+}
+
+html::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+html::-webkit-scrollbar-thumb {
+  min-height: 56px;
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 50% 7px, var(--red) 0 2px, transparent 2.6px),
+    var(--ink);
+  background-clip: padding-box;
+}
+
+html::-webkit-scrollbar-thumb:hover {
+  background:
+    radial-gradient(circle at 50% 7px, var(--cream) 0 2px, transparent 2.6px),
+    var(--red);
+  background-clip: padding-box;
+}
+
+html::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
 body {
   background: var(--cream);
   color: var(--ink);
