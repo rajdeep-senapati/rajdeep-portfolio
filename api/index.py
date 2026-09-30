@@ -1,7 +1,6 @@
 import re
 import json
 import asyncio
-import asyncio
 import logging
 import os
 from pathlib import Path
@@ -193,6 +192,34 @@ def is_unrelated_general_coding_request(question: str) -> bool:
     ])
 
 
+
+def is_general_math_request(question: str) -> bool:
+    q = question.lower().strip()
+
+    simple_expression = re.fullmatch(
+        r"(?:what is|calculate|solve)\s+[\d\s()+\-*/%.^=]+\??",
+        q,
+    )
+    if simple_expression:
+        return True
+
+    math_signals = [
+        "sin square",
+        "cos square",
+        "tan square",
+        "trigonometry",
+        "sine rule",
+        "cosine rule",
+        "integral of",
+        "derivative of",
+        "differentiate",
+        "integrate",
+        "solve this equation",
+        "quadratic equation",
+    ]
+    return any(signal in q for signal in math_signals)
+
+
 def is_out_of_scope_general_request(question: str) -> bool:
     q = question.lower().strip()
     generic_topics = [
@@ -218,7 +245,6 @@ def client_rate_limit_key(request: Request) -> str:
         return forwarded.split(",")[0].strip()
 
     return request.headers.get("x-real-ip", "unknown").strip() or "unknown"
-
 
 def allow_request(request: Request) -> bool:
     now = __import__("time").time()
@@ -437,8 +463,7 @@ async def stream_model(
     model: str,
     messages: list[dict[str, str]],
     max_completion_tokens: int,
-) -> AsyncIterator[str]:
-    payload = {
+) -> AsyncIterator[str]:    payload = {
         "model": model,
         "messages": messages,
         "stream": True,
@@ -555,11 +580,15 @@ async def chat(request: Request):
         body.get("messages") if isinstance(body, dict) else None
     )
 
-    if is_out_of_scope_general_request(message) or is_unrelated_general_coding_request(message):
+    if (
+        is_general_math_request(message)
+        or is_out_of_scope_general_request(message)
+        or is_unrelated_general_coding_request(message)
+    ):
         refusal = (
             "I’m Rajdeep’s portfolio AI, so I stay focused on Rajdeep’s "
             "work, projects, skills and experience. I can explain documented "
-            "project concepts and code, but I’m not a general coding tutor."
+            "project concepts and code, but I’m not a general-purpose assistant."
         )
 
         async def scoped_event_stream() -> AsyncIterator[str]:
@@ -657,8 +686,7 @@ async def chat(request: Request):
         yield sse({"error": "No AI model is currently available."})
 
     return StreamingResponse(
-        event_stream(),
-        media_type="text/event-stream",
+        event_stream(),        media_type="text/event-stream",
         headers={
             "Cache-Control": "no-cache, no-transform",
             "Connection": "keep-alive",
