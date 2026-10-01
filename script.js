@@ -1351,25 +1351,42 @@ document.addEventListener("keydown",(event)=>{
   }
 });
 
-function updateActiveNav(){
-  const headerHeight=document.querySelector(".site-header")?.offsetHeight||76;
-  const marker=window.scrollY+headerHeight+30;
+let cachedNavTargets = [];
 
-  let activeLink=navLinks[0];
-  for(const item of navTargets){
-    if(item.target.offsetTop<=marker) activeLink=item.link;
+function cacheNavPositions() {
+  const headerHeight = document.querySelector(".site-header")?.offsetHeight || 76;
+
+  cachedNavTargets = navTargets.map((item) => ({
+    link: item.link,
+    top: item.target.getBoundingClientRect().top + window.scrollY,
+  }));
+
+  updateActiveNav(headerHeight);
+}
+
+function updateActiveNav(headerHeight = 76) {
+  const marker = window.scrollY + headerHeight + 30;
+
+  let activeLink = navLinks[0];
+
+  for (const item of cachedNavTargets) {
+    if (item.top <= marker) activeLink = item.link;
   }
-  navLinks.forEach((link)=>link.classList.toggle("active",link===activeLink));
 
-  // The mobile section tracker does extra layout reads, so do not
-  // run it at all on desktop where it is not visible.
+  navLinks.forEach((link) =>
+    link.classList.toggle("active", link === activeLink),
+  );
+
+  // The mobile section tracker remains layout-aware because it is only
+  // used on mobile, but desktop scrolling never enters this path.
   if (window.innerWidth <= 620) {
     const activeMobile = getActiveMobileSection();
+
     if (activeMobile) {
-      const href = activeMobile.link.getAttribute("href") || "#top";
-      mobileSectionLinks.forEach((link) => {
-        link.classList.toggle("active", link === activeMobile.link);
-      });
+      mobileSectionLinks.forEach((link) =>
+        link.classList.toggle("active", link === activeMobile.link),
+      );
+
       if (mobileSectionLabel) {
         mobileSectionLabel.textContent =
           activeMobile.link.textContent.trim().toUpperCase();
@@ -1393,5 +1410,6 @@ function scheduleScrollUpdate() {
 }
 
 window.addEventListener("scroll", scheduleScrollUpdate, { passive: true });
-window.addEventListener("resize", updateActiveNav);
-updateActiveNav();
+window.addEventListener("resize", cacheNavPositions);
+window.addEventListener("load", cacheNavPositions);
+cacheNavPositions();
