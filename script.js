@@ -1425,8 +1425,20 @@ function updateActiveNav(headerHeight = 76) {
 }
 
 let scrollUpdatePending = false;
+let scrollIdleTimer = null;
+
+function markScrolling() {
+  document.documentElement.classList.add("is-scrolling");
+
+  window.clearTimeout(scrollIdleTimer);
+  scrollIdleTimer = window.setTimeout(() => {
+    document.documentElement.classList.remove("is-scrolling");
+  }, 120);
+}
 
 function scheduleScrollUpdate() {
+  markScrolling();
+
   if (scrollUpdatePending) return;
 
   scrollUpdatePending = true;
