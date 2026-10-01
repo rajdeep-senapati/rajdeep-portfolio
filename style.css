@@ -3629,9 +3629,7 @@ footer {
   animation: routeFlow 1.2s linear infinite;
 }
 
-@keyframes routeFlow {
-  to { stroke-dashoffset: -24; }
-}
+
 
 /* =========================================================
    ALZHEIMER'S — MRI → classification
@@ -3746,9 +3744,7 @@ footer {
   animation: hotspotPulse 1.2s ease-in-out infinite;
 }
 
-@keyframes hotspotPulse {
-  50% { transform: scale(1.18); transform-origin: 158px 116px; }
-}
+
 
 @media (max-width: 850px) {
   .site-header,
