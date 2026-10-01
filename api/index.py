@@ -317,10 +317,18 @@ def has_portfolio_reference(question: str) -> bool:
     words = set(re.findall(r"[a-z0-9]+(?:'[a-z]+)?", q))
     if project_context(q):
         return True
-    if any(term in q for term in portfolio_entity_terms()):
-        return True
     has_personal = bool(words & PERSONAL_REFERENCES)
     has_topic = any(topic in q for topic in PORTFOLIO_TOPIC_TERMS)
+
+    # A documented project name is inherently portfolio-scoped. Other
+    # knowledge-base entities (companies, schools, skills, tools) require
+    # either a personal/portfolio relationship or an explicit portfolio topic.
+    if project_context(q):
+        return True
+
+    if any(term in q for term in portfolio_entity_terms()):
+        return has_personal or has_topic
+
     return has_personal and has_topic
 
 
