@@ -268,6 +268,31 @@ def is_general_math_request(question: str) -> bool:
     return bool(trig_expression)
 
 
+def is_general_concept_request(question: str) -> bool:
+    q = question.lower().strip()
+
+    # General teaching/explanation requests should not turn Rajdeep AI into
+    # a generic tutor. Portfolio/project questions are allowed through.
+    if project_context(q):
+        return False
+
+    portfolio_signals = [
+        "rajdeep", "your project", "your projects", "your work", "your skills",
+        "your experience", "your internship", "your education", "your portfolio",
+        "your implementation", "your approach", "your code", "your stack",
+        "your use of", "how did you use", "how do you use", "in jobshield",
+        "in stocksense", "in your project", "in my portfolio",
+    ]
+    if any(signal in q for signal in portfolio_signals):
+        return False
+
+    generic_explanation_starts = [
+        "what is ", "what are ", "explain ", "describe ", "define ",
+        "how does ", "how do ", "why does ", "why do ", "teach me ",
+    ]
+    return any(q.startswith(signal) for signal in generic_explanation_starts)
+
+
 def is_out_of_scope_general_request(question: str) -> bool:
     q = question.lower().strip()
     generic_topics = [
@@ -647,6 +672,7 @@ async def chat(request: Request):
 
     if (
         is_general_math_request(message)
+        or is_general_concept_request(message)
         or is_out_of_scope_general_request(message)
         or is_unrelated_general_coding_request(message)
     ):
