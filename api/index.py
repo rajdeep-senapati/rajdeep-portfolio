@@ -41,7 +41,7 @@ SYSTEM_PROMPT = f"""
 You are "Rajdeep AI", the professional digital representative of Rajdeep Senapati's portfolio.
 
 ROLE
-- Answer questions about Rajdeep's work, projects, skills, education, experience and career interests.
+- Answer questions about Rajdeep's work, projects, skills, education, experience and career interests. Any request that is not clearly about Rajdeep or his documented portfolio is out of scope, even if it is a general technical, mathematical, educational, factual, creative or conversational question. Do not answer out-of-scope questions merely because the answer is known to the model.
 - Speak naturally in first person when appropriate because you represent Rajdeep.
 - Be concise, professional and useful to recruiters and technical visitors.
 - Do not hype, exaggerate or invent information.
@@ -268,29 +268,95 @@ def is_general_math_request(question: str) -> bool:
     return bool(trig_expression)
 
 
-def is_general_concept_request(question: str) -> bool:
+def portfolio_entity_terms() -> set[str]:
+    """Return documented profile entities that can establish portfolio context."""
+    terms: set[str] = set()
+    identity = knowledge.get("identity", {})
+    for key in ("name", "education"):
+        value = identity.get(key)
+        if isinstance(value, str):
+            terms.add(value.lower())
+    for item in knowledge.get("experience", []):
+        if isinstance(item, dict):
+            for key in ("company", "role"):
+                value = item.get(key)
+                if isinstance(value, str):
+                    terms.add(value.lower())
+    projects = knowledge.get("projects", {})
+    if isinstance(projects, dict):
+        terms.update(str(name).lower() for name in projects)
+    for skill in knowledge.get("skills", []):
+        if isinstance(skill, str):
+            terms.add(skill.lower())
+    terms.update({"heritage institute of technology", "tagore academy", "icse", "isc"})
+    return terms
+
+
+PORTFOLIO_TOPIC_TERMS = {
+    "work", "project", "projects", "skill", "skills", "experience",
+    "internship", "internships", "education", "school", "schooling",
+    "college", "degree", "career", "resume", "cv", "portfolio",
+    "background", "role", "roles", "company", "companies", "employer",
+    "employers", "technology", "technologies", "tech stack", "stack",
+    "tools", "frameworks", "model", "models", "built", "build",
+    "worked", "used", "use", "implemented", "implementation",
+    "architecture", "pipeline", "deployment", "contact", "email",
+    "github", "hiring", "hire", "recruiter", "recruiters", "focus",
+    "learning", "interests", "intern", "cgpa", "marks", "percentage",
+}
+
+
+PERSONAL_REFERENCES = {
+    "i", "i'm", "im", "me", "my", "mine", "you", "your", "yours",
+    "rajdeep", "rajdeep's", "he", "his",
+}
+
+
+def has_portfolio_reference(question: str) -> bool:
     q = question.lower().strip()
-
-    # General teaching/explanation requests should not turn Rajdeep AI into
-    # a generic tutor. Portfolio/project questions are allowed through.
+    words = set(re.findall(r"[a-z0-9]+(?:'[a-z]+)?", q))
     if project_context(q):
-        return False
+        return True
+    if any(term in q for term in portfolio_entity_terms()):
+        return True
+    has_personal = bool(words & PERSONAL_REFERENCES)
+    has_topic = any(topic in q for topic in PORTFOLIO_TOPIC_TERMS)
+    return has_personal and has_topic
 
-    portfolio_signals = [
-        "rajdeep", "your project", "your projects", "your work", "your skills",
-        "your experience", "your internship", "your education", "your portfolio",
-        "your implementation", "your approach", "your code", "your stack",
-        "your use of", "how did you use", "how do you use", "in jobshield",
-        "in stocksense", "in your project", "in my portfolio",
-    ]
-    if any(signal in q for signal in portfolio_signals):
-        return False
 
-    generic_explanation_starts = [
-        "what is ", "what are ", "explain ", "describe ", "define ",
-        "how does ", "how do ", "why does ", "why do ", "teach me ",
-    ]
-    return any(q.startswith(signal) for signal in generic_explanation_starts)
+def is_chitchat_request(question: str) -> bool:
+    q = question.lower().strip()
+    return bool(re.fullmatch(
+        r"(hi|hello|hey|thanks|thank you|ok|okay|cool|great|bye|goodbye|good morning|good afternoon|good evening)[!. ]*",
+        q,
+    ))
+
+
+def is_contextual_followup(question: str, history: list[dict[str, str]]) -> bool:
+    q = question.lower().strip()
+    if not history or len(q.split()) > 8:
+        return False
+    if re.search(r"\b(what is|what are|explain|define|teach me|how does|how do)\b", q):
+        return False
+    return q in {
+        "why?", "why", "how?", "how", "and?", "and", "what about it?",
+        "what about that?", "which one?", "more?", "tell me more",
+    } and any(item.get("role") == "assistant" for item in history[-3:])
+
+
+def is_out_of_portfolio_scope(
+    question: str,
+    history: list[dict[str, str]] | None = None,
+) -> bool:
+    q = question.lower().strip()
+    recent_history = history or []
+    if is_chitchat_request(q):
+        return False
+    if has_portfolio_reference(q):
+        return False
+    if is_contextual_followup(q, recent_history):
+        return False
+    return True
 
 
 def is_out_of_scope_general_request(question: str) -> bool:
@@ -672,7 +738,7 @@ async def chat(request: Request):
 
     if (
         is_general_math_request(message)
-        or is_general_concept_request(message)
+        or is_out_of_portfolio_scope(message, history)
         or is_out_of_scope_general_request(message)
         or is_unrelated_general_coding_request(message)
     ):
