@@ -657,141 +657,7 @@ h2 i {
   border-radius: 50%;
 }
 
-/* =========================================================
-   ORBIT SYSTEM
-   ========================================================= */
 
-.orbit{
-  position:absolute;
-
-  width:67%;
-  aspect-ratio:1;
-
-  left:26%;
-  top:17%;
-
-  border:1px dashed rgba(255,56,51,.8);
-  border-radius:50%;
-
-  z-index:2;
-
-  transform-origin:center center;
-
-  animation:orbit-spin 24s linear infinite;
-}
-
-
-/* ---------------------------------------------------------
-   OUTER GREY ORBIT
-   --------------------------------------------------------- */
-
-.orbit::before{
-  content:"";
-
-  position:absolute;
-
-  width:116%;
-  height:116%;
-
-  left:-8%;
-  top:-8%;
-
-  border:1px solid rgba(17,17,17,.12);
-  border-radius:50%;
-
-  pointer-events:none;
-}
-
-
-/* ---------------------------------------------------------
-   INNER GREY ORBIT
-   --------------------------------------------------------- */
-
-.orbit::after{
-  content:"";
-
-  position:absolute;
-
-  width:82%;
-  height:82%;
-
-  left:9%;
-  top:9%;
-
-  border:1px solid rgba(17,17,17,.13);
-  border-radius:50%;
-
-  pointer-events:none;
-}
-
-
-/* =========================================================
-   ORBIT DOTS — EXACTLY ON CIRCUMFERENCE
-   ========================================================= */
-
-.orbit-dot{
-  position:absolute;
-
-  width:12px;
-  height:12px;
-
-  background:var(--red);
-  border-radius:50%;
-
-  z-index:5;
-
-  pointer-events:none;
-
-  /* keeps the centre of the dot on the orbit line */
-  transform:translate(-50%, -50%);
-}
-
-
-/* ---------------------------------------------------------
-   DOT 1 — TOP
-   --------------------------------------------------------- */
-
-.dot-1{
-  left:50%;
-  top:0%;
-}
-
-
-/* ---------------------------------------------------------
-   DOT 2 — RIGHT / LOWER
-   --------------------------------------------------------- */
-
-.dot-2{
-  left:100%;
-  top:68%;
-}
-
-
-/* ---------------------------------------------------------
-   DOT 3 — LEFT / LOWER
-   --------------------------------------------------------- */
-
-.dot-3{
-  left:25%;
-  top:100%;
-}
-
-
-/* =========================================================
-   ORBIT ROTATION
-   ========================================================= */
-
-@keyframes orbit-spin{
-
-  from{
-    transform:rotate(0deg);
-  }
-
-  to{
-    transform:rotate(360deg);
-  }
-
-}
 
 
 /* ---------------------------------------------------------
@@ -3763,9 +3629,7 @@ footer {
   animation: routeFlow 1.2s linear infinite;
 }
 
-@keyframes routeFlow {
-  to { stroke-dashoffset: -24; }
-}
+
 
 /* =========================================================
    ALZHEIMER'S — MRI → classification
@@ -3880,9 +3744,7 @@ footer {
   animation: hotspotPulse 1.2s ease-in-out infinite;
 }
 
-@keyframes hotspotPulse {
-  50% { transform: scale(1.18); transform-origin: 158px 116px; }
-}
+
 
 @media (max-width: 850px) {
   .site-header,
