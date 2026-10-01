@@ -235,6 +235,9 @@ def is_general_math_request(question: str) -> bool:
         "sin square",
         "cos square",
         "tan square",
+        "sin^2",
+        "cos^2",
+        "tan^2",
         "trigonometry",
         "sine rule",
         "cosine rule",
@@ -244,8 +247,25 @@ def is_general_math_request(question: str) -> bool:
         "integrate",
         "solve this equation",
         "quadratic equation",
+        "value of sin",
+        "value of cos",
+        "value of tan",
+        "sin value",
+        "cos value",
+        "tan value",
     ]
-    return any(signal in q for signal in math_signals)
+    if any(signal in q for signal in math_signals):
+        return True
+
+    # Catch ordinary trigonometric questions such as "sin 45" or
+    # "what is cos 60", including degree/radian notation.
+    trig_expression = re.search(
+        r"\b(?:sin|cos|tan|cot|sec|csc)\s*(?:\^\s*\d+\s*)?"
+        r"(?:\([^)]*\)|\d+(?:\.\d+)?(?:\s*(?:degrees?|°|rad|radians?))?|"
+        r"[a-z]+)\b",
+        q,
+    )
+    return bool(trig_expression)
 
 
 def is_out_of_scope_general_request(question: str) -> bool:
