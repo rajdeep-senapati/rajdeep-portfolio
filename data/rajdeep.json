@@ -15,7 +15,18 @@
       "English",
       "Hindi",
       "Bengali"
-    ]
+    ],
+    "schooling": {
+      "school": "Tagore Academy",
+      "location": "Jamshedpur, Jharkhand",
+      "classes_1_to_10": "ICSE",
+      "classes_11_to_12": "ISC",
+      "stream": "Science",
+      "marks": {
+        "class_10": "89%",
+        "class_12": "86%"
+      }
+    }
   },
   "experience": [
     {
