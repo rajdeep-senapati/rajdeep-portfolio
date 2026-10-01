@@ -1352,6 +1352,7 @@ document.addEventListener("keydown",(event)=>{
 });
 
 let cachedNavTargets = [];
+let cachedMobileTargets = [];
 
 function cacheNavPositions() {
   const headerHeight = document.querySelector(".site-header")?.offsetHeight || 76;
@@ -1359,6 +1360,15 @@ function cacheNavPositions() {
   cachedNavTargets = navTargets.map((item) => ({
     link: item.link,
     top: item.target.getBoundingClientRect().top + window.scrollY,
+  }));
+
+  cachedMobileTargets = mobileSectionTargets.map((item) => ({
+    link: item.link,
+    top: item.target.getBoundingClientRect().top + window.scrollY,
+    bottom:
+      item.target.getBoundingClientRect().top +
+      window.scrollY +
+      item.target.getBoundingClientRect().height,
   }));
 
   updateActiveNav(headerHeight);
@@ -1377,20 +1387,39 @@ function updateActiveNav(headerHeight = 76) {
     link.classList.toggle("active", link === activeLink),
   );
 
-  // The mobile section tracker remains layout-aware because it is only
-  // used on mobile, but desktop scrolling never enters this path.
-  if (window.innerWidth <= 620) {
-    const activeMobile = getActiveMobileSection();
+  if (window.innerWidth <= 620 && cachedMobileTargets.length) {
+    const mobileMarker =
+      window.scrollY +
+      headerHeight +
+      Math.max(120, (window.innerHeight - headerHeight) * 0.45);
 
-    if (activeMobile) {
-      mobileSectionLinks.forEach((link) =>
-        link.classList.toggle("active", link === activeMobile.link),
-      );
+    let activeMobile = cachedMobileTargets[0];
+    let bestDistance = Infinity;
 
-      if (mobileSectionLabel) {
-        mobileSectionLabel.textContent =
-          activeMobile.link.textContent.trim().toUpperCase();
+    for (const item of cachedMobileTargets) {
+      if (mobileMarker >= item.top && mobileMarker <= item.bottom) {
+        activeMobile = item;
+        break;
       }
+
+      const distance =
+        mobileMarker < item.top
+          ? item.top - mobileMarker
+          : mobileMarker - item.bottom;
+
+      if (distance < bestDistance) {
+        bestDistance = distance;
+        activeMobile = item;
+      }
+    }
+
+    mobileSectionLinks.forEach((link) =>
+      link.classList.toggle("active", link === activeMobile.link),
+    );
+
+    if (mobileSectionLabel) {
+      mobileSectionLabel.textContent =
+        activeMobile.link.textContent.trim().toUpperCase();
     }
   }
 }
