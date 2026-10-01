@@ -194,6 +194,24 @@ def is_unrelated_general_coding_request(question: str) -> bool:
 
 
 
+def is_general_education_question(question: str) -> bool:
+    q = question.lower().strip()
+    education_signals = [
+        "educational background", "education background", "tell me about your education",
+        "tell me about your educational", "your education", "your schooling",
+        "where did you study", "where did you go to school", "academic background",
+    ]
+    return any(signal in q for signal in education_signals)
+
+
+EDUCATION_RESPONSE = (
+    "I completed my schooling at Tagore Academy in Jamshedpur, following the ICSE "
+    "curriculum up to Class 10 and the ISC curriculum up to Class 12 in the Science stream. "
+    "I then completed my B.Tech in Computer Science (Data Science) from Heritage Institute "
+    "of Technology, Kolkata, and graduated in 2026."
+)
+
+
 def is_general_math_request(question: str) -> bool:
     q = question.lower().strip()
 
@@ -582,6 +600,21 @@ async def chat(request: Request):
     history = clean_history(
         body.get("messages") if isinstance(body, dict) else None
     )
+
+    if is_general_education_question(message):
+        async def education_event_stream() -> AsyncIterator[str]:
+            yield sse({"text": EDUCATION_RESPONSE})
+            yield sse({"done": True, "model": "education-guard"})
+
+        return StreamingResponse(
+            education_event_stream(),
+            media_type="text/event-stream",
+            headers={
+                "Cache-Control": "no-cache, no-transform",
+                "Connection": "keep-alive",
+                "X-Accel-Buffering": "no",
+            },
+        )
 
     if (
         is_general_math_request(message)
