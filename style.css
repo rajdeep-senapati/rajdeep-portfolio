@@ -24,6 +24,19 @@ html {
 }
 
 /* =========================================================
+   SCROLL PERFORMANCE
+   Decorative animations pause only while the user is actively
+   scrolling, then resume automatically when scrolling stops.
+   This keeps the page responsive without removing the motion.
+   ========================================================= */
+
+html.is-scrolling *,
+html.is-scrolling *::before,
+html.is-scrolling *::after {
+  animation-play-state: paused !important;
+}
+
+/* =========================================================
    CUSTOM SCROLLBAR — ORBIT ACCENT
    Keep the browser scrollbar inside the site's cream / ink /
    red visual system instead of using the default Chrome UI.
