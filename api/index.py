@@ -176,32 +176,19 @@ def is_project_technical_question(question: str) -> bool:
     ])
 
 
-def is_unrelated_general_coding_request(question: str) -> bool:
-    q = question.lower().strip()
-    if project_context(q):
-        return False
-    return any(signal in q for signal in [
-        "give me code", "give me the code", "give me a code",
-        "write code", "write me code", "generate code",
-        "code for", "python code", "javascript code", "java code",
-        "c++ code", "sql query", "write a query", "solve this",
-        "solve the problem", "leetcode", "hackerrank", "implement this",
-        "build me", "create an app", "web scraper", "scrape this",
-        "eda code", "exploratory data analysis code", "debug this code",
-        "explain code", "show me how to code", "how do i code",
-        "write a program", "programming example", "coding example",
-    ])
-
-
-
 def is_general_education_question(question: str) -> bool:
     q = question.lower().strip()
-    education_signals = [
-        "educational background", "education background", "tell me about your education",
-        "tell me about your educational", "your education", "your schooling",
-        "where did you study", "where did you go to school", "academic background",
-    ]
-    return any(signal in q for signal in education_signals)
+    words = set(re.findall(r"[a-z0-9]+(?:'[a-z]+)?", q))
+    has_personal = bool(words & PERSONAL_REFERENCES) if "PERSONAL_REFERENCES" in globals() else bool(
+        words & {"i", "me", "my", "you", "your", "rajdeep", "he", "his"}
+    )
+    education_terms = {
+        "education", "educational", "school", "schooling", "college",
+        "degree", "academic", "study", "studied", "university",
+        "graduated", "graduation", "b.tech", "cgpa", "marks", "percentage",
+    }
+    has_education_topic = any(term in q for term in education_terms)
+    return has_personal and has_education_topic
 
 
 EDUCATION_RESPONSE = (
@@ -210,62 +197,6 @@ EDUCATION_RESPONSE = (
     "I then completed my B.Tech in Computer Science (Data Science) from Heritage Institute "
     "of Technology, Kolkata, and graduated in 2026."
 )
-
-
-def is_general_math_request(question: str) -> bool:
-    q = question.lower().strip()
-
-    simple_expression = re.fullmatch(
-        r"(?:what is|calculate|solve)\s+[\d\s()+\-*/%.^=]+\??",
-        q,
-    )
-    if simple_expression:
-        return True
-
-    # Catch symbolic equations such as "a^b = b^a" even when the user
-    # wraps them in a portfolio/person question.
-    symbolic_equation = re.search(
-        r"\b[a-z]\s*(?:\^|\*\*|=|\+|-|/|\*)\s*[a-z0-9]",
-        q,
-    )
-    if symbolic_equation and "=" in q:
-        return True
-
-    math_signals = [
-        "sin square",
-        "cos square",
-        "tan square",
-        "sin^2",
-        "cos^2",
-        "tan^2",
-        "trigonometry",
-        "sine rule",
-        "cosine rule",
-        "integral of",
-        "derivative of",
-        "differentiate",
-        "integrate",
-        "solve this equation",
-        "quadratic equation",
-        "value of sin",
-        "value of cos",
-        "value of tan",
-        "sin value",
-        "cos value",
-        "tan value",
-    ]
-    if any(signal in q for signal in math_signals):
-        return True
-
-    # Catch ordinary trigonometric questions such as "sin 45" or
-    # "what is cos 60", including degree/radian notation.
-    trig_expression = re.search(
-        r"\b(?:sin|cos|tan|cot|sec|csc)\s*(?:\^\s*\d+\s*)?"
-        r"(?:\([^)]*\)|\d+(?:\.\d+)?(?:\s*(?:degrees?|°|rad|radians?))?|"
-        r"[a-z]+)\b",
-        q,
-    )
-    return bool(trig_expression)
 
 
 def portfolio_entity_terms() -> set[str]:
@@ -365,25 +296,6 @@ def is_out_of_portfolio_scope(
     if is_contextual_followup(q, recent_history):
         return False
     return True
-
-
-def is_out_of_scope_general_request(question: str) -> bool:
-    q = question.lower().strip()
-    generic_topics = [
-        "three sum", "two sum", "binary search", "linked list",
-        "sorting algorithm", "data structure", "leetcode", "hackerrank",
-        "learn java", "learn python", "learn javascript", "learn c++",
-        "java tutorial", "javascript tutorial", "spring boot tutorial",
-        "coding tutorial", "coding roadmap", "programming roadmap",
-        "interview coding", "dsa", "competitive programming",
-    ]
-    learning_signals = [
-        "teach me", "tutorial", "roadmap", "how to become",
-        "how can i get hired", "prepare me", "course",
-    ]
-    if any(topic in q for topic in generic_topics):
-        return True
-    return any(signal in q for signal in learning_signals) and not project_context(q)
 
 
 def client_rate_limit_key(request: Request) -> str:
@@ -744,12 +656,7 @@ async def chat(request: Request):
             },
         )
 
-    if (
-        is_general_math_request(message)
-        or is_out_of_portfolio_scope(message, history)
-        or is_out_of_scope_general_request(message)
-        or is_unrelated_general_coding_request(message)
-    ):
+    if is_out_of_portfolio_scope(message, history):
         refusal = (
             "I’m Rajdeep’s portfolio AI, so I stay focused on Rajdeep’s "
             "work, projects, skills and experience. I can explain documented "
