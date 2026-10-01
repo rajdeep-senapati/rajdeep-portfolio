@@ -222,6 +222,15 @@ def is_general_math_request(question: str) -> bool:
     if simple_expression:
         return True
 
+    # Catch symbolic equations such as "a^b = b^a" even when the user
+    # wraps them in a portfolio/person question.
+    symbolic_equation = re.search(
+        r"\b[a-z]\s*(?:\^|\*\*|=|\+|-|/|\*)\s*[a-z0-9]",
+        q,
+    )
+    if symbolic_equation and "=" in q:
+        return True
+
     math_signals = [
         "sin square",
         "cos square",
