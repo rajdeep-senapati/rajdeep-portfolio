@@ -243,6 +243,33 @@ PERSONAL_REFERENCES = {
 }
 
 
+def is_personal_identity_question(question: str) -> bool:
+    """Allow direct identity/profile questions about Rajdeep without opening general Q&A."""
+    q = question.lower().strip()
+    words = set(re.findall(r"[a-z0-9]+(?:'[a-z]+)?", q))
+    has_direct_personal_reference = bool(
+        words & {"rajdeep", "rajdeep's", "he", "his"}
+    )
+
+    if not has_direct_personal_reference:
+        return False
+
+    identity_signals = (
+        r"\bwho\s+is\b",
+        r"\bwho's\b",
+        r"\bwhat\s+is\b",
+        r"\bwhat's\b",
+        r"\btell\s+me\s+about\b",
+        r"\babout\b",
+        r"\bfull\s+name\b",
+        r"\bname\b",
+        r"\bbackground\b",
+        r"\bbio(?:graphy)?\b",
+        r"\bprofile\b",
+    )
+    return any(re.search(signal, q) for signal in identity_signals)
+
+
 def has_portfolio_reference(question: str) -> bool:
     q = question.lower().strip()
     words = set(re.findall(r"[a-z0-9]+(?:'[a-z]+)?", q))
@@ -254,8 +281,6 @@ def has_portfolio_reference(question: str) -> bool:
     # A documented project name is inherently portfolio-scoped. Other
     # knowledge-base entities (companies, schools, skills, tools) require
     # either a personal/portfolio relationship or an explicit portfolio topic.
-    if project_context(q):
-        return True
 
     if any(term in q for term in portfolio_entity_terms()):
         return has_personal or has_topic
@@ -290,6 +315,8 @@ def is_out_of_portfolio_scope(
     q = question.lower().strip()
     recent_history = history or []
     if is_chitchat_request(q):
+        return False
+    if is_personal_identity_question(q):
         return False
     if has_portfolio_reference(q):
         return False
