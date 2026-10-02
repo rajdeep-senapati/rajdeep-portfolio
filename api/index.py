@@ -244,15 +244,15 @@ PERSONAL_REFERENCES = {
 
 
 def is_personal_identity_question(question: str) -> bool:
-    """Allow direct identity/profile questions about Rajdeep without opening general Q&A."""
+    """Allow direct identity/profile/contact questions about Rajdeep without opening general Q&A."""
     q = question.lower().strip()
     words = set(re.findall(r"[a-z0-9]+(?:'[a-z]+)?", q))
-    has_direct_personal_reference = bool(
-        words & {"rajdeep", "rajdeep's"}
-    )
 
-    if not has_direct_personal_reference:
-        return False
+    direct_personal_references = {"rajdeep", "rajdeep's"}
+    indirect_personal_references = {"he", "his", "him"}
+
+    has_direct_personal_reference = bool(words & direct_personal_references)
+    has_indirect_personal_reference = bool(words & indirect_personal_references)
 
     identity_signals = (
         r"\bwho\s+is\b",
@@ -267,7 +267,27 @@ def is_personal_identity_question(question: str) -> bool:
         r"\bbio(?:graphy)?\b",
         r"\bprofile\b",
     )
-    return any(re.search(signal, q) for signal in identity_signals)
+    contact_signals = (
+        r"\bcontact\b",
+        r"\breach\b",
+        r"\bget\s+in\s+touch\b",
+        r"\bemail\b",
+        r"\bmail\b",
+        r"\bphone\b",
+        r"\bcall\b",
+        r"\bconnect\b",
+    )
+
+    has_identity_intent = any(re.search(signal, q) for signal in identity_signals)
+    has_contact_intent = any(re.search(signal, q) for signal in contact_signals)
+
+    if has_direct_personal_reference:
+        return has_identity_intent or has_contact_intent
+
+    # Indirect references are only accepted for unambiguous contact/profile
+    # intents, preventing generic questions such as "What is his model?" from
+    # opening the portfolio scope.
+    return has_indirect_personal_reference and has_contact_intent
 
 
 def has_portfolio_reference(question: str) -> bool:
