@@ -248,7 +248,7 @@ def is_personal_identity_question(question: str) -> bool:
     q = question.lower().strip()
     words = set(re.findall(r"[a-z0-9]+(?:'[a-z]+)?", q))
     has_direct_personal_reference = bool(
-        words & {"rajdeep", "rajdeep's", "he", "his"}
+        words & {"rajdeep", "rajdeep's"}
     )
 
     if not has_direct_personal_reference:
