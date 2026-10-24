@@ -6437,16 +6437,80 @@ body.modal-open .site-header {
     background: #555149 !important;
   }
 
+  /* Keep the dark theme cohesive: coral is an accent, not a full-section fill. */
+  .hero {
+    background: #201f1c !important;
+    color: #f5f1e8 !important;
+  }
+
+  .hero > *,
+  .hero-copy,
+  .hero-visual,
+  .hero-art,
+  .dp-card,
+  .dp-stage {
+    background-color: #201f1c;
+    color: #f5f1e8;
+  }
+
+  .hero i,
+  .hero h1 i,
+  .about h2 i,
+  .contact h2 i {
+    color: #ff6258 !important;
+  }
+
   .about,
   .ai,
   .contact {
-    background-color: #ff6258;
-    color: #201f1c;
+    background: #292723 !important;
+    color: #f5f1e8 !important;
+    border-color: rgba(245, 241, 232, 0.14) !important;
   }
 
+  .about h2,
+  .about h2 i,
+  .contact h2,
+  .contact h2 i,
+  .ai h2,
+  .ai h2 i {
+    color: #f5f1e8 !important;
+  }
+
+  .about h2 i,
+  .contact h2 i,
+  .ai h2 i {
+    color: #ff6258 !important;
+  }
+
+  .about p,
   .about p.muted,
-  .contact small {
-    color: #f5f1e8;
+  .contact p,
+  .contact small,
+  .ai p {
+    color: #d0c9bd !important;
+  }
+
+  .facts {
+    border-color: rgba(245, 241, 232, 0.22);
+  }
+
+  .facts small,
+  .facts b {
+    color: #f5f1e8 !important;
+  }
+
+  .email,
+  .ai .button,
+  .ai a.button {
+    background: #f5f1e8 !important;
+    color: #201f1c !important;
+    border-color: #f5f1e8 !important;
+  }
+
+  .hero-art,
+  .dp-card {
+    border-color: rgba(245, 241, 232, 0.18);
   }
 
   .ticker {
