@@ -5,6 +5,7 @@
    ========================================================= */
 
 :root {
+  color-scheme: light;
   --red: #ff3b30;
   --ink: #11100f;
   --cream: #f5f1e8;
@@ -6423,5 +6424,16 @@ body.modal-open .site-header {
   ::selection {
     color: #181715;
     background: #ff8b83;
+  }
+}
+
+
+@media (prefers-color-scheme: dark) and (max-width: 620px) {
+  .site-header,
+  .site-header.is-scrolled {
+    background: rgba(24, 23, 21, 0.96) !important;
+    border-color: rgba(243, 238, 228, 0.2) !important;
+    border-bottom-color: rgba(243, 238, 228, 0.2) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28) !important;
   }
 }
