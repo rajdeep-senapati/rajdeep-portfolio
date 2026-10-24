@@ -6437,3 +6437,130 @@ body.modal-open .site-header {
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28) !important;
   }
 }
+
+
+/* =========================================================
+   DARK MODE — HEADER AND PROJECT PREVIEW CONTRAST
+   Target the components visible in the system-dark screenshots.
+   Keep the artwork's red route/chart accents intact.
+   ========================================================= */
+@media (prefers-color-scheme: dark) {
+  .site-header,
+  .site-header.is-scrolled {
+    background: rgba(24, 23, 21, 0.96) !important;
+    color: #f3eee4 !important;
+    border-color: rgba(243, 238, 228, 0.22) !important;
+    border-bottom-color: rgba(243, 238, 228, 0.22) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.24);
+  }
+
+  .site-header .main-nav a,
+  .site-header .mobile-section-indicator,
+  .site-header .logo,
+  .site-header .header-ai {
+    color: #f3eee4;
+  }
+
+  .site-header .main-nav a.active,
+  .site-header .main-nav a:hover,
+  .site-header .mobile-section-nav.is-open .mobile-section-indicator {
+    color: #ff6258;
+  }
+
+  .site-header .header-ai {
+    background: #181715;
+    border-color: rgba(243, 238, 228, 0.45);
+  }
+
+  .site-header .header-ai:hover {
+    background: #f3eee4;
+    color: #181715;
+  }
+
+  /* Section anchors should settle below the fixed/sticky header. */
+  #top,
+  #work,
+  #skills,
+  #ai,
+  #about,
+  #contact,
+  #experience,
+  #certifications {
+    scroll-margin-top: 100px;
+  }
+
+  /* Make the two pale project illustrations readable, not inverted. */
+  .stocksense-visual,
+  .route-visual {
+    background: #302d29;
+  }
+
+  .chart-window,
+  .map-window {
+    background: #201f1c;
+    color: #f3eee4;
+    border-color: rgba(243, 238, 228, 0.22);
+  }
+
+  .chart-head,
+  .chart-head span,
+  .chart-labels {
+    color: #d0c9bd;
+  }
+
+  .chart-window polyline:not(.forecast) {
+    stroke: #f3eee4;
+  }
+
+  .chart-window .forecast {
+    stroke: #ff6258;
+  }
+
+  .map-grid {
+    background-image:
+      linear-gradient(rgba(243, 238, 228, .10) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(243, 238, 228, .10) 1px, transparent 1px);
+  }
+
+  .map-window b,
+  .map-window small,
+  .map-window span,
+  .map-window .map-label {
+    color: #e4ddd1;
+  }
+
+  .map-window svg text {
+    fill: #e4ddd1;
+  }
+
+  .map-window svg .route,
+  .map-window svg [stroke="#ff3b30"] {
+    stroke: #ff6258;
+  }
+
+  .mock-window,
+  .chart-window,
+  .map-window {
+    border-color: rgba(243, 238, 228, 0.22);
+    box-shadow: 5px 5px rgba(0, 0, 0, 0.24);
+  }
+}
+
+@media (prefers-color-scheme: dark) and (max-width: 620px) {
+  .site-header,
+  .site-header.is-scrolled {
+    background: rgba(24, 23, 21, 0.97) !important;
+    color: #f3eee4 !important;
+  }
+
+  #top,
+  #work,
+  #skills,
+  #ai,
+  #about,
+  #contact,
+  #experience,
+  #certifications {
+    scroll-margin-top: 104px !important;
+  }
+}
