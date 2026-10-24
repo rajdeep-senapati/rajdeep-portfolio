@@ -6328,156 +6328,248 @@ body.modal-open .site-header {
 }
 
 /* =========================================================
-   SYSTEM DARK MODE — CONTRAST-SAFE PALETTE
-   Follow the device/browser preference without changing the
-   light theme. Keep the cream / ink / red identity.
+   SYSTEM DARK MODE
+   The light theme above remains the default. These overrides
+   run only when the operating system/browser requests dark mode.
+   Keep the original cream / coral identity; avoid global inversion.
    ========================================================= */
 @media (prefers-color-scheme: dark) {
   :root {
     color-scheme: dark;
-    --red: #ff6258;
-    --ink: #f3eee4;
-    --cream: #181715;
-    --paper: #24221f;
-    --muted: #b8b1a6;
-    --line: rgba(243, 238, 228, 0.2);
   }
 
+  html,
   body {
-    background-color: var(--cream);
-    color: var(--ink);
+    background: #201f1c;
+    color: #f5f1e8;
   }
 
+  /* A floating pill only: no full-width black rectangle behind it. */
   .site-header,
   .site-header.is-scrolled {
-    background: rgba(24, 23, 21, 0.94);
-    border-color: rgba(243, 238, 228, 0.18);
+    background: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
   }
 
-  .hero p {
-    color: #d0c9bd;
+  .site-header::before,
+  .site-header.is-scrolled::before {
+    background: rgba(32, 31, 28, 0.94) !important;
+    border: 1px solid rgba(245, 241, 232, 0.18) !important;
+    border-radius: 999px !important;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22) !important;
+    opacity: 1 !important;
   }
 
-  .dp-card {
-    background:
-      linear-gradient(90deg, transparent 49.85%, rgba(243, 238, 228, .09) 50%, transparent 50.15%),
-      linear-gradient(0deg, transparent 49.85%, rgba(243, 238, 228, .08) 50%, transparent 50.15%),
-      var(--cream);
-  }
-
-  .orbit::before,
-  .orbit::after {
-    border-color: rgba(243, 238, 228, .18);
-  }
-
-  .dp::before {
-    border-color: rgba(243, 238, 228, .22);
-  }
-
-  .dp-card > b {
-    border-color: rgba(243, 238, 228, .24);
-  }
-
-  .project-card,
-  .skill-card,
-  .about-card,
-  .experience-card,
-  .certification-card {
-    background-color: var(--paper);
-    color: var(--ink);
-    border-color: var(--line);
-  }
-
-  .project-meta,
-  .project-card p,
-  .section p,
-  .about p,
-  .contact p {
-    color: #c5beb2;
-  }
-
-  .mobile-section-menu {
-    background: #24221f;
-    color: var(--ink);
-    border-color: var(--red);
-  }
-
-  .mobile-section-menu a {
-    color: var(--ink);
-  }
-
-  .header-ai {
-    border-color: var(--ink);
-    color: var(--ink);
-  }
-
-  .header-ai:hover {
-    background: var(--ink);
-    color: var(--cream);
-  }
-
-  .ticker {
-    background-color: var(--ink);
-    color: var(--cream);
-  }
-
-  ::selection {
-    color: #181715;
-    background: #ff8b83;
-  }
-}
-
-
-@media (prefers-color-scheme: dark) and (max-width: 620px) {
-  .site-header,
-  .site-header.is-scrolled {
-    background: rgba(24, 23, 21, 0.96) !important;
-    border-color: rgba(243, 238, 228, 0.2) !important;
-    border-bottom-color: rgba(243, 238, 228, 0.2) !important;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28) !important;
-  }
-}
-
-
-/* =========================================================
-   DARK MODE — HEADER AND PROJECT PREVIEW CONTRAST
-   Target the components visible in the system-dark screenshots.
-   Keep the artwork's red route/chart accents intact.
-   ========================================================= */
-@media (prefers-color-scheme: dark) {
-  .site-header,
-  .site-header.is-scrolled {
-    background: rgba(24, 23, 21, 0.96) !important;
-    color: #f3eee4 !important;
-    border-color: rgba(243, 238, 228, 0.22) !important;
-    border-bottom-color: rgba(243, 238, 228, 0.22) !important;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.24);
-  }
-
-  .site-header .main-nav a,
-  .site-header .mobile-section-indicator,
   .site-header .logo,
+  .site-header .main-nav a,
   .site-header .header-ai {
-    color: #f3eee4;
+    color: #f5f1e8 !important;
   }
 
   .site-header .main-nav a.active,
-  .site-header .main-nav a:hover,
-  .site-header .mobile-section-nav.is-open .mobile-section-indicator {
-    color: #ff6258;
+  .site-header .main-nav a:hover {
+    color: #ff6258 !important;
   }
 
   .site-header .header-ai {
-    background: #181715;
-    border-color: rgba(243, 238, 228, 0.45);
+    background: #201f1c !important;
+    border-color: rgba(245, 241, 232, 0.35) !important;
   }
 
   .site-header .header-ai:hover {
-    background: #f3eee4;
-    color: #181715;
+    background: #f5f1e8 !important;
+    color: #201f1c !important;
   }
 
-  /* Section anchors should settle below the fixed/sticky header. */
+  /* Light sections become warm charcoal; retain the coral feature bands. */
+  .hero,
+  .work-section,
+  .section-heading,
+  .projects,
+  .project-grid,
+  .experience-section,
+  .certifications-section,
+  .skills {
+    background-color: #201f1c;
+    color: #f5f1e8;
+  }
+
+  .hero p,
+  .section-heading p,
+  .project-content p,
+  .experience p,
+  .certification p,
+  .about p {
+    color: #d0c9bd;
+  }
+
+  .section h2,
+  .section h3,
+  .section-heading h2,
+  .project-content h3,
+  .skillbox,
+  .skillbox div {
+    color: #f5f1e8;
+  }
+
+  .skills {
+    background: #292723 !important;
+    color: #f5f1e8 !important;
+  }
+
+  .skills small,
+  .skillbox b {
+    color: #c5beb2 !important;
+  }
+
+  .skillbox hr {
+    background: #555149 !important;
+  }
+
+  .about,
+  .ai,
+  .contact {
+    background-color: #ff6258;
+    color: #201f1c;
+  }
+
+  .about p.muted,
+  .contact small {
+    color: #f5f1e8;
+  }
+
+  .ticker {
+    background: #f5f1e8;
+    color: #201f1c;
+  }
+
+  .project-card,
+  .experience-card,
+  .certification-card,
+  .about-card {
+    background: #292723;
+    color: #f5f1e8;
+    border-color: rgba(245, 241, 232, 0.18);
+  }
+
+  .project-meta,
+  .chips {
+    color: #c5beb2;
+  }
+
+  .jobshield-visual {
+    background: #ff6258;
+  }
+
+  .mock-window,
+  .chart-window,
+  .map-window {
+    border-color: rgba(245, 241, 232, 0.22);
+    box-shadow: 5px 5px rgba(0, 0, 0, 0.22);
+  }
+
+  .stocksense-visual,
+  .chart-window,
+  .route-visual,
+  .route-graphic,
+  .seating-visual,
+  .seating-board,
+  .diwali-visual,
+  .sales-art {
+    background-color: #292723 !important;
+  }
+
+  .chart-head,
+  .chart-head span,
+  .chart-labels,
+  .route-title,
+  .route-graphic text {
+    color: #e4ddd1;
+    fill: #e4ddd1;
+  }
+
+  .chart-window polyline:not(.forecast) {
+    stroke: #d0c9bd;
+  }
+
+  .chart-window .forecast,
+  .route-main,
+  .route-flow,
+  .route-node {
+    stroke: #ff6258;
+  }
+
+  .route-roads path {
+    stroke: rgba(245, 241, 232, 0.18);
+  }
+
+  .route-node {
+    fill: #292723;
+  }
+
+  .route-node.stop {
+    fill: #f5f1e8;
+    stroke: #292723;
+  }
+
+  .seating-visual::before,
+  .diwali-visual::before {
+    background: #3a3731;
+    color: #f5f1e8;
+  }
+
+  .seat-list i,
+  .seat-grid b {
+    background: #777168;
+  }
+
+  .seat-grid b:nth-child(3n),
+  .seat-grid b:nth-child(7n),
+  .sales-bars i:nth-child(odd) {
+    background: #ff6258;
+  }
+
+  .seating-board::after {
+    color: #ff827a;
+  }
+
+  .mri-graphic {
+    background: #151413;
+  }
+
+  .mri-brain,
+  .mri-slice {
+    stroke: rgba(245, 241, 232, 0.62);
+  }
+
+  .stage-list text,
+  .stage-label,
+  .stage-note,
+  .mri-title,
+  .mri-graphic::after {
+    fill: #f5f1e8;
+    color: #f5f1e8;
+  }
+
+  .stage-list rect {
+    fill: rgba(245, 241, 232, 0.10);
+    stroke: rgba(245, 241, 232, 0.42);
+  }
+
+  .stage-list rect:nth-of-type(2),
+  .stage-list rect:nth-of-type(4) {
+    fill: rgba(255, 98, 88, 0.20);
+    stroke: #ff6258;
+  }
+
+  .stage-list line {
+    stroke: rgba(245, 241, 232, 0.42);
+  }
+
+  /* Keep in-page navigation from landing underneath the floating header. */
   #top,
   #work,
   #skills,
@@ -6487,360 +6579,5 @@ body.modal-open .site-header {
   #experience,
   #certifications {
     scroll-margin-top: 100px;
-  }
-
-  /* Make the two pale project illustrations readable, not inverted. */
-  .stocksense-visual,
-  .route-visual {
-    background: #302d29;
-  }
-
-  .chart-window,
-  .map-window {
-    background: #201f1c;
-    color: #f3eee4;
-    border-color: rgba(243, 238, 228, 0.22);
-  }
-
-  .chart-head,
-  .chart-head span,
-  .chart-labels {
-    color: #d0c9bd;
-  }
-
-  .chart-window polyline:not(.forecast) {
-    stroke: #f3eee4;
-  }
-
-  .chart-window .forecast {
-    stroke: #ff6258;
-  }
-
-  .map-grid {
-    background-image:
-      linear-gradient(rgba(243, 238, 228, .10) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(243, 238, 228, .10) 1px, transparent 1px);
-  }
-
-  .map-window b,
-  .map-window small,
-  .map-window span,
-  .map-window .map-label {
-    color: #e4ddd1;
-  }
-
-  .map-window svg text {
-    fill: #e4ddd1;
-  }
-
-  .map-window svg .route,
-  .map-window svg [stroke="#ff3b30"] {
-    stroke: #ff6258;
-  }
-
-  .mock-window,
-  .chart-window,
-  .map-window {
-    border-color: rgba(243, 238, 228, 0.22);
-    box-shadow: 5px 5px rgba(0, 0, 0, 0.24);
-  }
-}
-
-@media (prefers-color-scheme: dark) and (max-width: 620px) {
-  .site-header,
-  .site-header.is-scrolled {
-    background: rgba(24, 23, 21, 0.97) !important;
-    color: #f3eee4 !important;
-  }
-
-  #top,
-  #work,
-  #skills,
-  #ai,
-  #about,
-  #contact,
-  #experience,
-  #certifications {
-    scroll-margin-top: 104px !important;
-  }
-}
-
-
-@media (prefers-color-scheme: dark) {
-  .route-graphic {
-    background: #201f1c;
-    border-color: rgba(243, 238, 228, 0.22);
-  }
-
-  .route-title {
-    color: #e4ddd1;
-  }
-
-  .route-roads path {
-    stroke: rgba(243, 238, 228, 0.18);
-  }
-
-  .route-alt {
-    stroke: rgba(243, 238, 228, 0.48);
-  }
-
-  .route-node {
-    fill: #201f1c;
-    stroke: #ff6258;
-  }
-
-  .route-node.stop {
-    fill: #f3eee4;
-    stroke: #201f1c;
-  }
-
-  .route-graphic text {
-    fill: #d0c9bd;
-  }
-}
-
-
-/* FINAL DARK-MODE OVERRIDES — header pill and all project artwork */
-@media (prefers-color-scheme: dark) {
-  /* The visible cream pill is the ::before layer, not the header background. */
-  .site-header.is-scrolled::before {
-    background: rgba(24, 23, 21, 0.97) !important;
-    border-color: rgba(243, 238, 228, 0.24) !important;
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.38) !important;
-    opacity: 1 !important;
-  }
-
-  .site-header:not(.is-scrolled) {
-    background: rgba(24, 23, 21, 0.97) !important;
-  }
-
-  .site-header .main-nav a,
-  .site-header .logo,
-  .site-header .header-ai {
-    color: #f3eee4 !important;
-  }
-
-  .site-header .main-nav a.active,
-  .site-header .main-nav a:hover {
-    color: #ff6258 !important;
-  }
-
-  /* Exam seating illustration: replace low-contrast light board and labels. */
-  .seating-visual {
-    background: #24221f !important;
-  }
-
-  .seating-board {
-    background: #24221f !important;
-    border-color: rgba(243, 238, 228, 0.22) !important;
-  }
-
-  .seating-visual::before {
-    background: #34312c !important;
-    color: #f3eee4 !important;
-  }
-
-  .seat-list i {
-    background: #8f897f !important;
-  }
-
-  .seat-grid b {
-    background: #777168 !important;
-    border-color: rgba(243, 238, 228, 0.18) !important;
-  }
-
-  .seat-grid b:nth-child(3n),
-  .seat-grid b:nth-child(7n) {
-    background: #ff6258 !important;
-  }
-
-  .seating-board::after {
-    color: #ff827a !important;
-  }
-
-  /* MRI / XGBoost: keep the dark aesthetic but make all labels readable. */
-  .mri-graphic {
-    background:
-      radial-gradient(circle at 20% 52%, rgba(243, 238, 228, .08), transparent 27%),
-      #151413 !important;
-  }
-
-  .mri-title,
-  .mri-graphic::after,
-  .stage-list text:first-child,
-  .stage-label,
-  .stage-note {
-    fill: #f3eee4 !important;
-    color: #f3eee4 !important;
-  }
-
-  .mri-brain,
-  .mri-slice {
-    stroke: rgba(243, 238, 228, .62) !important;
-  }
-
-  .stage-list rect {
-    fill: rgba(243, 238, 228, .10) !important;
-    stroke: rgba(243, 238, 228, .42) !important;
-  }
-
-  .stage-list rect:nth-of-type(2),
-  .stage-list rect:nth-of-type(4) {
-    fill: rgba(255, 98, 88, .20) !important;
-    stroke: #ff6258 !important;
-  }
-
-  .stage-list line {
-    stroke: rgba(243, 238, 228, .42) !important;
-  }
-
-  /* Diwali sales illustration: dark canvas with clear neutral/red bars. */
-  .diwali-visual {
-    background: #24221f !important;
-  }
-
-  .diwali-visual::before {
-    background: #34312c !important;
-    color: #f3eee4 !important;
-  }
-
-  .sales-art {
-    background: #24221f !important;
-    border-color: rgba(243, 238, 228, .18) !important;
-  }
-
-  .sales-bars i {
-    background: #777168 !important;
-  }
-
-  .sales-bars i:nth-child(odd) {
-    background: #ff6258 !important;
-  }
-
-  .donut {
-    border-color: #777168 !important;
-    border-top-color: #ff6258 !important;
-    border-right-color: #ff6258 !important;
-  }
-}
-
-
-/* DARK MODE — PAGE SURFACE CONSISTENCY */
-@media (prefers-color-scheme: dark) {
-  :root {
-    color-scheme: dark;
-    --red: #ff6258;
-    --ink: #f3eee4;
-    --cream: #181715;
-    --paper: #24221f;
-    --muted: #c5beb2;
-    --line: rgba(243, 238, 228, 0.2);
-  }
-
-  html,
-  body {
-    background: #181715 !important;
-    color: #f3eee4 !important;
-  }
-
-  main,
-  section,
-  .section,
-  .skills,
-  .skills-section,
-  .work,
-  .work-section,
-  .about,
-  .experience,
-  .certifications,
-  .contact {
-    color: #f3eee4;
-  }
-
-  .site-header,
-  .site-header.is-scrolled {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: rgba(24, 23, 21, 0.97) !important;
-    color: #f3eee4 !important;
-    border: 1px solid rgba(243, 238, 228, 0.2) !important;
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.32) !important;
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-  }
-
-  .site-header::before,
-  .site-header.is-scrolled::before {
-    background: rgba(24, 23, 21, 0.97) !important;
-    border-color: rgba(243, 238, 228, 0.2) !important;
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.32) !important;
-    opacity: 1 !important;
-  }
-
-  /* The hero/skills content should not inherit pale hard-coded panels. */
-  .skills-section,
-  .skills-wrap,
-  .skill-list,
-  .skill-item,
-  .skill-row,
-  .about-section,
-  .experience-section,
-  .certifications-section,
-  .contact-section {
-    background-color: transparent;
-    color: #f3eee4;
-  }
-
-  .skill-item,
-  .skill-row,
-  .skill-name,
-  .skill-label,
-  .skills p,
-  .skills-section p {
-    color: #e4ddd1 !important;
-  }
-
-  .section h1,
-  .section h2,
-  .section h3,
-  .skills h1,
-  .skills h2,
-  .skills h3 {
-    color: #f3eee4;
-  }
-
-  /* Maintain the original coral AI panel, but avoid pale text fading into it. */
-  .ai,
-  .ai-section,
-  .contact-cta {
-    color: #fff7ec;
-  }
-
-  /* Scroll targets stop below the sticky header when navigated via anchors. */
-  #top,
-  #work,
-  #skills,
-  #ai,
-  #about,
-  #contact,
-  #experience,
-  #certifications {
-    scroll-margin-top: 124px !important;
-  }
-
-  /* All remaining project art labels should stay legible on their own surface. */
-  .seating-visual::before,
-  .diwali-visual::before {
-    background: #34312c !important;
-    color: #f3eee4 !important;
-  }
-
-  .mri-title,
-  .mri-graphic::after,
-  .stage-list .stage-label,
-  .stage-list .stage-note {
-    fill: #f3eee4 !important;
-    color: #f3eee4 !important;
   }
 }
