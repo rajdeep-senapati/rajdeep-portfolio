@@ -6325,3 +6325,103 @@ body.modal-open .site-header {
   .mobile-section-menu a { display:inline-flex; align-items:center; justify-content:center; min-height:30px; padding:0 8px; border-radius:999px; color:var(--ink); font:500 8.5px "DM Mono",monospace; letter-spacing:.04em; }
   .mobile-section-menu a.active,.mobile-section-menu a:hover { color:var(--red); }
 }
+
+/* =========================================================
+   SYSTEM DARK MODE — CONTRAST-SAFE PALETTE
+   Follow the device/browser preference without changing the
+   light theme. Keep the cream / ink / red identity.
+   ========================================================= */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --red: #ff6258;
+    --ink: #f3eee4;
+    --cream: #181715;
+    --paper: #24221f;
+    --muted: #b8b1a6;
+    --line: rgba(243, 238, 228, 0.2);
+  }
+
+  body {
+    background-color: var(--cream);
+    color: var(--ink);
+  }
+
+  .site-header,
+  .site-header.is-scrolled {
+    background: rgba(24, 23, 21, 0.94);
+    border-color: rgba(243, 238, 228, 0.18);
+  }
+
+  .hero p {
+    color: #d0c9bd;
+  }
+
+  .dp-card {
+    background:
+      linear-gradient(90deg, transparent 49.85%, rgba(243, 238, 228, .09) 50%, transparent 50.15%),
+      linear-gradient(0deg, transparent 49.85%, rgba(243, 238, 228, .08) 50%, transparent 50.15%),
+      var(--cream);
+  }
+
+  .orbit::before,
+  .orbit::after {
+    border-color: rgba(243, 238, 228, .18);
+  }
+
+  .dp::before {
+    border-color: rgba(243, 238, 228, .22);
+  }
+
+  .dp-card > b {
+    border-color: rgba(243, 238, 228, .24);
+  }
+
+  .project-card,
+  .skill-card,
+  .about-card,
+  .experience-card,
+  .certification-card {
+    background-color: var(--paper);
+    color: var(--ink);
+    border-color: var(--line);
+  }
+
+  .project-meta,
+  .project-card p,
+  .section p,
+  .about p,
+  .contact p {
+    color: #c5beb2;
+  }
+
+  .mobile-section-menu {
+    background: #24221f;
+    color: var(--ink);
+    border-color: var(--red);
+  }
+
+  .mobile-section-menu a {
+    color: var(--ink);
+  }
+
+  .header-ai {
+    border-color: var(--ink);
+    color: var(--ink);
+  }
+
+  .header-ai:hover {
+    background: var(--ink);
+    color: var(--cream);
+  }
+
+  .ticker {
+    background-color: var(--ink);
+    color: var(--cream);
+  }
+
+  ::selection {
+    color: #181715;
+    background: #ff8b83;
+  }
+}
