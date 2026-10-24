@@ -6598,3 +6598,128 @@ body.modal-open .site-header {
     fill: #d0c9bd;
   }
 }
+
+
+/* FINAL DARK-MODE OVERRIDES — header pill and all project artwork */
+@media (prefers-color-scheme: dark) {
+  /* The visible cream pill is the ::before layer, not the header background. */
+  .site-header.is-scrolled::before {
+    background: rgba(24, 23, 21, 0.97) !important;
+    border-color: rgba(243, 238, 228, 0.24) !important;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.38) !important;
+    opacity: 1 !important;
+  }
+
+  .site-header:not(.is-scrolled) {
+    background: rgba(24, 23, 21, 0.97) !important;
+  }
+
+  .site-header .main-nav a,
+  .site-header .logo,
+  .site-header .header-ai {
+    color: #f3eee4 !important;
+  }
+
+  .site-header .main-nav a.active,
+  .site-header .main-nav a:hover {
+    color: #ff6258 !important;
+  }
+
+  /* Exam seating illustration: replace low-contrast light board and labels. */
+  .seating-visual {
+    background: #24221f !important;
+  }
+
+  .seating-board {
+    background: #24221f !important;
+    border-color: rgba(243, 238, 228, 0.22) !important;
+  }
+
+  .seating-visual::before {
+    background: #34312c !important;
+    color: #f3eee4 !important;
+  }
+
+  .seat-list i {
+    background: #8f897f !important;
+  }
+
+  .seat-grid b {
+    background: #777168 !important;
+    border-color: rgba(243, 238, 228, 0.18) !important;
+  }
+
+  .seat-grid b:nth-child(3n),
+  .seat-grid b:nth-child(7n) {
+    background: #ff6258 !important;
+  }
+
+  .seating-board::after {
+    color: #ff827a !important;
+  }
+
+  /* MRI / XGBoost: keep the dark aesthetic but make all labels readable. */
+  .mri-graphic {
+    background:
+      radial-gradient(circle at 20% 52%, rgba(243, 238, 228, .08), transparent 27%),
+      #151413 !important;
+  }
+
+  .mri-title,
+  .mri-graphic::after,
+  .stage-list text:first-child,
+  .stage-label,
+  .stage-note {
+    fill: #f3eee4 !important;
+    color: #f3eee4 !important;
+  }
+
+  .mri-brain,
+  .mri-slice {
+    stroke: rgba(243, 238, 228, .62) !important;
+  }
+
+  .stage-list rect {
+    fill: rgba(243, 238, 228, .10) !important;
+    stroke: rgba(243, 238, 228, .42) !important;
+  }
+
+  .stage-list rect:nth-of-type(2),
+  .stage-list rect:nth-of-type(4) {
+    fill: rgba(255, 98, 88, .20) !important;
+    stroke: #ff6258 !important;
+  }
+
+  .stage-list line {
+    stroke: rgba(243, 238, 228, .42) !important;
+  }
+
+  /* Diwali sales illustration: dark canvas with clear neutral/red bars. */
+  .diwali-visual {
+    background: #24221f !important;
+  }
+
+  .diwali-visual::before {
+    background: #34312c !important;
+    color: #f3eee4 !important;
+  }
+
+  .sales-art {
+    background: #24221f !important;
+    border-color: rgba(243, 238, 228, .18) !important;
+  }
+
+  .sales-bars i {
+    background: #777168 !important;
+  }
+
+  .sales-bars i:nth-child(odd) {
+    background: #ff6258 !important;
+  }
+
+  .donut {
+    border-color: #777168 !important;
+    border-top-color: #ff6258 !important;
+    border-right-color: #ff6258 !important;
+  }
+}
