@@ -6723,3 +6723,124 @@ body.modal-open .site-header {
     border-right-color: #ff6258 !important;
   }
 }
+
+
+/* DARK MODE — PAGE SURFACE CONSISTENCY */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --red: #ff6258;
+    --ink: #f3eee4;
+    --cream: #181715;
+    --paper: #24221f;
+    --muted: #c5beb2;
+    --line: rgba(243, 238, 228, 0.2);
+  }
+
+  html,
+  body {
+    background: #181715 !important;
+    color: #f3eee4 !important;
+  }
+
+  main,
+  section,
+  .section,
+  .skills,
+  .skills-section,
+  .work,
+  .work-section,
+  .about,
+  .experience,
+  .certifications,
+  .contact {
+    color: #f3eee4;
+  }
+
+  .site-header,
+  .site-header.is-scrolled {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(24, 23, 21, 0.97) !important;
+    color: #f3eee4 !important;
+    border: 1px solid rgba(243, 238, 228, 0.2) !important;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.32) !important;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+
+  .site-header::before,
+  .site-header.is-scrolled::before {
+    background: rgba(24, 23, 21, 0.97) !important;
+    border-color: rgba(243, 238, 228, 0.2) !important;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.32) !important;
+    opacity: 1 !important;
+  }
+
+  /* The hero/skills content should not inherit pale hard-coded panels. */
+  .skills-section,
+  .skills-wrap,
+  .skill-list,
+  .skill-item,
+  .skill-row,
+  .about-section,
+  .experience-section,
+  .certifications-section,
+  .contact-section {
+    background-color: transparent;
+    color: #f3eee4;
+  }
+
+  .skill-item,
+  .skill-row,
+  .skill-name,
+  .skill-label,
+  .skills p,
+  .skills-section p {
+    color: #e4ddd1 !important;
+  }
+
+  .section h1,
+  .section h2,
+  .section h3,
+  .skills h1,
+  .skills h2,
+  .skills h3 {
+    color: #f3eee4;
+  }
+
+  /* Maintain the original coral AI panel, but avoid pale text fading into it. */
+  .ai,
+  .ai-section,
+  .contact-cta {
+    color: #fff7ec;
+  }
+
+  /* Scroll targets stop below the sticky header when navigated via anchors. */
+  #top,
+  #work,
+  #skills,
+  #ai,
+  #about,
+  #contact,
+  #experience,
+  #certifications {
+    scroll-margin-top: 124px !important;
+  }
+
+  /* All remaining project art labels should stay legible on their own surface. */
+  .seating-visual::before,
+  .diwali-visual::before {
+    background: #34312c !important;
+    color: #f3eee4 !important;
+  }
+
+  .mri-title,
+  .mri-graphic::after,
+  .stage-list .stage-label,
+  .stage-list .stage-note {
+    fill: #f3eee4 !important;
+    color: #f3eee4 !important;
+  }
+}
