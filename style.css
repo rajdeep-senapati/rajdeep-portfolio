@@ -6564,3 +6564,37 @@ body.modal-open .site-header {
     scroll-margin-top: 104px !important;
   }
 }
+
+
+@media (prefers-color-scheme: dark) {
+  .route-graphic {
+    background: #201f1c;
+    border-color: rgba(243, 238, 228, 0.22);
+  }
+
+  .route-title {
+    color: #e4ddd1;
+  }
+
+  .route-roads path {
+    stroke: rgba(243, 238, 228, 0.18);
+  }
+
+  .route-alt {
+    stroke: rgba(243, 238, 228, 0.48);
+  }
+
+  .route-node {
+    fill: #201f1c;
+    stroke: #ff6258;
+  }
+
+  .route-node.stop {
+    fill: #f3eee4;
+    stroke: #201f1c;
+  }
+
+  .route-graphic text {
+    fill: #d0c9bd;
+  }
+}
