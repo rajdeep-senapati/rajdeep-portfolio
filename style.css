@@ -6345,6 +6345,13 @@ body.modal-open .site-header {
     --dark-panel: #202329;
     --dark-raised: #292d34;
     --dark-muted: #b9bec7;
+    /* Distinct section identities: black hero, slate work, aubergine skills,
+       deep teal about, and warm charcoal AI/contact. Coral remains the accent. */
+    --hero-black: #000000;
+    --work-surface: #202329;
+    --skills-surface: #25212b;
+    --about-surface: #172a2b;
+    --cta-surface: #292723;
   }
 
   html,
@@ -6421,21 +6428,37 @@ body.modal-open .site-header {
   }
 
   /* Page surfaces: use a small, consistent tonal scale rather than pure black. */
-  .hero,
   .work-section,
   .section-heading,
   .projects,
   .project-grid,
   .experience-section,
   .certifications-section,
-  .skills,
   .profile-sections {
-    background-color: var(--ink) !important;
+    background-color: var(--work-surface) !important;
     color: var(--cream);
   }
 
-  .hero {
-    background: var(--ink) !important;
+  .skills {
+    background-color: var(--skills-surface) !important;
+    color: var(--cream);
+  }
+
+  /* The entire hero is one uninterrupted black canvas in dark mode. */
+  .hero,
+  .hero .hero-copy,
+  .hero .hero-visual,
+  .hero .hero-art,
+  .hero .dp-card,
+  .hero .dp-stage {
+    background: var(--hero-black) !important;
+  }
+
+  .hero .hero-visual,
+  .hero .hero-art,
+  .hero .dp-card,
+  .hero .dp-stage {
+    border-color: rgba(244, 240, 231, 0.14) !important;
   }
 
   .hero-copy,
@@ -6479,7 +6502,7 @@ body.modal-open .site-header {
   }
 
   .skills {
-    background: var(--dark-panel) !important;
+    background: var(--skills-surface) !important;
     color: var(--cream) !important;
   }
 
@@ -6495,10 +6518,15 @@ body.modal-open .site-header {
   }
 
   /* Coral is now a highlight, not a full-viewport background. */
-  .about,
+  .about {
+    background: var(--about-surface) !important;
+    color: var(--cream) !important;
+    border-color: var(--line) !important;
+  }
+
   .ai,
   .contact {
-    background: var(--dark-panel) !important;
+    background: var(--cta-surface) !important;
     color: var(--cream) !important;
     border-color: var(--line) !important;
   }
