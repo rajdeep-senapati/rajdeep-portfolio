@@ -32,32 +32,31 @@ const aiHistory = [];
 
 let activeDialog = null;
 let lastDialogTrigger = null;
-
 /*
- * Preserve the page position while a full-screen modal is open.
- * Using a fixed body prevents the underlying page from jumping to the
- * top when the modal takes control of scrolling.
+ * Lock background scrolling cleanly using overflow: hidden instead of
+ * position: fixed so the browser never resets window.scrollY to 0 or
+ * triggers a smooth-scroll animation from Home back to Work on close.
  */
 let lockedPageScrollY = 0;
 const MODAL_SCROLL_STORAGE_KEY = "rajdeep-modal-scroll-y";
 
 function lockPageScroll() {
   lockedPageScrollY = window.scrollY || window.pageYOffset || 0;
-  document.body.style.position = "fixed";
-  document.body.style.top = `-${lockedPageScrollY}px`;
-  document.body.style.left = "0";
-  document.body.style.right = "0";
-  document.body.style.width = "100%";
+  const scrollbarWidth =
+    window.innerWidth - document.documentElement.clientWidth;
+  if (scrollbarWidth > 0) {
+    document.body.style.paddingRight = `${scrollbarWidth}px`;
+  }
+  document.documentElement.style.overflow = "hidden";
+  document.body.style.overflow = "hidden";
 }
 
 function unlockPageScroll() {
-  const restoreY = lockedPageScrollY;
-  document.body.style.position = "";
-  document.body.style.top = "";
-  document.body.style.left = "";
-  document.body.style.right = "";
-  document.body.style.width = "";
-  window.scrollTo(0, restoreY);
+  document.documentElement.style.overflow = "";
+  document.body.style.overflow = "";
+  document.body.style.paddingRight = "";
+  // Instant restore (overrides CSS scroll-behavior: smooth) just in case
+  window.scrollTo({ top: lockedPageScrollY, left: 0, behavior: "instant" });
 }
 
 function rememberModalScrollForReload() {
@@ -75,7 +74,7 @@ function restoreModalScrollAfterReload() {
   if (!Number.isFinite(restoreY)) return;
 
   window.requestAnimationFrame(() => {
-    window.scrollTo(0, restoreY);
+    window.scrollTo({ top: restoreY, left: 0, behavior: "instant" });
   });
 }
 
@@ -101,8 +100,8 @@ function activateDialog(dialog, trigger) {
   dialog?.setAttribute("aria-hidden", "false");
   window.setTimeout(() => {
     const focusables = getDialogFocusableElements(dialog);
-    (focusables[0] || dialog)?.focus?.();
-  }, 80);
+    (focusables[0] || dialog)?.focus?.({ preventScroll: true });
+  }, 50);
 }
 
 function deactivateDialog(dialog) {
@@ -116,11 +115,10 @@ function deactivateDialog(dialog) {
     lastDialogTrigger = null;
 
     if (trigger && document.contains(trigger)) {
-      window.setTimeout(() => trigger.focus(), 0);
+      trigger.focus({ preventScroll: true });
     }
   }
 }
-
 function trapDialogFocus(event) {
   if (event.key !== "Tab" || !activeDialog) return;
 
