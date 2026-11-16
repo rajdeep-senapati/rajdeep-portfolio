@@ -18,11 +18,11 @@ const RAJDEEP_AI_API =
 
 const quickAnswers = {
   "Who are you?":
-    "I'm Rajdeep's portfolio AI — a digital representative built around his work, projects, skills and experience. Rajdeep is a Data Science graduate focused on practical machine learning, analytics and GenAI products.",
+    "I'm Rajdeep's portfolio AI — a digital representative built around his work, projects, skills and experience. Rajdeep is a Data Science graduate focused on practical machine learning, Agentic AI, Hybrid RAG and LLM products.",
   "Tell me about JobShield.":
-    "JobShield is an AI job discovery and safety assistant built around the flow Find → Verify → Match → Improve. It uses resume parsing, job-risk signals and evidence-based resume matching to help job seekers make better-informed decisions.",
+    "JobShield v2.0 is a Multi-Agent LangGraph & Hybrid RAG career copilot built around Web Verify (Tool Use) → Hybrid RAG (BM25 + Cosine RRF) → Match → Grounded Critic. It combines autonomous DuckDuckGo web verification, Reciprocal Rank Fusion retrieval (cutting prompt tokens by up to 60% and improving Precision@2 by +33.4% over pure BM25 at 3.63 ms latency), Pydantic v2 schema enforcement, and a self-reflection grounding critic achieving 1.00/1.00 faithfulness (~$0.00057/run).",
   "What are your skills?":
-    "Rajdeep works with Python, machine learning, data analytics, SQL, GenAI/LLMs and cloud technologies. His project work includes XGBoost, Streamlit, Groq, OR-Tools, Flask, Pandas and Azure/AWS technologies.",
+    "Rajdeep works across Python, Agentic AI (LangGraph), Hybrid RAG (BM25 + Cosine RRF), GenAI/LLMs, machine learning, data analytics, SQL and cloud data engineering. His stack includes Groq, LangChain, Pydantic, XGBoost, Streamlit, OR-Tools, Flask, Pandas and Azure/AWS.",
   "What is the tech stack of this portfolio?":
     "The portfolio itself uses HTML, CSS and Vanilla JavaScript on the frontend, Python with FastAPI on the backend, Groq with GPT-OSS 20B/120B and a Qwen fallback for AI, a structured JSON knowledge base, Server-Sent Events for streaming, and Vercel for deployment."
 };
@@ -649,10 +649,10 @@ async function streamRemoteAnswer(question) {
 
   thinking?.remove();
 
-  const output = addAssistantMessage();
+  let output = addAssistantMessage();
   if (!output) return;
 
-  const cursor = document.createElement("span");
+  let cursor = document.createElement("span");
   cursor.className = "ai-cursor";
   output.appendChild(cursor);
 
@@ -847,30 +847,29 @@ aiQuestions?.querySelectorAll("button").forEach((button) => {
 /* =========================================================
    PROJECT CASE STUDIES
    Card -> case study -> GitHub.
-   No live-demo buttons are shown because these projects are not deployed.
    ========================================================= */
 
 const projectData = {
   jobshield: {
-    kicker: "01 · AI / GENAI",
-    title: "JobShield",
+    kicker: "01 · AGENTIC AI / HYBRID RAG",
+    title: "JobShield v2.0",
     summary:
-      "AI Job Discovery & Safety Assistant built around the flow Find → Verify → Match → Improve.",
+      "Multi-Agent Job Verification & Hybrid-RAG Career Copilot built around Web Verify (Tool Use) → Hybrid RAG (BM25 + Cosine RRF) → Match → Grounded Critic.",
     problem:
-      "Job seekers need to distinguish suspicious recruitment signals from legitimate job requirements before relying on an automated match.",
+      "Standard LLM resume matchers hallucinate skills, trust suspicious job listings, and waste context tokens stuffing entire multi-page resumes into a single prompt.",
     approach:
-      "Resume PDF/DOCX text is parsed and cleaned locally. A 20B model analyzes job-risk signals, while a separate 120B model performs evidence-based resume-to-job reasoning after the risk gate.",
+      "Architected a 3-node LangGraph StateGraph: (1) Autonomous Web Verifier agent with live DuckDuckGo tool calling, (2) Hybrid RAG retriever combining BM25 lexical search and TF-IDF Cosine similarity via Reciprocal Rank Fusion (compressing prompt context by up to 60%), and (3) a Self-Reflection Grounding Critic with Pydantic v2 schema enforcement and dynamic Groq model routing.",
     stack: [
       "Python",
-      "Groq",
-      "GPT-OSS 20B",
-      "GPT-OSS 120B",
+      "LangGraph",
+      "Hybrid RAG (BM25 + RRF)",
+      "Groq API",
+      "Pydantic v2",
+      "DuckDuckGo Tool Use",
       "Streamlit",
-      "PyPDF",
-      "python-docx",
     ],
     notes:
-      "Risk output is a signal score, not a scam probability. High-risk results require confirmation before detailed matching.",
+      "Benchmarked via rag_eval.py: Hybrid RRF improved Precision@2 & Recall@2 by +33.4% over pure BM25 (3.63 ms latency), achieving 1.00/1.00 faithfulness (0 hallucinations) at ~$0.00057/run.",
     github: "https://github.com/rajdeep-senapati/JobShield",
   },
   stocksense: {
@@ -1005,7 +1004,6 @@ function openCaseStudy(key, trigger = document.activeElement) {
   caseModal.classList.add("open");
   document.body.classList.add("modal-open");
   activateDialog(caseModal, trigger);
-
 }
 
 function closeCaseStudy() {

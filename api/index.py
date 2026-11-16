@@ -12,7 +12,6 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, StreamingResponse
 
-
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("rajdeep-ai")
 
@@ -22,7 +21,7 @@ GROQ_URL = "https://api.groq.com/openai/v1/chat/completions"
 
 PRIMARY_MODEL = os.getenv("GROQ_PRIMARY_MODEL", "openai/gpt-oss-20b")
 ESCALATION_MODEL = os.getenv("GROQ_ESCALATION_MODEL", "openai/gpt-oss-120b")
-FALLBACK_MODEL = os.getenv("GROQ_FALLBACK_MODEL", "qwen/qwen3.8-27b")
+FALLBACK_MODEL = os.getenv("GROQ_FALLBACK_MODEL", "qwen/qwen3-32b")
 
 # Lightweight in-process protection suitable for the current free-tier setup.
 # It is intentionally conservative and does not require a paid datastore.
@@ -140,52 +139,128 @@ app.add_middleware(
 )
 
 
-
 def project_context(question: str) -> bool:
     q = question.lower()
-    return any(term in q for term in [
-        "jobshield", "stocksense", "stock sense", "route optimizer",
-        "route_optimiser", "exam seating", "alzheimer", "diwali sales",
-        "diwali", "bapar", "binance account performance", "pizza review",
-        "nifty bank", "rajdeep's code", "your code", "your project",
-        "your implementation", "your eda",
-    ])
+    return any(
+        term in q
+        for term in [
+            "jobshield",
+            "stocksense",
+            "stock sense",
+            "route optimizer",
+            "route_optimiser",
+            "exam seating",
+            "alzheimer",
+            "diwali sales",
+            "diwali",
+            "bapar",
+            "binance account performance",
+            "pizza review",
+            "nifty bank",
+            "rajdeep's code",
+            "your code",
+            "your project",
+            "your implementation",
+            "your eda",
+            "langgraph",
+            "hybrid rag",
+            "rag_eval",
+            "bm25",
+        ]
+    )
 
 
 def is_exact_code_request(question: str) -> bool:
     q = question.lower().strip()
-    return any(signal in q for signal in [
-        "show me the code", "show me actual code", "show actual code",
-        "show the actual code", "exact code", "source code",
-        "actual python code", "actual code", "code snippet",
-        "give me the code", "give me actual code",
-    ])
+    return any(
+        signal in q
+        for signal in [
+            "show me the code",
+            "show me actual code",
+            "show actual code",
+            "show the actual code",
+            "exact code",
+            "source code",
+            "actual python code",
+            "actual code",
+            "code snippet",
+            "give me the code",
+            "give me actual code",
+        ]
+    )
 
 
 def is_project_technical_question(question: str) -> bool:
     q = question.lower().strip()
     if not project_context(q):
         return False
-    return any(signal in q for signal in [
-        "how does", "how did", "how do", "walk me through",
-        "implementation", "implemented", "architecture", "technical",
-        "pipeline", "parser", "parsing", "clean", "cleaning",
-        "model", "reasoning", "risk", "forecast", "feature",
-        "eda", "code", "source", "file", "function", "deployment",
-        "algorithm", "flow", "workflow",
-    ])
+    return any(
+        signal in q
+        for signal in [
+            "how does",
+            "how did",
+            "how do",
+            "walk me through",
+            "implementation",
+            "implemented",
+            "architecture",
+            "technical",
+            "pipeline",
+            "parser",
+            "parsing",
+            "clean",
+            "cleaning",
+            "model",
+            "reasoning",
+            "risk",
+            "forecast",
+            "feature",
+            "eda",
+            "code",
+            "source",
+            "file",
+            "function",
+            "deployment",
+            "algorithm",
+            "flow",
+            "workflow",
+            "rag",
+            "agent",
+            "langgraph",
+            "eval",
+            "evaluation",
+            "bm25",
+            "rrf",
+            "critic",
+        ]
+    )
 
 
 def is_general_education_question(question: str) -> bool:
     q = question.lower().strip()
     words = set(re.findall(r"[a-z0-9]+(?:'[a-z]+)?", q))
-    has_personal = bool(words & PERSONAL_REFERENCES) if "PERSONAL_REFERENCES" in globals() else bool(
-        words & {"i", "me", "my", "you", "your", "rajdeep", "he", "his"}
+    has_personal = (
+        bool(words & PERSONAL_REFERENCES)
+        if "PERSONAL_REFERENCES" in globals()
+        else bool(words & {"i", "me", "my", "you", "your", "rajdeep", "he", "his"})
     )
     education_terms = {
-        "education", "educational", "school", "schooling", "college",
-        "degree", "academic", "study", "studied", "university",
-        "graduated", "graduation", "b.tech", "cgpa", "marks", "percentage",
+        "education",
+        "educational",
+        "school",
+        "schooling",
+        "college",
+        "degree",
+        "academic",
+        "study",
+        "studied",
+        "university",
+        "graduated",
+        "graduation",
+        "b.tech",
+        "cgpa",
+        "marks",
+        "percentage",
     }
     has_education_topic = any(term in q for term in education_terms)
     return has_personal and has_education_topic
@@ -219,27 +294,100 @@ def portfolio_entity_terms() -> set[str]:
     for skill in knowledge.get("skills", []):
         if isinstance(skill, str):
             terms.add(skill.lower())
-    terms.update({"heritage institute of technology", "tagore academy", "icse", "isc"})
+    terms.update(
+        {
+            "heritage institute of technology",
+            "tagore academy",
+            "icse",
+            "isc",
+            "langgraph",
+            "hybrid rag",
+            "bm25",
+        }
+    )
     return terms
 
 
 PORTFOLIO_TOPIC_TERMS = {
-    "work", "project", "projects", "skill", "skills", "experience",
-    "internship", "internships", "education", "school", "schooling",
-    "college", "degree", "career", "resume", "cv", "portfolio",
-    "background", "role", "roles", "company", "companies", "employer",
-    "employers", "technology", "technologies", "tech stack", "stack",
-    "tools", "frameworks", "model", "models", "built", "build",
-    "worked", "used", "use", "implemented", "implementation",
-    "architecture", "pipeline", "deployment", "contact", "email",
-    "github", "hiring", "hire", "recruiter", "recruiters", "focus",
-    "learning", "interests", "intern", "cgpa", "marks", "percentage",
+    "work",
+    "project",
+    "projects",
+    "skill",
+    "skills",
+    "experience",
+    "internship",
+    "internships",
+    "education",
+    "school",
+    "schooling",
+    "college",
+    "degree",
+    "career",
+    "resume",
+    "cv",
+    "portfolio",
+    "background",
+    "role",
+    "roles",
+    "company",
+    "companies",
+    "employer",
+    "employers",
+    "technology",
+    "technologies",
+    "tech stack",
+    "stack",
+    "tools",
+    "frameworks",
+    "model",
+    "models",
+    "built",
+    "build",
+    "worked",
+    "used",
+    "use",
+    "implemented",
+    "implementation",
+    "architecture",
+    "pipeline",
+    "deployment",
+    "contact",
+    "email",
+    "github",
+    "hiring",
+    "hire",
+    "recruiter",
+    "recruiters",
+    "focus",
+    "learning",
+    "interests",
+    "intern",
+    "cgpa",
+    "marks",
+    "percentage",
+    "rag",
+    "agent",
+    "agents",
+    "langgraph",
+    "eval",
+    "evaluation",
 }
 
 
 PERSONAL_REFERENCES = {
-    "i", "i'm", "im", "me", "my", "mine", "you", "your", "yours",
-    "rajdeep", "rajdeep's", "he", "his",
+    "i",
+    "i'm",
+    "im",
+    "me",
+    "my",
+    "mine",
+    "you",
+    "your",
+    "yours",
+    "rajdeep",
+    "rajdeep's",
+    "he",
+    "his",
 }
 
 
@@ -310,10 +458,12 @@ def has_portfolio_reference(question: str) -> bool:
 
 def is_chitchat_request(question: str) -> bool:
     q = question.lower().strip()
-    return bool(re.fullmatch(
-        r"(hi|hello|hey|thanks|thank you|ok|okay|cool|great|bye|goodbye|good morning|good afternoon|good evening)[!. ]*",
-        q,
-    ))
+    return bool(
+        re.fullmatch(
+            r"(hi|hello|hey|thanks|thank you|ok|okay|cool|great|bye|goodbye|good morning|good afternoon|good evening)[!. ]*",
+            q,
+        )
+    )
 
 
 def is_contextual_followup(question: str, history: list[dict[str, str]]) -> bool:
@@ -323,8 +473,17 @@ def is_contextual_followup(question: str, history: list[dict[str, str]]) -> bool
     if re.search(r"\b(what is|what are|explain|define|teach me|how does|how do)\b", q):
         return False
     return q in {
-        "why?", "why", "how?", "how", "and?", "and", "what about it?",
-        "what about that?", "which one?", "more?", "tell me more",
+        "why?",
+        "why",
+        "how?",
+        "how",
+        "and?",
+        "and",
+        "what about it?",
+        "what about that?",
+        "which one?",
+        "more?",
+        "tell me more",
     } and any(item.get("role") == "assistant" for item in history[-3:])
 
 
@@ -372,9 +531,9 @@ def allow_request(request: Request) -> bool:
     if len(RATE_LIMIT_BUCKETS) > 1000:
         oldest_key = min(
             RATE_LIMIT_BUCKETS,
-            key=lambda item: RATE_LIMIT_BUCKETS[item][-1]
-            if RATE_LIMIT_BUCKETS[item]
-            else 0,
+            key=lambda item: (
+                RATE_LIMIT_BUCKETS[item][-1] if RATE_LIMIT_BUCKETS[item] else 0
+            ),
         )
         RATE_LIMIT_BUCKETS.pop(oldest_key, None)
 
@@ -383,21 +542,49 @@ def allow_request(request: Request) -> bool:
 
 PROJECT_SOURCE_MAP: dict[str, list[tuple[str, str, str]]] = {
     "jobshield": [
-        ("JobShield", "rajdeep-senapati/JobShield", "app.py"),
+        ("JobShield Streamlit UI & cache", "rajdeep-senapati/JobShield", "app.py"),
+        (
+            "JobShield LangGraph & Hybrid RAG pipeline",
+            "rajdeep-senapati/JobShield",
+            "agent_pipeline.py",
+        ),
+        (
+            "JobShield RAG evaluation & ablation suite",
+            "rajdeep-senapati/JobShield",
+            "rag_eval.py",
+        ),
+        (
+            "JobShield heuristic risk analyzer",
+            "rajdeep-senapati/JobShield",
+            "analysis/analyzer.py",
+        ),
         ("JobShield resume parser", "rajdeep-senapati/JobShield", "resume/parser.py"),
         ("JobShield resume cleaner", "rajdeep-senapati/JobShield", "resume/cleaner.py"),
-        ("JobShield risk analyzer", "rajdeep-senapati/JobShield", "risk/analyzer.py"),
-        ("JobShield reasoner", "rajdeep-senapati/JobShield", "ai/reasoner.py"),
-        ("JobShield AI router", "rajdeep-senapati/JobShield", "ai/router.py"),
     ],
     "stocksense": [
         ("StockSense app", "rajdeep-senapati/stocksense", "app.py"),
-        ("StockSense business understanding", "rajdeep-senapati/stocksense", "notebooks/01_business_data_understanding.ipynb"),
-        ("StockSense demand forecasting", "rajdeep-senapati/stocksense", "notebooks/02_demand_forecasting.ipynb"),
-        ("StockSense production forecast pipeline", "rajdeep-senapati/stocksense", "notebooks/03_production_forecast_pipeline.ipynb"),
+        (
+            "StockSense business understanding",
+            "rajdeep-senapati/stocksense",
+            "notebooks/01_business_data_understanding.ipynb",
+        ),
+        (
+            "StockSense demand forecasting",
+            "rajdeep-senapati/stocksense",
+            "notebooks/02_demand_forecasting.ipynb",
+        ),
+        (
+            "StockSense production forecast pipeline",
+            "rajdeep-senapati/stocksense",
+            "notebooks/03_production_forecast_pipeline.ipynb",
+        ),
     ],
     "diwali": [
-        ("Diwali Sales analysis", "rajdeep-senapati/Diwali_Sales", "Diwali_Sales_Analysis.ipynb"),
+        (
+            "Diwali Sales analysis",
+            "rajdeep-senapati/Diwali_Sales",
+            "Diwali_Sales_Analysis.ipynb",
+        ),
     ],
 }
 
@@ -409,13 +596,44 @@ def project_source_specs(question: str) -> list[tuple[str, str, str]]:
         if key in q or (key == "diwali" and "diwali sales" in q):
             specs.extend(entries)
 
-    if "jobshield" in q:
+    if "jobshield" in q or any(
+        t in q for t in ["langgraph", "hybrid rag", "rag_eval", "bm25"]
+    ):
+        if not specs:
+            specs.extend(PROJECT_SOURCE_MAP["jobshield"])
         if any(term in q for term in ["resume", "parser", "parse", "clean"]):
-            specs = [x for x in specs if "resume parser" in x[0] or "resume cleaner" in x[0]]
-        elif any(term in q for term in ["risk", "scam", "safety"]):
-            specs = [x for x in specs if "risk analyzer" in x[0]]
-        elif any(term in q for term in ["reason", "match", "job", "resume-job"]):
-            specs = [x for x in specs if "reasoner" in x[0] or "AI router" in x[0]]
+            specs = [
+                x for x in specs if "resume parser" in x[0] or "resume cleaner" in x[0]
+            ]
+        elif any(term in q for term in ["risk", "scam", "safety", "heuristic"]):
+            specs = [x for x in specs if "risk analyzer" in x[0] or "LangGraph" in x[0]]
+        elif any(
+            term in q
+            for term in [
+                "eval",
+                "evaluation",
+                "ablation",
+                "mrr",
+                "precision",
+                "faithfulness",
+            ]
+        ):
+            specs = [x for x in specs if "evaluation" in x[0] or "LangGraph" in x[0]]
+        elif any(
+            term in q
+            for term in [
+                "reason",
+                "match",
+                "job",
+                "rag",
+                "agent",
+                "langgraph",
+                "bm25",
+                "rrf",
+                "critic",
+            ]
+        ):
+            specs = [x for x in specs if "LangGraph" in x[0] or "Streamlit UI" in x[0]]
     return specs[:6]
 
 
@@ -425,6 +643,7 @@ async def get_project_code_context(question: str) -> tuple[str, bool]:
         return "", False
 
     async with httpx.AsyncClient(timeout=httpx.Timeout(10.0, connect=4.0)) as client:
+
         async def fetch_source(spec: tuple[str, str, str]) -> tuple[str, bool]:
             project, repo, path = spec
             cache_key = f"{repo}:{path}"
@@ -438,7 +657,14 @@ async def get_project_code_context(question: str) -> tuple[str, bool]:
                     source = ""
                     last_error: Exception | None = None
                     for branch in ("main", "master"):
-                        url = "https://raw.githubusercontent.com/" + repo + "/" + branch + "/" + quote(path)
+                        url = (
+                            "https://raw.githubusercontent.com/"
+                            + repo
+                            + "/"
+                            + branch
+                            + "/"
+                            + quote(path)
+                        )
                         try:
                             response = await client.get(url)
                             response.raise_for_status()
@@ -470,7 +696,9 @@ async def get_project_code_context(question: str) -> tuple[str, bool]:
 
                 return f"PROJECT: {project}\nFILE: {path}\nSOURCE:\n{source}", False
             except Exception as exc:
-                logger.warning("Project source retrieval failed for %s/%s: %s", repo, path, exc)
+                logger.warning(
+                    "Project source retrieval failed for %s/%s: %s", repo, path, exc
+                )
                 return "", True
 
         results = await asyncio.gather(*(fetch_source(spec) for spec in specs))
@@ -509,11 +737,7 @@ def is_complex_question(question: str) -> bool:
 
     signal_count = sum(signal in q for signal in complex_signals)
 
-    return (
-        signal_count >= 2
-        or len(q) > 420
-        or (" and " in q and len(q) > 260)
-    )
+    return signal_count >= 2 or len(q) > 420 or (" and " in q and len(q) > 260)
 
 
 def model_config(model: str) -> dict[str, Any]:
@@ -553,10 +777,12 @@ def clean_history(raw_history: Any) -> list[dict[str, str]]:
         if role not in {"user", "assistant"} or not isinstance(content, str):
             continue
 
-        history.append({
-            "role": role,
-            "content": content[:1200],
-        })
+        history.append(
+            {
+                "role": role,
+                "content": content[:1200],
+            }
+        )
 
     return history[-10:]
 
@@ -599,7 +825,9 @@ async def stream_model(
                     response.status_code,
                     error_body[:500],
                 )
-                raise RuntimeError(f"Groq request failed with status {response.status_code}")
+                raise RuntimeError(
+                    f"Groq request failed with status {response.status_code}"
+                )
 
             async for line in response.aiter_lines():
                 if not line.startswith("data:"):
@@ -684,11 +912,10 @@ async def chat(request: Request):
             headers={"Retry-After": str(RATE_LIMIT_WINDOW_SECONDS)},
         )
 
-    history = clean_history(
-        body.get("messages") if isinstance(body, dict) else None
-    )
+    history = clean_history(body.get("messages") if isinstance(body, dict) else None)
 
     if is_general_education_question(message):
+
         async def education_event_stream() -> AsyncIterator[str]:
             yield sse({"text": EDUCATION_RESPONSE})
             yield sse({"done": True, "model": "education-guard"})
@@ -763,8 +990,8 @@ async def chat(request: Request):
             "\n\nRETRIEVED RAJDEEP PROJECT SOURCE:\n"
             + code_context
             + "\n\nSOURCE RULE: Treat retrieved source as the implementation authority. "
-              "Use only details supported by it. For exact code requests, reproduce "
-              "only code from these files; do not invent or substitute generic snippets."
+            "Use only details supported by it. For exact code requests, reproduce "
+            "only code from these files; do not invent or substitute generic snippets."
         )
     elif technical_project_question and source_retrieval_failed:
         messages[0]["content"] += (
@@ -773,9 +1000,11 @@ async def chat(request: Request):
         )
 
     complex_question = is_complex_question(message)
-    max_completion_tokens = 700 if exact_code_request else (1400 if complex_question else 1000)
+    max_completion_tokens = (
+        700 if exact_code_request else (1400 if complex_question else 1000)
+    )
     models = (
-        [ESCALATION_MODEL, FALLBACK_MODEL]
+        [ESCALATION_MODEL, FALLBACK_MODEL] or [PRIMARY_MODEL, FALLBACK_MODEL]
         if complex_question
         else [PRIMARY_MODEL, FALLBACK_MODEL]
     )

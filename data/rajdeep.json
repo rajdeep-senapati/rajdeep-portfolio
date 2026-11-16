@@ -8,14 +8,10 @@
       "data analytics",
       "GenAI/LLM applications",
       "useful AI products",
-      "RAG",
-      "agentic AI"
+      "Hybrid RAG",
+      "agentic AI (LangGraph)"
     ],
-    "languages": [
-      "English",
-      "Hindi",
-      "Bengali"
-    ],
+    "languages": ["English", "Hindi", "Bengali"],
     "schooling": {
       "school": "Tagore Academy",
       "location": "Jamshedpur, Jharkhand",
@@ -63,15 +59,15 @@
   ],
   "projects": {
     "JobShield": {
-      "type": "AI / GenAI",
-      "summary": "AI job discovery and safety assistant built around Find → Verify → Match → Improve.",
+      "type": "Agentic AI / Hybrid RAG",
+      "summary": "Multi-agent job verification and Hybrid-RAG career copilot built around Web Verify (Tool Use) → Hybrid RAG (BM25 + Cosine RRF) → Match → Grounded Critic.",
       "details": [
-        "Resume PDF/DOCX text is parsed and cleaned locally.",
-        "GPT-OSS 20B is used for job-risk signal analysis.",
-        "GPT-OSS 120B is used for resume-to-job reasoning after the risk gate.",
-        "Risk output is a signal score, not a scam probability.",
-        "High-risk results require confirmation before detailed matching.",
-        "Stack: Python, Groq, LLMs, Streamlit, PyPDF and python-docx."
+        "Architected a 3-node LangGraph StateGraph combining live DuckDuckGo web verification, Hybrid RAG retrieval, and a self-reflection grounding critic.",
+        "Hybrid RAG ranks resume chunks using Reciprocal Rank Fusion (RRF) over BM25 lexical search and TF-IDF Cosine similarity, compressing prompt context by up to 60%.",
+        "Enforces deterministic Pydantic v2 JSON schemas and dynamic Groq model routing (GPT-OSS 20B / 120B and Llama-3.3-70B) with automatic fallback.",
+        "Includes a heuristic risk gate requiring explicit user confirmation on high-risk job listings before matching.",
+        "Benchmarked via rag_eval.py: Hybrid RRF improved Precision@2 and Recall@2 by +33.4% over pure BM25 (0.667 vs 0.500, MRR 0.833) at 3.63 ms retrieval latency, achieving 1.00/1.00 faithfulness (0 hallucinations) at ~$0.00057/run (2,262 tokens).",
+        "Stack: Python, LangGraph, LangChain-Groq, Hybrid RAG (BM25 + TF-IDF Cosine RRF), Pydantic, DuckDuckGo Search, Streamlit, PyPDF and python-docx."
       ]
     },
     "StockSense": {
@@ -120,6 +116,13 @@
   },
   "skills": [
     "Python",
+    "LangGraph",
+    "Hybrid RAG (BM25 + Cosine RRF)",
+    "Agentic Workflows",
+    "GenAI/LLMs",
+    "Groq",
+    "LangChain",
+    "Pydantic",
     "Machine Learning",
     "XGBoost",
     "Scikit-learn",
@@ -132,24 +135,22 @@
     "Azure",
     "AWS",
     "Streamlit",
-    "GenAI/LLMs",
-    "Groq",
     "Hugging Face",
-    "LangChain",
     "Flask",
     "OR-Tools"
   ],
   "career": {
     "target_roles": [
-      "Data Analyst",
+      "GenAI Engineer",
+      "AI Engineer",
       "Data Scientist",
       "Machine Learning Engineer",
-      "GenAI Developer"
+      "Data Analyst"
     ],
     "interests": [
       "practical AI",
       "LLM applications",
-      "RAG",
+      "Hybrid RAG",
       "agentic AI"
     ]
   },
@@ -163,16 +164,16 @@
     "current_focus": [
       "practical AI",
       "LLM applications",
-      "RAG",
-      "agentic AI",
+      "Hybrid RAG pipelines",
+      "agentic AI with LangGraph",
       "building useful AI products"
     ],
     "work_style": "I like understanding what I am building rather than treating tools as black boxes. I prefer practical projects where the technical work connects to a real problem.",
-    "why_genai": "I am interested in GenAI because it lets me build useful applications around language models, retrieval and agents rather than using AI only as a model-training exercise.",
-    "why_hire_me": "I am a 2026 graduate who likes building practical things across machine learning, data and GenAI. My projects show that I try to connect technical work to an actual use case instead of stopping at a model or notebook.",
-    "career_direction": "I am interested in roles across data, machine learning and GenAI, with a growing focus on practical LLM applications, RAG and agentic AI.",
+    "why_genai": "I am interested in GenAI because it lets me build useful applications around language models, hybrid retrieval and multi-agent workflows rather than using AI only as a model-training exercise.",
+    "why_hire_me": "I am a 2026 graduate who likes building practical things across machine learning, data and GenAI. My projects show that I connect technical work—like LangGraph agents, Hybrid RAG, and evaluation benchmarks—to an actual use case instead of stopping at a notebook.",
+    "career_direction": "I am interested in roles across GenAI engineering, machine learning and data science, with a strong focus on practical LLM applications, RAG and agentic AI.",
     "project_motivations": {
-      "JobShield": "I wanted to build something around a real problem for job seekers and combine document parsing, risk signals and LLM-based reasoning into one useful workflow.",
+      "JobShield": "I wanted to build something more reliable and cost-effective than raw ChatGPT prompting for job seekers—combining live web verification tool-calling, BM25 + Cosine RRF Hybrid RAG to cut token usage, and a LangGraph critic loop to prevent resume hallucinations.",
       "StockSense": "I wanted forecasting to lead to a business decision rather than ending at a prediction. The project connects SKU-level demand behaviour to inventory risk and reorder decisions."
     },
     "answering_rules": [
@@ -183,30 +184,12 @@
     ]
   },
   "portfolio_tech_stack": {
-    "frontend": [
-      "HTML",
-      "CSS",
-      "Vanilla JavaScript"
-    ],
-    "backend": [
-      "Python",
-      "FastAPI"
-    ],
-    "ai": [
-      "Groq",
-      "GPT-OSS 20B",
-      "GPT-OSS 120B",
-      "Qwen fallback"
-    ],
-    "knowledge": [
-      "Structured JSON knowledge base"
-    ],
-    "streaming": [
-      "Server-Sent Events (SSE)"
-    ],
-    "deployment": [
-      "Vercel"
-    ]
+    "frontend": ["HTML", "CSS", "Vanilla JavaScript"],
+    "backend": ["Python", "FastAPI"],
+    "ai": ["Groq", "GPT-OSS 20B", "GPT-OSS 120B", "Qwen fallback"],
+    "knowledge": ["Structured JSON knowledge base"],
+    "streaming": ["Server-Sent Events (SSE)"],
+    "deployment": ["Vercel"]
   },
   "current_status": {
     "graduation_status": "B.Tech Computer Science (Data Science), 2026 graduate",
@@ -214,7 +197,7 @@
     "current_focus": [
       "practical AI",
       "LLM applications",
-      "RAG",
+      "Hybrid RAG",
       "agentic AI",
       "building useful AI products"
     ],
