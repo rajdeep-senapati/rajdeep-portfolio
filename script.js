@@ -24,7 +24,7 @@ const quickAnswers = {
   "What are your skills?":
     "Rajdeep works across Python, Agentic AI (LangGraph), Hybrid RAG (BM25 + Cosine RRF), GenAI/LLMs, machine learning, data analytics, SQL and cloud data engineering. His stack includes Groq, LangChain, Pydantic, XGBoost, Streamlit, OR-Tools, Flask, Pandas and Azure/AWS.",
   "What is the tech stack of this portfolio?":
-    "The portfolio itself uses HTML, CSS and Vanilla JavaScript on the frontend, Python with FastAPI on the backend, Groq with GPT-OSS 20B/120B and a Qwen fallback for AI, a structured JSON knowledge base, Server-Sent Events for streaming, and Vercel for deployment."
+    "The portfolio itself uses HTML, CSS and Vanilla JavaScript on the frontend, Python with FastAPI on the backend, Groq with GPT-OSS 20B/120B and a Qwen fallback for AI, a structured JSON knowledge base, Server-Sent Events for streaming, and Vercel for deployment.",
 };
 
 let aiBusy = false;
@@ -32,6 +32,7 @@ const aiHistory = [];
 
 let activeDialog = null;
 let lastDialogTrigger = null;
+
 /*
  * Lock background scrolling cleanly using overflow: hidden instead of
  * position: fixed so the browser never resets window.scrollY to 0 or
@@ -55,7 +56,6 @@ function unlockPageScroll() {
   document.documentElement.style.overflow = "";
   document.body.style.overflow = "";
   document.body.style.paddingRight = "";
-  // Instant restore (overrides CSS scroll-behavior: smooth) just in case
   window.scrollTo({ top: lockedPageScrollY, left: 0, behavior: "instant" });
 }
 
@@ -86,7 +86,7 @@ function getDialogFocusableElements(dialog) {
 
   return [
     ...dialog.querySelectorAll(
-      'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])',
     ),
   ].filter((element) => {
     const style = window.getComputedStyle(element);
@@ -119,6 +119,7 @@ function deactivateDialog(dialog) {
     }
   }
 }
+
 function trapDialogFocus(event) {
   if (event.key !== "Tab" || !activeDialog) return;
 
@@ -184,11 +185,6 @@ function scrollAIChat(force = false) {
   aiChat.scrollTop = aiChat.scrollHeight;
 }
 
-/*
- * Auto-follow stays on by default. A real user scroll temporarily pauses
- * it, so the reader can move through the answer without being pulled back
- * to the bottom. Reaching the bottom automatically resumes follow mode.
- */
 aiChat?.addEventListener("scroll", () => {
   if (aiUserScrolledUp && isAIChatAtBottom()) {
     aiUserScrolledUp = false;
@@ -205,15 +201,22 @@ aiChat?.addEventListener("pointerdown", () => {
   aiUserScrolledUp = true;
 });
 
-aiChat?.addEventListener("touchmove", () => {
-  aiUserScrolledUp = true;
-}, { passive: true });
+aiChat?.addEventListener(
+  "touchmove",
+  () => {
+    aiUserScrolledUp = true;
+  },
+  { passive: true },
+);
 
 aiChat?.addEventListener("keydown", (event) => {
   if (["ArrowUp", "PageUp", "Home"].includes(event.key)) {
     aiUserScrolledUp = true;
   }
-  if (["ArrowDown", "PageDown", "End"].includes(event.key) && isAIChatAtBottom()) {
+  if (
+    ["ArrowDown", "PageDown", "End"].includes(event.key) &&
+    isAIChatAtBottom()
+  ) {
     aiUserScrolledUp = false;
   }
 });
@@ -223,7 +226,6 @@ function resumeAIAutoScroll() {
   scrollAIChat(true);
 }
 
-/* The terminal-style cursor is singular: only the active response owns it. */
 function clearActiveCursor() {
   aiChat?.querySelectorAll(".ai-cursor").forEach((cursor) => {
     cursor.remove();
@@ -263,22 +265,13 @@ function addAssistantMessage() {
 function placeAIResponseCursor(response, cursor) {
   if (!response || !cursor) return;
 
-  /*
-   * Put the blinking cursor immediately after the final rendered text node,
-   * rather than at the end of the containing paragraph/list/code element.
-   * This keeps it visually attached to the actual last character.
-   */
-  const walker = document.createTreeWalker(
-    response,
-    NodeFilter.SHOW_TEXT,
-    {
-      acceptNode(node) {
-        return node.nodeValue?.length
-          ? NodeFilter.FILTER_ACCEPT
-          : NodeFilter.FILTER_REJECT;
-      }
-    }
-  );
+  const walker = document.createTreeWalker(response, NodeFilter.SHOW_TEXT, {
+    acceptNode(node) {
+      return node.nodeValue?.length
+        ? NodeFilter.FILTER_ACCEPT
+        : NodeFilter.FILTER_REJECT;
+    },
+  });
 
   let lastTextNode = null;
   while (walker.nextNode()) {
@@ -360,7 +353,6 @@ function renderInlineMarkdown(text) {
     .replace(/\`([^\`]+)\`/g, "<code>$1</code>");
 }
 
-
 function renderAIText(text) {
   const normalized = normalizeAIText(text.trim());
   if (!normalized) return "";
@@ -375,7 +367,9 @@ function renderAIText(text) {
 
   const flushParagraph = () => {
     if (!paragraph.length) return;
-    html.push("<p>" + paragraph.map(renderInlineMarkdown).join("<br>") + "</p>");
+    html.push(
+      "<p>" + paragraph.map(renderInlineMarkdown).join("<br>") + "</p>",
+    );
     paragraph = [];
   };
 
@@ -402,7 +396,7 @@ function renderAIText(text) {
         languageClass +
         ">" +
         escapeHTML(codeLines.join("\n")) +
-        "</code></pre>"
+        "</code></pre>",
     );
     codeLines = [];
     codeLanguage = "";
@@ -413,7 +407,7 @@ function renderAIText(text) {
     const rawLine = lines[i];
     const line = rawLine.trim();
     const fence = line.match(
-      new RegExp("^" + String.fromCharCode(96) + "{3,}([\\w+#.-]+)?\\s*$")
+      new RegExp("^" + String.fromCharCode(96) + "{3,}([\\w+#.-]+)?\\s*$"),
     );
 
     if (fence) {
@@ -444,7 +438,7 @@ function renderAIText(text) {
     if (
       /^\|.*\|$/.test(line) &&
       /^\|?\s*:?-{2,}:?\s*(\|\s*:?-{2,}:?\s*)+\|?$/.test(
-        lines[i + 1]?.trim() || ""
+        lines[i + 1]?.trim() || "",
       )
     ) {
       flushParagraph();
@@ -458,17 +452,14 @@ function renderAIText(text) {
       i += 1;
 
       const rows = [];
-      while (
-        i + 1 < lines.length &&
-        /^\|.*\|$/.test(lines[i + 1].trim())
-      ) {
+      while (i + 1 < lines.length && /^\|.*\|$/.test(lines[i + 1].trim())) {
         i += 1;
         rows.push(
           lines[i]
             .trim()
             .replace(/^\||\|$/g, "")
             .split("|")
-            .map((cell) => cell.trim())
+            .map((cell) => cell.trim()),
         );
       }
 
@@ -487,7 +478,7 @@ function renderAIText(text) {
               renderInlineMarkdown(headers[index] || "") +
               "</small>" +
               renderInlineMarkdown(cell) +
-              "</span>"
+              "</span>",
           );
         });
         html.push("</div>");
@@ -542,8 +533,6 @@ function renderAIText(text) {
   return html.join("");
 }
 
-
-
 function getAIStreamSpeed(question, textLength = 0) {
   const lower = question.toLowerCase();
 
@@ -556,7 +545,7 @@ function getAIStreamSpeed(question, textLength = 0) {
     "tell me about stocksense",
     "what projects have you built",
     "where did you study",
-    "what did you study"
+    "what did you study",
   ];
 
   const deepPatterns = [
@@ -570,7 +559,7 @@ function getAIStreamSpeed(question, textLength = 0) {
     "walk me through",
     "how does",
     "weakness",
-    "why should i hire you"
+    "why should i hire you",
   ];
 
   if (fastPatterns.some((pattern) => lower.includes(pattern))) {
@@ -578,22 +567,22 @@ function getAIStreamSpeed(question, textLength = 0) {
   }
 
   if (deepPatterns.some((pattern) => lower.includes(pattern))) {
-    return 24;
+    return 20;
   }
 
-  if (textLength > 900) return 18;
-  return 14;
+  if (textLength > 900) return 16;
+  return 12;
 }
 
 async function revealAIText(output, cursor, text, delay) {
   const chars = [...text];
+  const step = 3;
 
-  for (let i = 0; i < chars.length; i += 1) {
-    cursor.before(document.createTextNode(chars[i]));
-
-    if (i % 2 === 0) scrollAIChat();
-
-    await wait(chars[i] === " " ? Math.max(4, delay * 0.45) : delay);
+  for (let i = 0; i < chars.length; i += step) {
+    const chunk = chars.slice(i, i + step).join("");
+    cursor.before(document.createTextNode(chunk));
+    scrollAIChat();
+    await wait(Math.max(12, delay));
   }
 
   scrollAIChat();
@@ -604,7 +593,7 @@ async function streamLocalAnswer(text, question = "") {
   resumeAIAutoScroll();
 
   const thinking = addThinkingMessage();
-  await wait(520);
+  await wait(420);
   thinking?.remove();
 
   const output = addAssistantMessage();
@@ -637,8 +626,8 @@ async function streamRemoteAnswer(question) {
     body: JSON.stringify({
       message: question,
       messages: aiHistory.slice(-10),
-      stream: true
-    })
+      stream: true,
+    }),
   });
 
   if (!response.ok || !response.body) {
@@ -674,32 +663,28 @@ async function streamRemoteAnswer(question) {
     scrollAIChat();
   };
 
+  const nextCharDelay = (visible, baseDelay) => {
+    const last = visible.slice(-1);
+    if (last === " " || last === "\n") return Math.max(10, baseDelay * 0.6);
+    if (/[.!?]/.test(last)) return baseDelay * 1.8;
+    if (/[,:;]/.test(last)) return baseDelay * 1.25;
+    return baseDelay;
+  };
+
   const revealLoop = async () => {
     while (!streamFinished || displayText.length < streamedText.length) {
       if (displayText.length < streamedText.length) {
-        const nextChar = [...streamedText][[...displayText].length];
-        if (nextChar !== undefined) {
-          displayText += nextChar;
-          renderVisible();
-        }
+        const remaining = streamedText.length - displayText.length;
+        const step = remaining > 40 ? 6 : remaining > 15 ? 3 : 2;
+        displayText = streamedText.slice(0, displayText.length + step);
+        renderVisible();
+        await wait(Math.max(16, nextCharDelay(displayText, delay)));
       } else {
-        await wait(16);
-      }
-
-      if (displayText.length < streamedText.length) {
-        await wait(nextCharDelay(displayText, delay));
+        await wait(20);
       }
     }
 
     revealResolve();
-  };
-
-  const nextCharDelay = (visible, baseDelay) => {
-    const last = visible.slice(-1);
-    if (last === " " || last === "\n") return Math.max(4, baseDelay * 0.45);
-    if (/[.!?]/.test(last)) return baseDelay * 2.2;
-    if (/[,:;]/.test(last)) return baseDelay * 1.35;
-    return baseDelay;
   };
 
   const revealPromise = revealLoop();
@@ -781,7 +766,7 @@ async function streamRemoteAnswer(question) {
 
   aiHistory.push(
     { role: "user", content: question },
-    { role: "assistant", content: streamedText }
+    { role: "assistant", content: streamedText },
   );
 
   if (aiHistory.length > 12) {
@@ -803,14 +788,14 @@ async function askRajdeep(question) {
       await streamLocalAnswer(answer);
       aiHistory.push(
         { role: "user", content: cleanQuestion },
-        { role: "assistant", content: answer }
+        { role: "assistant", content: answer },
       );
       if (aiHistory.length > 12) aiHistory.splice(0, aiHistory.length - 12);
     } else if (RAJDEEP_AI_API) {
       await streamRemoteAnswer(cleanQuestion);
     } else {
       await streamLocalAnswer(
-        "I can answer questions about Rajdeep's projects, skills, experience and portfolio. The live AI endpoint is being connected for open-ended questions."
+        "I can answer questions about Rajdeep's projects, skills, experience and portfolio. The live AI endpoint is being connected for open-ended questions.",
       );
     }
   } catch (error) {
@@ -818,17 +803,17 @@ async function askRajdeep(question) {
     thinking?.remove();
 
     const hasAssistantResponse = aiChat?.querySelector(
-      ".ai-message.assistant:not(.ai-thinking-message) .ai-response"
+      ".ai-message.assistant:not(.ai-thinking-message) .ai-response",
     );
 
     if (!hasAssistantResponse?.textContent?.trim()) {
       await streamLocalAnswer(
-        "I couldn't reach the live AI layer right now. Try one of the suggested questions, or check back once the AI endpoint is available."
+        "I couldn't reach the live AI layer right now. Try one of the suggested questions, or check back once the AI endpoint is available.",
       );
     }
   } finally {
     setComposerBusy(false);
-    aiInput?.focus();
+    aiInput?.focus({ preventScroll: true });
   }
 }
 
@@ -844,7 +829,6 @@ aiQuestions?.querySelectorAll("button").forEach((button) => {
 
 /* =========================================================
    PROJECT CASE STUDIES
-   Card -> case study -> GitHub.
    ========================================================= */
 
 const projectData = {
@@ -1027,13 +1011,7 @@ document.querySelectorAll(".project-card[data-project]").forEach((card) => {
 });
 
 /* =========================================================
-   HEADER STATE + PAGE/SCROLL MOTION
-   ========================================================= */
-
-/* =========================================================
    RESPONSIVE MOBILE TICKER
-   Measure the actual rendered ticker text, not its 100%-wide
-   container, then fit the complete string to the phone width.
    ========================================================= */
 
 const mobileTicker = document.querySelector(".ticker");
@@ -1086,15 +1064,12 @@ function fitMobileTicker() {
   const fittedWidth = getTickerTextWidth();
 
   if (fittedWidth > availableWidth) {
-    mobileTickerContent.style.transform =
-      `scaleX(${availableWidth / fittedWidth})`;
+    mobileTickerContent.style.transform = `scaleX(${availableWidth / fittedWidth})`;
   }
 }
 
 const tickerResizeObserver =
-  "ResizeObserver" in window
-    ? new ResizeObserver(fitMobileTicker)
-    : null;
+  "ResizeObserver" in window ? new ResizeObserver(fitMobileTicker) : null;
 
 tickerResizeObserver?.observe(mobileTicker);
 window.addEventListener("resize", fitMobileTicker, { passive: true });
@@ -1103,15 +1078,19 @@ window.addEventListener("load", fitMobileTicker);
 fitMobileTicker();
 
 const siteHeader = document.querySelector(".site-header");
+let isHeaderScrolled = false;
 
 function updateHeaderState() {
-  siteHeader?.classList.toggle("is-scrolled", window.scrollY > 24);
+  const shouldBeScrolled = window.scrollY > 24;
+  if (shouldBeScrolled !== isHeaderScrolled) {
+    isHeaderScrolled = shouldBeScrolled;
+    siteHeader?.classList.toggle("is-scrolled", shouldBeScrolled);
+  }
 }
 
 window.addEventListener("load", updateHeaderState);
 updateHeaderState();
 
-/* Add the same restrained reveal language to the main sections/cards. */
 const revealTargets = [
   ...document.querySelectorAll(
     ".section-heading, .project-card, .skills > div, .ai > div, .profile-panel, .about, .contact, .experience-item, .cert-item",
@@ -1123,14 +1102,10 @@ revealTargets.forEach((el, index) => {
   el.style.setProperty("--reveal-delay", `${Math.min(index % 3, 2) * 70}ms`);
 });
 
-/* Experience + certification items use a tighter stagger. */
 document
   .querySelectorAll(".experience-item, .cert-item")
   .forEach((item, index) => {
-    item.style.setProperty(
-      "--profile-delay",
-      `${index * 90}ms`,
-    );
+    item.style.setProperty("--profile-delay", `${index * 90}ms`);
   });
 
 if ("IntersectionObserver" in window) {
@@ -1186,12 +1161,6 @@ if (aiTerminal && "IntersectionObserver" in window) {
    NAVIGATION
    ========================================================= */
 
-/* =========================================================
-   MOBILE HASH NAVIGATION
-   Fixed glass header must never cover the Work section when
-   #work is opened directly or through an anchor.
-   ========================================================= */
-
 function positionWorkSection() {
   const work = document.querySelector("#work");
   if (!work || window.innerWidth > 620) return;
@@ -1199,10 +1168,7 @@ function positionWorkSection() {
   const header = document.querySelector(".site-header");
   const headerHeight = header?.getBoundingClientRect().height || 56;
   const targetY =
-    work.getBoundingClientRect().top +
-    window.scrollY -
-    headerHeight -
-    80;
+    work.getBoundingClientRect().top + window.scrollY - headerHeight - 80;
 
   window.scrollTo({
     top: Math.max(0, targetY),
@@ -1229,14 +1195,9 @@ const navLinks = [...document.querySelectorAll(".main-nav a")];
 
 function resolveSectionTarget(href) {
   if (!href || !href.startsWith("#")) return null;
-
-  // #top is the <main> wrapper for the entire page, not the Home section.
-  // Use the hero as the actual Home detection target so section tracking
-  // cannot fall back to HOME while the user is deeper in the page.
   if (href === "#top") {
     return document.querySelector(".hero");
   }
-
   return document.querySelector(href);
 }
 
@@ -1244,106 +1205,83 @@ const navTargets = navLinks
   .map((link) => {
     const href = link.getAttribute("href");
     const target = resolveSectionTarget(href);
-
     if (!target) return null;
-
-    return {
-      link,
-      target,
-    };
+    return { link, target };
   })
   .filter(Boolean);
 
-const mobileSectionNav=document.querySelector(".mobile-section-nav");
-const mobileSectionIndicator=document.querySelector(".mobile-section-indicator");
-const mobileSectionLabel=mobileSectionIndicator?.querySelector("span");
-const mobileSectionLinks=[...document.querySelectorAll(".mobile-section-menu a")];
+const mobileSectionNav = document.querySelector(".mobile-section-nav");
+const mobileSectionIndicator = document.querySelector(
+  ".mobile-section-indicator",
+);
+const mobileSectionLabel = mobileSectionIndicator?.querySelector("span");
+const mobileSectionLinks = [
+  ...document.querySelectorAll(".mobile-section-menu a"),
+];
 
-const mobileSectionTargets=mobileSectionLinks
-  .map((link)=>{
-    const href=link.getAttribute("href");
-    const target=resolveSectionTarget(href);
-    if(!target) return null;
-    return {link,target};
+const mobileSectionTargets = mobileSectionLinks
+  .map((link) => {
+    const href = link.getAttribute("href");
+    const target = resolveSectionTarget(href);
+    if (!target) return null;
+    return { link, target };
   })
   .filter(Boolean);
 
-function setMobileSectionMenu(open){
-  if(!mobileSectionNav||!mobileSectionIndicator) return;
-  mobileSectionNav.classList.toggle("is-open",open);
-  mobileSectionIndicator.setAttribute("aria-expanded",String(open));
+function setMobileSectionMenu(open) {
+  if (!mobileSectionNav || !mobileSectionIndicator) return;
+  mobileSectionNav.classList.toggle("is-open", open);
+  mobileSectionIndicator.setAttribute("aria-expanded", String(open));
 }
 
-function getActiveMobileSection(){
-  const headerHeight=document.querySelector(".site-header")?.getBoundingClientRect().height||76;
-  const probeY=Math.min(
-    window.innerHeight-1,
-    headerHeight+Math.max(120, (window.innerHeight-headerHeight)*0.45)
-  );
-  const probeX=Math.min(window.innerWidth/2,window.innerWidth-1);
-  const element=document.elementFromPoint(probeX,probeY);
-  const visibleSection=element?.closest("section, footer");
-
-  if(visibleSection){
-    const match=mobileSectionTargets.find((item)=>item.target===visibleSection);
-    if(match) return match;
-  }
-
-  const marker=window.scrollY+probeY;
-  let active=mobileSectionTargets[0];
-  let bestDistance=Infinity;
-
-  for(const item of mobileSectionTargets){
-    const rect=item.target.getBoundingClientRect();
-    const top=rect.top+window.scrollY;
-    const bottom=top+rect.height;
-
-    if(marker>=top&&marker<=bottom) return item;
-
-    const distance=marker<top?top-marker:marker-bottom;
-    if(distance<bestDistance){
-      bestDistance=distance;
-      active=item;
-    }
-  }
-
-  return active;
-}
-
-mobileSectionIndicator?.addEventListener("click",()=>{
+mobileSectionIndicator?.addEventListener("click", () => {
   setMobileSectionMenu(!mobileSectionNav?.classList.contains("is-open"));
 });
 
-mobileSectionLinks.forEach((link)=>{
-  link.addEventListener("click",()=>{
-    if(mobileSectionLabel){
-      mobileSectionLabel.textContent=link.textContent.trim().toUpperCase();
+mobileSectionLinks.forEach((link) => {
+  link.addEventListener("click", () => {
+    if (mobileSectionLabel) {
+      mobileSectionLabel.textContent = link.textContent.trim().toUpperCase();
     }
-    mobileSectionLinks.forEach((item)=>item.classList.toggle("active",item===link));
+    mobileSectionLinks.forEach((item) =>
+      item.classList.toggle("active", item === link),
+    );
     setMobileSectionMenu(false);
   });
 });
 
-window.addEventListener("hashchange",()=>{
-  const hash=window.location.hash||"#top";
-  const activeLink=mobileSectionLinks.find((link)=>link.getAttribute("href")===hash);
-  if(!activeLink) return;
-  if(mobileSectionLabel){
-    mobileSectionLabel.textContent=activeLink.textContent.trim().toUpperCase();
+window.addEventListener("hashchange", () => {
+  const hash = window.location.hash || "#top";
+  const activeLink = mobileSectionLinks.find(
+    (link) => link.getAttribute("href") === hash,
+  );
+  if (!activeLink) return;
+  if (mobileSectionLabel) {
+    mobileSectionLabel.textContent = activeLink.textContent
+      .trim()
+      .toUpperCase();
   }
-  mobileSectionLinks.forEach((item)=>item.classList.toggle("active",item===activeLink));
+  mobileSectionLinks.forEach((item) =>
+    item.classList.toggle("active", item === activeLink),
+  );
 });
 
-document.addEventListener("click",(event)=>{
-  if(mobileSectionNav?.classList.contains("is-open")&&!mobileSectionNav.contains(event.target)){
+document.addEventListener("click", (event) => {
+  if (
+    mobileSectionNav?.classList.contains("is-open") &&
+    !mobileSectionNav.contains(event.target)
+  ) {
     setMobileSectionMenu(false);
   }
 });
 
-document.addEventListener("keydown",(event)=>{
-  if(event.key==="Escape"&&mobileSectionNav?.classList.contains("is-open")){
+document.addEventListener("keydown", (event) => {
+  if (
+    event.key === "Escape" &&
+    mobileSectionNav?.classList.contains("is-open")
+  ) {
     setMobileSectionMenu(false);
-    mobileSectionIndicator?.focus();
+    mobileSectionIndicator?.focus({ preventScroll: true });
   }
 });
 
@@ -1351,7 +1289,8 @@ let cachedNavTargets = [];
 let cachedMobileTargets = [];
 
 function cacheNavPositions() {
-  const headerHeight = document.querySelector(".site-header")?.offsetHeight || 76;
+  const headerHeight =
+    document.querySelector(".site-header")?.offsetHeight || 76;
 
   cachedNavTargets = navTargets.map((item) => ({
     link: item.link,
@@ -1414,29 +1353,30 @@ function updateActiveNav(headerHeight = 76) {
     );
 
     if (mobileSectionLabel) {
-      mobileSectionLabel.textContent =
-        activeMobile.link.textContent.trim().toUpperCase();
+      mobileSectionLabel.textContent = activeMobile.link.textContent
+        .trim()
+        .toUpperCase();
     }
   }
 }
 
 let scrollUpdatePending = false;
 let scrollIdleTimer = null;
+let isCurrentlyScrolling = false;
 
-function markScrolling() {
-  document.documentElement.classList.add("is-scrolling");
+function scheduleScrollUpdate() {
+  if (!isCurrentlyScrolling) {
+    isCurrentlyScrolling = true;
+    document.documentElement.classList.add("is-scrolling");
+  }
 
   window.clearTimeout(scrollIdleTimer);
   scrollIdleTimer = window.setTimeout(() => {
+    isCurrentlyScrolling = false;
     document.documentElement.classList.remove("is-scrolling");
-  }, 120);
-}
-
-function scheduleScrollUpdate() {
-  markScrolling();
+  }, 150);
 
   if (scrollUpdatePending) return;
-
   scrollUpdatePending = true;
 
   window.requestAnimationFrame(() => {
@@ -1447,6 +1387,6 @@ function scheduleScrollUpdate() {
 }
 
 window.addEventListener("scroll", scheduleScrollUpdate, { passive: true });
-window.addEventListener("resize", cacheNavPositions);
+window.addEventListener("resize", cacheNavPositions, { passive: true });
 window.addEventListener("load", cacheNavPositions);
 cacheNavPositions();
