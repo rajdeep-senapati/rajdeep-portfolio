@@ -852,6 +852,7 @@ const projectData = {
     ],
     notes:
       "Benchmarked via rag_eval.py: Hybrid RRF improved Precision@2 & Recall@2 by +33.4% over pure BM25 (3.63 ms latency), achieving 1.00/1.00 faithfulness (0 hallucinations) at ~$0.00057/run.",
+    live: "https://jobshield-v2.streamlit.app/",
     github: "https://github.com/rajdeep-senapati/JobShield",
   },
   stocksense: {
@@ -966,6 +967,7 @@ const caseApproach = document.querySelector("#caseApproach");
 const caseNotes = document.querySelector("#caseNotes");
 const caseTags = document.querySelector("#caseTags");
 const caseGithub = document.querySelector("#caseGithub");
+const caseLive = document.querySelector("#caseLive");
 
 function openCaseStudy(key, trigger = document.activeElement) {
   const project = projectData[key];
@@ -981,6 +983,16 @@ function openCaseStudy(key, trigger = document.activeElement) {
     .map((tag) => `<span>${tag}</span>`)
     .join("");
   caseGithub.href = project.github;
+
+  if (caseLive) {
+    if (project.live) {
+      caseLive.href = project.live;
+      caseLive.style.display = "inline-flex";
+    } else {
+      caseLive.removeAttribute("href");
+      caseLive.style.display = "none";
+    }
+  }
 
   lockPageScroll();
   caseModal.classList.add("open");

@@ -6326,3 +6326,50 @@ body.modal-open .site-header {
   .mobile-section-menu a { display:inline-flex; align-items:center; justify-content:center; min-height:30px; padding:0 8px; border-radius:999px; color:var(--ink); font:500 8.5px "DM Mono",monospace; letter-spacing:.04em; }
   .mobile-section-menu a.active,.mobile-section-menu a:hover { color:var(--red); }
 }
+
+/* =========================================================
+   BLACK LIVE DEMO BUTTON + ZERO-STUTTER MODAL PERFORMANCE
+   ========================================================= */
+
+.case-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.case-button-dark {
+  background: #151515;
+  color: #f5f1e8;
+  border: 1.5px solid #151515;
+  transition: transform 0.16s ease, background-color 0.16s ease, box-shadow 0.16s ease;
+}
+
+.case-button-dark:hover,
+.case-button-dark:focus-visible {
+  background: #2a2a2a;
+  border-color: #2a2a2a;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+/* Make modals vanish instantaneously (0ms) on close with zero layout lag */
+.case-modal:not(.open),
+.modal:not(.open),
+.case-modal:not(.open) .case-panel,
+.modal:not(.open) .panel,
+.case-modal:not(.open) .case-backdrop,
+.modal:not(.open) .backdrop {
+  transition: none !important;
+  animation: none !important;
+  pointer-events: none !important;
+}
+
+/* GPU-accelerate panels and cards to prevent repaint stutter */
+.case-panel,
+.ai-chat-panel,
+.project-card {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
