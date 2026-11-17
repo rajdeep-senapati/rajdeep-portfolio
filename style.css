@@ -6365,11 +6365,8 @@ body.modal-open .site-header {
   pointer-events: none !important;
 }
 
-/* GPU-accelerate panels and cards to prevent repaint stutter */
-.case-panel,
-.ai-chat-panel,
+/* GPU-accelerate cards without overriding centered modal transforms */
 .project-card {
-  will-change: transform, opacity;
-  transform: translateZ(0);
+  will-change: transform;
   backface-visibility: hidden;
 }
