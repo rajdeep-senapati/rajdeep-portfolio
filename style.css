@@ -5,7 +5,7 @@
    ========================================================= */
 
 :root {
-  color-scheme: light;
+  color-scheme: only light;
   --red: #ff3b30;
   --ink: #11100f;
   --cream: #f5f1e8;
@@ -6363,6 +6363,33 @@ body.modal-open .site-header {
   transition: none !important;
   animation: none !important;
   pointer-events: none !important;
+}
+
+/* GPU-accelerate cards without overriding centered modal transforms */
+.project-card {
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+/* =========================================================
+   FORCE LIGHT MODE (BLOCK BROWSER AUTO-DARK OVERRIDES)
+   ========================================================= */
+
+html,
+body {
+  color-scheme: only light !important;
+  background-color: #f5f1e8 !important;
+  color: #11100f !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root,
+  html,
+  body {
+    color-scheme: only light !important;
+    background-color: #f5f1e8 !important;
+    color: #11100f !important;
+  }
 }
 
 /* GPU-accelerate cards without overriding centered modal transforms */
