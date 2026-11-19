@@ -145,11 +145,21 @@ def project_context(question: str) -> bool:
         term in q
         for term in [
             "jobshield",
+            "pipesage",
+            "pipe sage",
+            "fastmcp",
+            "mcp",
             "stocksense",
             "stock sense",
+            "airwatch",
+            "jamshedpur",
+            "medallion",
             "route optimizer",
             "route_optimiser",
             "exam seating",
+            "examseat",
+            "cricket",
+            "t20",
             "alzheimer",
             "diwali sales",
             "diwali",
@@ -561,6 +571,23 @@ PROJECT_SOURCE_MAP: dict[str, list[tuple[str, str, str]]] = {
         ("JobShield resume parser", "rajdeep-senapati/JobShield", "resume/parser.py"),
         ("JobShield resume cleaner", "rajdeep-senapati/JobShield", "resume/cleaner.py"),
     ],
+    "pipesage": [
+        (
+            "PipeSage PySpark ETL & quarantine pipeline",
+            "rajdeep-senapati/PipeSage",
+            "src/pipeline/transform.py",
+        ),
+        (
+            "PipeSage FastMCP server & tools",
+            "rajdeep-senapati/PipeSage",
+            "src/mcp_server/server.py",
+        ),
+        (
+            "PipeSage validation rules config",
+            "rajdeep-senapati/PipeSage",
+            "config/validation_rules.json",
+        ),
+    ],
     "stocksense": [
         ("StockSense app", "rajdeep-senapati/stocksense", "app.py"),
         (
@@ -579,6 +606,47 @@ PROJECT_SOURCE_MAP: dict[str, list[tuple[str, str, str]]] = {
             "notebooks/03_production_forecast_pipeline.ipynb",
         ),
     ],
+    "airwatch": [
+        (
+            "AirWatch Open-Meteo Bronze ingestion",
+            "rajdeep-senapati/jamshedpur-airwatch",
+            "scripts/ingest_open_meteo.py",
+        ),
+        (
+            "AirWatch PySpark Silver transformation",
+            "rajdeep-senapati/jamshedpur-airwatch",
+            "scripts/transform_silver.py",
+        ),
+        (
+            "AirWatch Spark SQL Gold aggregation",
+            "rajdeep-senapati/jamshedpur-airwatch",
+            "scripts/build_gold.py",
+        ),
+        (
+            "AirWatch Streamlit dashboard",
+            "rajdeep-senapati/jamshedpur-airwatch",
+            "dashboard/app.py",
+        ),
+    ],
+    "exam": [
+        (
+            "ExamSeat 3-phase seating & invigilator algorithm",
+            "rajdeep-senapati/Exam-seating-system",
+            "backend/algorithm.py",
+        ),
+        (
+            "ExamSeat Flask API & Gemini 2.5 constraint parser",
+            "rajdeep-senapati/Exam-seating-system",
+            "backend/app.py",
+        ),
+    ],
+    "cricket": [
+        (
+            "T20 WC data preprocessing & KPI engineering",
+            "rajdeep-senapati/Cricket_Analysis",
+            "t20_data_preprocessing.ipynb",
+        ),
+    ],
     "diwali": [
         (
             "Diwali Sales analysis",
@@ -593,7 +661,17 @@ def project_source_specs(question: str) -> list[tuple[str, str, str]]:
     q = question.lower()
     specs: list[tuple[str, str, str]] = []
     for key, entries in PROJECT_SOURCE_MAP.items():
-        if key in q or (key == "diwali" and "diwali sales" in q):
+        if (
+            key in q
+            or (
+                key == "pipesage"
+                and any(t in q for t in ["pipe sage", "fastmcp", "mcp"])
+            )
+            or (key == "airwatch" and any(t in q for t in ["jamshedpur", "medallion"]))
+            or (key == "exam" and "examseat" in q)
+            or (key == "cricket" and "t20" in q)
+            or (key == "diwali" and "diwali sales" in q)
+        ):
             specs.extend(entries)
 
     if "jobshield" in q or any(

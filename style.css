@@ -6397,3 +6397,339 @@ body {
   will-change: transform;
   backface-visibility: hidden;
 }
+/* =========================================================
+   CUSTOM PROJECT VISUALS — PIPESAGE, AIRWATCH, T20 WC
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   02 — PIPESAGE (MCP + PYSPARK VALIDATION & QUARANTINE)
+   --------------------------------------------------------- */
+.pipesage-visual {
+  background: #e8e3da;
+  padding: 18px;
+  display: grid;
+  place-items: center;
+}
+
+.pipe-window {
+  width: 100%;
+  height: 100%;
+  background: var(--paper);
+  border: 1px solid rgba(17, 16, 15, 0.14);
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.pipe-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font: 600 9px "DM Mono", monospace;
+  letter-spacing: 0.04em;
+}
+
+.pipe-head span {
+  padding: 3px 7px;
+  background: var(--ink);
+  color: var(--cream);
+  font-size: 8px;
+}
+
+.pipe-flow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin: auto 0;
+}
+
+.pipe-node {
+  padding: 10px 12px;
+  border: 1px solid var(--ink);
+  background: var(--cream);
+  text-align: center;
+  min-width: 64px;
+}
+
+.pipe-node small {
+  display: block;
+  font: 500 7px "DM Mono", monospace;
+  color: var(--muted);
+  margin-bottom: 3px;
+}
+
+.pipe-node b {
+  font: 700 12px "DM Mono", monospace;
+  color: var(--ink);
+}
+
+.pipe-node.gate {
+  background: var(--ink);
+  color: var(--cream);
+  animation: pipeGatePulse 2.6s ease-in-out infinite;
+}
+
+.pipe-node.gate small {
+  color: #aaa49a;
+}
+
+.pipe-node.gate b {
+  color: var(--red);
+}
+
+.pipe-line {
+  flex: 1;
+  height: 2px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--ink) 0 6px,
+    transparent 6px 11px
+  );
+  animation: pipeStream 1.4s linear infinite;
+}
+
+.pipe-branches {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.branch-ok,
+.branch-err {
+  padding: 6px 9px;
+  font: 600 8px "DM Mono", monospace;
+  letter-spacing: 0.03em;
+  border: 1px solid var(--ink);
+}
+
+.branch-ok {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.branch-err {
+  background: var(--red);
+  border-color: var(--red);
+  color: var(--paper);
+  animation: quarantineBlink 2.8s ease-in-out infinite;
+}
+
+@keyframes pipeStream {
+  to {
+    background-position: 22px 0;
+  }
+}
+
+@keyframes pipeGatePulse {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-2px);
+  }
+}
+
+@keyframes quarantineBlink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.78;
+  }
+}
+
+/* ---------------------------------------------------------
+   04 — JAMSHEDPUR AIRWATCH (MEDALLION PIPELINE)
+   --------------------------------------------------------- */
+.airwatch-visual {
+  padding: 0;
+  background: #e5e0d6;
+}
+
+.airwatch-graphic {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 82% 22%, rgba(255, 59, 48, 0.09), transparent 28%),
+    #f8f4eb;
+}
+
+.airwatch-head {
+  position: absolute;
+  top: 14px;
+  left: 16px;
+  right: 16px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font: 600 9px "DM Mono", monospace;
+  letter-spacing: 0.03em;
+}
+
+.airwatch-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--red);
+  animation: ai-status-blink 1.6s ease-in-out infinite;
+}
+
+.airwatch-head em {
+  margin-left: auto;
+  font-style: normal;
+  padding: 3px 6px;
+  border: 1px solid rgba(17, 16, 15, 0.16);
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 7.5px;
+}
+
+.airwatch-graphic svg {
+  position: absolute;
+  inset: 34px 10px 8px;
+  width: calc(100% - 20px);
+  height: calc(100% - 42px);
+}
+
+.airwatch-grid line {
+  stroke: rgba(17, 16, 15, 0.07);
+  stroke-width: 1;
+  stroke-dasharray: 4 4;
+}
+
+.airwatch-curve {
+  fill: none;
+  stroke: var(--red);
+  stroke-width: 4.5;
+  stroke-linecap: round;
+}
+
+.airwatch-pulse {
+  fill: none;
+  stroke: #fffdf7;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-dasharray: 3 34;
+  animation: routeFlowSignal 1.5s linear infinite;
+}
+
+.aw-node {
+  fill: #f8f4eb;
+  stroke: var(--red);
+  stroke-width: 3.5;
+}
+
+.aw-node.silver {
+  fill: var(--ink);
+  stroke: #f8f4eb;
+  stroke-width: 3;
+}
+
+.aw-node.gold {
+  fill: var(--red);
+  stroke: var(--ink);
+  stroke-width: 2.5;
+}
+
+.airwatch-graphic text {
+  fill: var(--muted);
+  font: 600 8px "DM Mono", monospace;
+  letter-spacing: 0.04em;
+}
+
+/* ---------------------------------------------------------
+   05 — EXAM SEATING OVERRIDE LABEL
+   --------------------------------------------------------- */
+.mri-graphic::after {
+  content: "3-PHASE SOLVER  •  0 CONFLICTS" !important;
+}
+
+/* ---------------------------------------------------------
+   06 — T20 WC PERFORMANCE & POWER BI
+   --------------------------------------------------------- */
+.cricket-visual {
+  background: #e8e3da;
+  padding: 20px;
+  display: grid;
+  place-items: center;
+  position: relative;
+}
+
+.cricket-badge {
+  position: absolute;
+  z-index: 3;
+  left: 14px;
+  top: 11px;
+  padding: 4px 7px;
+  background: rgba(255, 253, 247, 0.85);
+  color: var(--ink);
+  font: 600 7.5px "DM Mono", monospace;
+  letter-spacing: 0.04em;
+}
+
+.cricket-art {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  padding: 28px 6% 10px;
+}
+
+.cricket-bars {
+  height: 82%;
+  display: flex;
+  align-items: flex-end;
+  gap: 9px;
+  flex: 1;
+}
+
+.cricket-bars i {
+  width: 11%;
+  background: var(--red);
+  height: 40%;
+  transform-origin: bottom;
+  animation: salesSignal 3.4s ease-in-out infinite;
+}
+
+.cricket-bars i:nth-child(2) { height: 64%; background: var(--ink); animation-delay: 0.15s; }
+.cricket-bars i:nth-child(3) { height: 48%; animation-delay: 0.3s; }
+.cricket-bars i:nth-child(4) { height: 78%; background: var(--ink); animation-delay: 0.45s; }
+.cricket-bars i:nth-child(5) { height: 56%; animation-delay: 0.6s; }
+.cricket-bars i:nth-child(6) { height: 86%; background: var(--ink); animation-delay: 0.75s; }
+.cricket-bars i:nth-child(7) { height: 68%; animation-delay: 0.9s; }
+
+.cricket-donut {
+  width: 68px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: conic-gradient(var(--red) 0 35%, var(--ink) 35% 80%, #d0cbc1 80%);
+  position: relative;
+  margin-bottom: 18px;
+  animation: donutFloat 3.8s ease-in-out infinite;
+}
+
+.cricket-donut::after {
+  content: "";
+  position: absolute;
+  inset: 16px;
+  border-radius: 50%;
+  background: #e8e3da;
+}
+
+.cricket-art b {
+  position: absolute;
+  right: 12%;
+  top: 6%;
+  font: 600 9px "DM Mono", monospace;
+  background: var(--paper);
+  border: 1px solid rgba(17, 16, 15, 0.12);
+  padding: 6px 9px;
+  box-shadow: 3px 3px 0 var(--ink);
+}

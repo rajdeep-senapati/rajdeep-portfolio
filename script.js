@@ -855,15 +855,36 @@ const projectData = {
     live: "https://jobshield-v2.streamlit.app/",
     github: "https://github.com/rajdeep-senapati/JobShield",
   },
+  pipesage: {
+    kicker: "02 · DATA ENGINEERING / MCP",
+    title: "PipeSage",
+    summary:
+      "MCP-enabled PySpark ETL and data-quality platform with configurable validation rules, invalid-record quarantine, pipeline observability, and AI assistant integration.",
+    problem:
+      "Silent schema drift and malformed records corrupt downstream analytics tables, while manual log inspection slows down pipeline recovery.",
+    approach:
+      "Built a schema-enforced PySpark ETL pipeline driven by external JSON validation rules (not_null, unique, positive, non_negative). Valid rows write to Parquet while rejected rows quarantine with a rejection_reasons array, exposed via 5 FastMCP tools and 2 MCP resources.",
+    stack: [
+      "Python",
+      "PySpark",
+      "FastMCP (MCP)",
+      "Pydantic",
+      "Parquet",
+      "pytest",
+    ],
+    notes:
+      "Includes a repeatable failure-scenario simulator (7 corruption modes), JSON observability reports, and 34 automated pytest unit and MCP integration tests.",
+    github: "https://github.com/rajdeep-senapati/PipeSage",
+  },
   stocksense: {
-    kicker: "02 · ML / FORECASTING",
+    kicker: "03 · DATA SCIENCE / FORECASTING",
     title: "StockSense",
     summary:
-      "Predictive Inventory Intelligence connecting SKU-level demand forecasting to replenishment decisions.",
+      "Predictive Inventory Intelligence connecting SKU-level demand forecasting to reorder-point and safety-stock replenishment decisions.",
     problem:
-      "Retail inventory decisions need to balance stockout risk against excess inventory while demand can be intermittent and highly variable.",
+      "Retail inventory decisions must balance stockout risk against excess working capital across 3,936 SKUs where over 55% exhibit intermittent demand.",
     approach:
-      "Transactions are cleaned with explicit business rules, transformed into daily SKU demand, analyzed for intermittency, then modeled with lag, rolling and calendar features. Forecasts feed a reorder-point and inventory-risk decision layer.",
+      "Cleaned 541,909 UCI retail transactions into 1.07M daily SKU-day records, engineered 11 leak-free lag, rolling-window, and calendar features, and trained a chronologically validated XGBoost forecaster feeding a 95% service-level reorder engine.",
     stack: [
       "Python",
       "Pandas",
@@ -873,86 +894,73 @@ const projectData = {
       "Streamlit",
     ],
     notes:
-      "The project is designed around prediction → inventory risk → business action rather than forecasting alone.",
+      "Outperformed Naive and Moving-Average baselines on held-out test data (MAE: 10.25, RMSE: 41.24) and translates forecasts into Healthy / Watch / High / Critical action tiers.",
     github: "https://github.com/rajdeep-senapati/stocksense",
   },
-  route: {
-    kicker: "03 · AI / OPTIMIZATION",
-    title: "AI Route Optimizer",
+  airwatch: {
+    kicker: "04 · DATA ENGINEERING / MEDALLION",
+    title: "Jamshedpur AirWatch",
     summary:
-      "Vehicle-routing workflow combining optimization, capacity, fuel constraints and traffic-aware enrichment.",
+      "Reproducible Bronze → Silver → Gold PySpark & Spark SQL pipeline exploring hourly and daily air-quality trends for Jamshedpur, Jharkhand.",
     problem:
-      "Delivery planning has to account for multiple customers, vehicle capacity, route distance, fuel usage and changing traffic conditions.",
+      "Raw environmental API telemetry arrives as nested hourly arrays requiring deduplication, timestamp normalization, and AQI band aggregation before decision analysis.",
     approach:
-      "A Flask backend uses OR-Tools for vehicle routing, Haversine distance calculations and capacity constraints. The solver can attempt a fuel-aware model, fall back when necessary, then enrich routes with traffic durations and rerouting logic.",
+      "Ingests Open-Meteo Air Quality API feeds into raw JSON (Bronze), flattens and validates arrays into date-partitioned Parquet using PySpark (Silver), and aggregates daily pollutant metrics and US AQI categories in Spark SQL (Gold) for an interactive Streamlit dashboard.",
     stack: [
-      "Python",
-      "OR-Tools",
-      "Flask",
-      "Supabase",
-      "Haversine",
-      "Traffic APIs",
+      "Python 3.11",
+      "PySpark 3.5",
+      "Spark SQL",
+      "Parquet",
+      "Plotly",
+      "Streamlit",
+      "GitHub Actions CI",
     ],
     notes:
-      "The portfolio case study links both the optimization backend and the separate React frontend repository.",
-    github: "https://github.com/rajdeep-senapati/Route_Optimizer",
+      "Includes automated pytest suites validating AQI category boundaries and Gold transformations on every push via GitHub Actions CI.",
+    github: "https://github.com/rajdeep-senapati/jamshedpur-airwatch",
   },
   exam: {
-    kicker: "04 · ALGORITHMS",
-    title: "Exam Seating Algorithm",
+    kicker: "05 · FULL-STACK / ALGORITHMS",
+    title: "Exam Seating System",
     summary:
-      "Full-stack exam management system with constraint-based seating, invigilator assignment and AI constraint parsing.",
+      "Full-stack exam management system with a 3-phase greedy seating algorithm, load-balanced invigilator assignment, and Gemini 2.5 AI constraint parsing.",
     problem:
-      "Manual exam hall allocation is repetitive and can create seating conflicts, invigilator double-booking and poor room utilization.",
+      "Manual exam hall allocation creates adjacent-student seating conflicts, invigilator double-booking, and uneven room utilization.",
     approach:
-      "A three-phase seating algorithm handles department distribution and leftover allocation. Invigilators are load-balanced with conflict prevention, while Gemini converts natural-language constraints into structured rules.",
+      "Engineered a 3-phase alternating-column seating algorithm with conflict-free invigilator load balancing in Flask + SQLAlchemy, paired with a React dashboard and Google Gemini 2.5 Flash to translate plain-English rules into structured solver constraints.",
     stack: [
       "Python",
       "Flask",
-      "React",
-      "SQLite",
+      "React 18",
+      "Gemini 2.5 Flash",
       "SQLAlchemy",
-      "Gemini",
       "OpenPyXL",
       "JWT",
     ],
     notes:
-      "The repository includes the frontend, backend, sample data and screenshots, making the case study useful even without a hosted demo.",
+      "Includes role-based authentication (superadmin/admin), fairness & utilization metrics, graceful fallback without an API key, and formatted Excel export.",
     github: "https://github.com/rajdeep-senapati/Exam-seating-system",
   },
-  alzheimers: {
-    kicker: "05 · ML / RESEARCH",
-    title: "Alzheimer’s Classification",
+  cricket: {
+    kicker: "06 · DATA ANALYTICS / POWER BI",
+    title: "T20 WC Performance & BI",
     summary:
-      "Research project using MRI-derived biomarkers, statistical feature selection and XGBoost for disease-stage classification.",
+      "End-to-end sports analytics and Power BI dashboard analyzing 9,554 deliveries across 45 T20 World Cup matches to simulate optimal team selection.",
     problem:
-      "MRI-derived volumetric biomarkers can contain many candidate variables, making feature selection and stage-specific classification important parts of the modeling workflow.",
+      "Traditional batting and bowling averages overlook situational match pressure and fail to quantify how lineup combinations affect win probability.",
     approach:
-      "ADNI MRI volumetric reports were processed into biomarker features. Statistical z-test selection was used before XGBoost models were trained for binary disease-stage classification tasks.",
+      "Processed 9,554 ball-by-ball records and 260 player profiles in Python, engineered custom Player Impact Score and Pressure Index KPIs, simulated playing-XI win probabilities, and built an interactive Power BI (.pbix) executive dashboard.",
     stack: [
       "Python",
-      "XGBoost",
-      "Statistics",
-      "Feature Selection",
-      "Cross-validation",
+      "Pandas",
+      "NumPy",
+      "Power BI (.pbix)",
+      "Plotly",
+      "KPI Engineering",
     ],
     notes:
-      "The project was completed as machine-learning research work at Jadavpur University; the portfolio should present the documented methodology rather than imply clinical deployment.",
-    github: "https://github.com/rajdeep-senapati/ML-and-DL",
-  },
-  diwali: {
-    kicker: "06 · DATA ANALYTICS",
-    title: "Diwali Sales Analysis",
-    summary:
-      "Exploratory retail analysis focused on customer demographics, spending patterns and product categories.",
-    problem:
-      "Festive retail data can reveal which customer segments, regions and product categories contribute most to sales.",
-    approach:
-      "The notebook cleans the transaction data, engineers total-spend and age-group features, then uses univariate and bivariate analysis to explore demographic and product-level patterns.",
-    stack: ["Python", "Pandas", "NumPy", "Matplotlib", "Seaborn", "Jupyter"],
-    notes:
-      "The repository contains the analysis notebook and source dataset, so the portfolio case study can explain the findings before sending the recruiter to the code.",
-    github: "https://github.com/rajdeep-senapati/Diwali_Sales",
+      "Simulated optimal lineups improved projected win probability by +15% and reduced manual player-evaluation reporting time by 40%.",
+    github: "https://github.com/rajdeep-senapati/Cricket_Analysis",
   },
 };
 

@@ -57,63 +57,102 @@
       ]
     }
   ],
-  "projects": {
-    "JobShield": {
-      "type": "Agentic AI / Hybrid RAG",
-      "summary": "Multi-agent job verification and Hybrid-RAG career copilot built around Web Verify (Tool Use) → Hybrid RAG (BM25 + Cosine RRF) → Match → Grounded Critic.",
-      "details": [
-        "Architected a 3-node LangGraph StateGraph combining live DuckDuckGo web verification, Hybrid RAG retrieval, and a self-reflection grounding critic.",
-        "Hybrid RAG ranks resume chunks using Reciprocal Rank Fusion (RRF) over BM25 lexical search and TF-IDF Cosine similarity, compressing prompt context by up to 60%.",
-        "Enforces deterministic Pydantic v2 JSON schemas and dynamic Groq model routing (GPT-OSS 20B / 120B and Llama-3.3-70B) with automatic fallback.",
-        "Includes a heuristic risk gate requiring explicit user confirmation on high-risk job listings before matching.",
-        "Benchmarked via rag_eval.py: Hybrid RRF improved Precision@2 and Recall@2 by +33.4% over pure BM25 (0.667 vs 0.500, MRR 0.833) at 3.63 ms retrieval latency, achieving 1.00/1.00 faithfulness (0 hallucinations) at ~$0.00057/run (2,262 tokens).",
-        "Stack: Python, LangGraph, LangChain-Groq, Hybrid RAG (BM25 + TF-IDF Cosine RRF), Pydantic, DuckDuckGo Search, Streamlit, PyPDF and python-docx."
+  "projects": [
+    {
+      "name": "JobShield v2.0",
+      "category": "Agentic AI / Hybrid RAG",
+      "featured": true,
+      "live_demo": "https://jobshield-v2.streamlit.app/",
+      "github": "https://github.com/rajdeep-senapati/JobShield",
+      "summary": "Multi-Agent Job Verification & Hybrid-RAG Career Copilot built around Web Verify (Tool Use) -> Hybrid RAG (BM25 + Cosine RRF) -> Match -> Grounded Critic.",
+      "tech_stack": ["Python", "LangGraph", "Hybrid RAG (BM25 + RRF)", "Groq API", "Pydantic v2", "DuckDuckGo Tool Use", "Streamlit"],
+      "highlights": [
+        "3-node sequential LangGraph StateGraph: Web Verifier agent with DuckDuckGo tool calling, Hybrid RAG Matcher, and Self-Reflection Grounding Critic.",
+        "Hybrid Reciprocal Rank Fusion (BM25 + TF-IDF Cosine) improved Precision@2 and Recall@2 by +33.4% over pure BM25 at 3.63 ms retrieval latency while cutting prompt tokens by up to 60%.",
+        "Achieved 1.00/1.00 faithfulness (0 hallucinations) via automated LLM-as-a-Judge evaluation (rag_eval.py) at ~$0.00057 per run."
       ]
     },
-    "StockSense": {
-      "type": "ML / Forecasting",
-      "summary": "Inventory and demand forecasting focused on SKU-level demand behaviour and reorder decisions.",
-      "details": [
-        "Uses explicit data-cleaning rules and daily SKU demand analysis.",
-        "Uses feature engineering and XGBoost forecasting.",
-        "Designed around prediction → inventory risk → business action.",
-        "Stack: Python, Pandas, XGBoost, Streamlit and time-series/feature engineering."
+    {
+      "name": "PipeSage",
+      "category": "Data Engineering / MCP",
+      "featured": true,
+      "github": "https://github.com/rajdeep-senapati/PipeSage",
+      "summary": "MCP-enabled PySpark ETL and data-quality platform with configurable validation rules, invalid-record quarantine, pipeline observability, and AI assistant integration.",
+      "tech_stack": ["Python", "PySpark", "FastMCP (MCP)", "Pydantic", "Parquet", "pytest"],
+      "highlights": [
+        "Schema-enforced PySpark ETL pipeline driven by external JSON validation rules (not_null, unique, positive, non_negative).",
+        "Separates clean records to Parquet while routing malformed records to quarantine with a rejection_reasons array.",
+        "Exposes 5 FastMCP tools and 2 MCP resources for AI assistant execution and observability, backed by 34 automated pytest unit and integration tests."
       ]
     },
-    "AI Route Optimizer": {
-      "type": "AI / Optimization",
-      "summary": "Vehicle-routing workflow using distance-aware optimization, capacity and fuel constraints, traffic enrichment and rerouting.",
-      "details": [
-        "Uses OR-Tools, Flask, Supabase and Haversine distance calculations."
+    {
+      "name": "StockSense",
+      "category": "Data Science / Forecasting",
+      "featured": true,
+      "github": "https://github.com/rajdeep-senapati/stocksense",
+      "summary": "Predictive Inventory Intelligence connecting SKU-level demand forecasting to reorder-point and safety-stock replenishment decisions.",
+      "tech_stack": ["Python", "Pandas", "XGBoost", "Feature Engineering", "Time Series", "Streamlit"],
+      "highlights": [
+        "Processed 541,909 UCI retail transactions into 1.07M daily SKU-day records across 3,936 SKUs.",
+        "Engineered 11 leak-free lag, rolling-window, and calendar features for chronologically validated XGBoost forecasting (Test MAE: 10.25, RMSE: 41.24).",
+        "Translates forecasts into 95% service-level reorder points and Healthy / Watch / High / Critical replenishment tiers."
       ]
     },
-    "Exam Seating Algorithm": {
-      "type": "Algorithms",
-      "summary": "Constraint-based exam seating and management system.",
-      "details": [
-        "Handles seating allocation, conflict prevention and invigilator assignment.",
-        "Includes AI constraint parsing using Gemini.",
-        "Stack includes Python, Flask, React, SQLite, SQLAlchemy, Gemini, OpenPyXL and JWT."
+    {
+      "name": "Jamshedpur AirWatch",
+      "category": "Data Engineering / Medallion Analytics",
+      "featured": true,
+      "github": "https://github.com/rajdeep-senapati/jamshedpur-airwatch",
+      "summary": "Reproducible Bronze -> Silver -> Gold PySpark & Spark SQL pipeline exploring hourly and daily air-quality trends for Jamshedpur, Jharkhand.",
+      "tech_stack": ["Python 3.11", "PySpark 3.5", "Spark SQL", "Parquet", "Plotly", "Streamlit", "GitHub Actions CI"],
+      "highlights": [
+        "Ingests Open-Meteo Air Quality API telemetry into Bronze JSON, flattens and validates hourly arrays into date-partitioned Silver Parquet, and builds Gold daily aggregates in Spark SQL.",
+        "Surfaces PM2.5, PM10, US AQI trends, and unhealthy-hour distributions in an interactive Streamlit dashboard.",
+        "Validated by automated pytest suites running on every push via GitHub Actions CI."
       ]
     },
-    "Alzheimer’s Classification": {
-      "type": "ML / Research",
-      "summary": "Machine-learning research project using ADNI MRI volumetric reports.",
-      "details": [
-        "Uses MRI-derived biomarkers, statistical feature selection and XGBoost for disease-stage classification.",
-        "Completed as machine-learning research work at Jadavpur University.",
-        "It should not be described as a clinical product or clinical diagnosis system."
+    {
+      "name": "Exam Seating System",
+      "category": "Full-Stack / Algorithms",
+      "featured": true,
+      "github": "https://github.com/rajdeep-senapati/Exam-seating-system",
+      "summary": "Full-stack exam management system with a 3-phase greedy seating algorithm, load-balanced invigilator assignment, and Gemini 2.5 AI constraint parsing.",
+      "tech_stack": ["Python", "Flask", "React 18", "Gemini 2.5 Flash", "SQLAlchemy", "OpenPyXL", "JWT"],
+      "highlights": [
+        "3-phase alternating-column seating algorithm with conflict-free, load-balanced invigilator assignment.",
+        "Uses Google Gemini 2.5 Flash to convert plain-English rules into structured solver constraints with graceful fallback.",
+        "Includes role-based JWT authentication, live utilization metrics, and formatted OpenPyXL Excel exports."
       ]
     },
-    "Diwali Sales Analysis": {
-      "type": "Data Analytics",
-      "summary": "Exploratory retail analysis and customer segmentation.",
-      "details": [
-        "Uses demographic, spending and product-level analysis.",
-        "Stack: Python, Pandas, NumPy, Matplotlib, Seaborn and Jupyter."
+    {
+      "name": "T20 WC Performance & BI",
+      "category": "Data Analytics / Power BI",
+      "featured": true,
+      "github": "https://github.com/rajdeep-senapati/Cricket_Analysis",
+      "summary": "End-to-end sports analytics and Power BI dashboard analyzing 9,554 deliveries across 45 T20 World Cup matches to simulate optimal team selection.",
+      "tech_stack": ["Python", "Pandas", "NumPy", "Power BI (.pbix)", "Plotly", "KPI Engineering"],
+      "highlights": [
+        "Processed 9,554 ball-by-ball records and 260 player profiles to engineer custom Player Impact Score and Pressure Index KPIs.",
+        "Simulated optimal playing-XI compositions, improving projected win probability by +15% and cutting manual analysis time by 40%."
       ]
+    },
+    {
+      "name": "AI Route Optimizer",
+      "category": "AI / Operations Optimization",
+      "featured": false,
+      "github": "https://github.com/rajdeep-senapati/Route_Optimizer",
+      "summary": "Vehicle-routing workflow combining OR-Tools optimization, capacity and fuel constraints, Haversine distance calculations, and traffic-aware rerouting.",
+      "tech_stack": ["Python", "OR-Tools", "Flask", "React", "Supabase"]
+    },
+    {
+      "name": "Global Layoffs SQL Analysis",
+      "category": "SQL / Data Cleaning & EDA",
+      "featured": false,
+      "github": "https://github.com/rajdeep-senapati/SQL_Improvization",
+      "summary": "End-to-end MySQL 8.0+ data cleaning and exploratory analysis using staging tables, CTEs, ROW_NUMBER(), DENSE_RANK(), and rolling window aggregations.",
+      "tech_stack": ["MySQL 8.0+", "CTEs", "Window Functions", "SQL"]
     }
-  },
+  ],
   "skills": [
     "Python",
     "LangGraph",
